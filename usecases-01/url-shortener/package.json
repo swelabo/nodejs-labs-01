@@ -10,7 +10,7 @@
     "test": "node --test",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
-    "db:seed": "node src/seed.js"
+    "db:seed": "node ../../scripts/seed-prisma.mjs"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "7.10.1",

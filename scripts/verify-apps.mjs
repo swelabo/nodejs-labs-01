@@ -14,6 +14,13 @@ const applications = [
 ]
 
 for (const [directory, args] of applications) {
+  const isSimple = directory.startsWith('simple-01/')
+  const setup = isSimple ? [['run', 'db:init'], ['run', 'db:seed']] : [['run', 'db:generate'], ['run', 'db:migrate'], ['run', 'db:seed']]
+  for (const setupArgs of setup) {
+    console.log(`\n==> ${directory}: npm ${setupArgs.join(' ')}`)
+    const setupResult = spawnSync('npm', setupArgs, { cwd: directory, stdio: 'inherit' })
+    if (setupResult.status !== 0) process.exit(setupResult.status ?? 1)
+  }
   console.log(`\n==> ${directory}: npm ${args.join(' ')}`)
   const result = spawnSync('npm', args, { cwd: directory, stdio: 'inherit' })
   if (result.status !== 0) process.exit(result.status ?? 1)

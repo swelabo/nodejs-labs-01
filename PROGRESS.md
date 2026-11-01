@@ -87,6 +87,9 @@ Phase 7 — consolidation and acceptance audit.
   the direct Blog session flow.
 - Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
   comparison chapters with Mermaid diagrams and exercises.
+- Added idempotent seed commands to all eighteen applications; the matrix now
+  initializes, migrates, seeds, type-checks where applicable, and tests each
+  variant.
 
 ## Known limitations
 

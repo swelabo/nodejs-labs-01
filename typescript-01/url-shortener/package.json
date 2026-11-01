@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
-    "db:seed": "node src/seed.js"
+    "db:seed": "tsx ../../scripts/seed-prisma.mjs"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "7.10.1",

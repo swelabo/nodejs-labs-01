@@ -2,8 +2,9 @@
 
 Use the Node.js version pinned in `.nvmrc` through asdf, then install the root
 dependencies. For a Prisma application, run `npm install`, `npx prisma generate`,
-and `npx prisma migrate deploy` from that application's directory. Start with
-its `npm start` command and stop it with SIGTERM so the server can close its
+and `npx prisma migrate deploy` from that application's directory. Run
+`npm run db:seed` to load idempotent teaching data. Start with its `npm start`
+command and stop it with SIGTERM so the server can close its
 listener and database connection.
 
 Before a milestone is considered complete, run:
