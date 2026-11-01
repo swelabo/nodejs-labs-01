@@ -56,7 +56,7 @@ export default defineConfig({
         { text: 'Comparisons', items: [{ text: 'All variants', link: '/comparisons/all-variants' }] },
       ],
       '/architecture/': [
-        { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }, { text: 'Prisma comparison', link: '/architecture/prisma-comparison' }, { text: 'Use-case comparison', link: '/architecture/usecases-comparison' }, { text: 'Hexagonal comparison', link: '/architecture/hexagonal-comparison' }, { text: 'DDD comparison', link: '/architecture/ddd-comparison' }, { text: 'DDD and Clean Architecture', link: '/architecture/ddd-clean-architecture' }, { text: 'Variant matrix', link: '/architecture/variant-matrix' }] },
+        { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }, { text: 'Prisma comparison', link: '/architecture/prisma-comparison' }, { text: 'Use-case comparison', link: '/architecture/usecases-comparison' }, { text: 'Hexagonal comparison', link: '/architecture/hexagonal-comparison' }, { text: 'TypeScript comparison', link: '/architecture/typescript-comparison' }, { text: 'DDD comparison', link: '/architecture/ddd-comparison' }, { text: 'DDD and Clean Architecture', link: '/architecture/ddd-clean-architecture' }, { text: 'Variant matrix', link: '/architecture/variant-matrix' }, { text: 'Reflection matrix', link: '/architecture/reflection-matrix' }] },
       ],
       '/applications/': [
         { text: 'Applications', items: [{ text: 'Simple URL shortener', link: '/applications/simple-url-shortener' }, { text: 'Simple Pastebin', link: '/applications/simple-pastebin' }, { text: 'Simple blog', link: '/applications/simple-blog' }, { text: 'Variant matrix', link: '/applications/variant-matrix' }] },

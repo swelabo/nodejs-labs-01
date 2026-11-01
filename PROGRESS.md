@@ -89,6 +89,9 @@ Phase 7 — consolidation and acceptance audit.
   comparison chapters with Mermaid diagrams and exercises.
 - Added tooling, concurrency, Express security, accessibility, reflections,
   glossary, and official references sections to the book.
+- Added a dedicated TypeScript comparison and an eighteen-entry application
+  reflection matrix covering design, testing, performance, security, and
+  evolution tradeoffs.
 - Added idempotent seed commands to all eighteen applications; the matrix now
   initializes, migrates, seeds, type-checks where applicable, and tests each
   variant.
