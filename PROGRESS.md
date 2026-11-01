@@ -99,6 +99,8 @@ Phase 7 — consolidation and acceptance audit.
   security tests to the direct application baselines.
 - Added explanatory comments at representative SQL, Prisma, port, TypeScript,
   and domain boundaries; focused tests and typechecks remain green.
+- Completed the technology research references for Express, Node testing,
+  TypeScript, SQLite, HTMX, Alpine.js, Tailwind, EJS, and OpenAPI.
 - Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
   comparison chapters with Mermaid diagrams and exercises.
 - Added tooling, concurrency, Express security, accessibility, reflections,

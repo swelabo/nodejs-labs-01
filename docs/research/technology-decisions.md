@@ -31,9 +31,20 @@ variants must re-check compatibility before adding their own dependencies.
 - [Prisma supported versions](https://www.prisma.io/docs/orm/supported-versions)
   identifies Prisma ORM 8 as a release-candidate line and notes that its SQLite
   library is experimental.
-- Express and package versions were checked through npm package metadata on the
-  research date. The application milestone will add the official Express
-  documentation URL and verify middleware compatibility before implementation.
+- [Express documentation](https://expressjs.com/en/5x/api.html) documents the
+  Express 5 API and middleware contract used by the applications.
+- [Node.js test runner](https://nodejs.org/api/test.html) documents the built-in
+  `node:test` API used in the JavaScript variants.
+- [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
+  is the primary reference for the compiler and type-system chapters.
+- [HTMX documentation](https://htmx.org/docs/), [Alpine.js documentation](https://alpinejs.dev/start-here),
+  [Tailwind CSS documentation](https://tailwindcss.com/docs/installation), and
+  [EJS documentation](https://ejs.co/) describe the server-driven frontend
+  tools used or discussed by the baseline.
+- [OpenAPI specification](https://spec.openapis.org/oas/latest.html) defines
+  the contract format; the repository uses OpenAPI 3.1 artifacts.
+- [SQLite documentation](https://www.sqlite.org/docs.html) is the primary
+  reference for SQL, transactions, constraints, and operational behavior.
 
 ## Prisma compatibility checkpoint
 
