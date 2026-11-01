@@ -1,4 +1,5 @@
 import express from 'express'
+import crypto from 'node:crypto'
 import QRCode from 'qrcode'
 
 import { createRepository, ForbiddenError, NotFoundError, ValidationError, MAX_PAGE_SIZE } from './repository.js'
@@ -11,10 +12,11 @@ function sendProblem(response, status, title, detail, errors) {
   return response.type('application/problem+json').status(status).json(problem(status, title, detail, errors))
 }
 
-function userIdFrom(request, config) {
+function cookie(request, name) { return request.get('cookie')?.split(';').map((part) => part.trim()).find((part) => part.startsWith(`${name}=`))?.slice(name.length + 1) }
+function userIdFrom(request, config, repository) {
   // The development header is an explicit identity seam. Falling back to a
   // configured user would turn an anonymous request into an authorized one.
-  return request.get('x-user-id') || (config.allowAnonymousCreation ? null : null)
+  return repository.sessionUser(cookie(request, 'shortener_session'))?.id || request.get('x-user-id') || (config.allowAnonymousCreation ? null : null)
 }
 
 function parsePage(value, fallback) {
@@ -49,13 +51,17 @@ export function createApp({ repository, config }) {
   app.use(express.urlencoded({ extended: false, limit: '16kb' }))
   app.set('view engine', 'ejs')
   app.set('views', new URL('./views', import.meta.url).pathname)
+  app.use((request, response, next) => { const session = cookie(request, 'shortener_session'); const supplied = request.get('x-csrf-token') || request.body?._csrf; if (session && ['POST', 'PATCH', 'DELETE'].includes(request.method) && !['/api/v1/auth/register', '/api/v1/auth/login'].includes(request.path) && supplied !== cookie(request, 'shortener_csrf')) return sendProblem(response, 403, 'Forbidden', 'CSRF token is missing or invalid'); next() })
+  app.post('/api/v1/auth/register', (request, response, next) => { try { const user = repository.register(request.body); const login = repository.login(request.body); const csrfToken = crypto.randomBytes(24).toString('base64url'); response.set('Set-Cookie', [`shortener_session=${login.token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400`, `shortener_csrf=${csrfToken}; SameSite=Lax; Path=/; Max-Age=86400`]); response.set('X-CSRF-Token', csrfToken); return response.status(201).json({ data: { user, expires_at: login.expires_at } }) } catch (error) { return next(error) } })
+  app.post('/api/v1/auth/login', (request, response, next) => { try { const login = repository.login(request.body); const csrfToken = crypto.randomBytes(24).toString('base64url'); response.set('Set-Cookie', [`shortener_session=${login.token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400`, `shortener_csrf=${csrfToken}; SameSite=Lax; Path=/; Max-Age=86400`]); response.set('X-CSRF-Token', csrfToken); return response.json({ data: login }) } catch (error) { return next(error) } })
+  app.post('/api/v1/auth/logout', (request, response) => { repository.logout(cookie(request, 'shortener_session')); response.set('Set-Cookie', ['shortener_session=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0', 'shortener_csrf=; SameSite=Lax; Path=/; Max-Age=0']); return response.status(204).end() })
   const limitCreation = createRateLimiter(config.rateLimitPerMinute)
 
   app.get('/', (request, response, next) => {
     try {
-      const ownerId = userIdFrom(request, config)
+      const ownerId = userIdFrom(request, config, repository)
       const links = repository.list({ ownerId, page: 1, pageSize: 100 }).items
-      return response.render('home', { links, error: null, userId: ownerId })
+      return response.render('home', { links, error: null, userId: ownerId, csrfToken: cookie(request, 'shortener_csrf') })
     } catch (error) {
       return next(error)
     }
@@ -63,7 +69,7 @@ export function createApp({ repository, config }) {
 
   app.post('/links', (request, response, next) => {
     try {
-      const ownerId = userIdFrom(request, config)
+      const ownerId = userIdFrom(request, config, repository)
       const link = repository.create({ ...request.body, owner_id: ownerId })
       if (request.get('hx-request') === 'true') {
         return response.render('link-row', { link, userId: ownerId })
@@ -71,11 +77,12 @@ export function createApp({ repository, config }) {
       return response.redirect(303, '/')
     } catch (error) {
       if (error instanceof ValidationError) {
-        const ownerId = userIdFrom(request, config)
+        const ownerId = userIdFrom(request, config, repository)
         return response.status(400).render('home', {
           links: repository.list({ ownerId, page: 1, pageSize: 100 }).items,
           error: error.message,
           userId: ownerId,
+          csrfToken: cookie(request, 'shortener_csrf'),
         })
       }
       return next(error)
@@ -84,7 +91,7 @@ export function createApp({ repository, config }) {
 
   app.post('/links/:alias/toggle', (request, response, next) => {
     try {
-      const ownerId = userIdFrom(request, config)
+      const ownerId = userIdFrom(request, config, repository)
       const current = repository.get(request.params.alias)
       const link = repository.update(request.params.alias, ownerId, { active: !current?.active })
       if (request.get('hx-request') === 'true') {
@@ -98,7 +105,7 @@ export function createApp({ repository, config }) {
 
   app.post('/api/v1/links', limitCreation, (request, response, next) => {
     try {
-      const ownerId = userIdFrom(request, config)
+      const ownerId = userIdFrom(request, config, repository)
       if (!ownerId && !config.allowAnonymousCreation) {
         return sendProblem(response, 401, 'Unauthorized', 'A user identity is required')
       }
@@ -111,7 +118,7 @@ export function createApp({ repository, config }) {
 
   app.get('/api/v1/links', (request, response, next) => {
     try {
-      const ownerId = userIdFrom(request, config)
+      const ownerId = userIdFrom(request, config, repository)
       const result = repository.list({
         ownerId,
         query: typeof request.query.q === 'string' ? request.query.q.slice(0, 100) : '',
@@ -128,7 +135,7 @@ export function createApp({ repository, config }) {
     try {
       const link = repository.get(request.params.alias)
       if (!link) throw new NotFoundError()
-      const ownerId = userIdFrom(request, config)
+      const ownerId = userIdFrom(request, config, repository)
       if (link.owner_id && link.owner_id !== ownerId) throw new ForbiddenError()
       return response.json({ data: link })
     } catch (error) {
@@ -138,7 +145,7 @@ export function createApp({ repository, config }) {
 
   app.get('/api/v1/links/:alias/analytics', (request, response, next) => {
     try {
-      return response.json({ data: repository.analytics(request.params.alias, userIdFrom(request, config)) })
+      return response.json({ data: repository.analytics(request.params.alias, userIdFrom(request, config, repository)) })
     } catch (error) {
       return next(error)
     }
@@ -148,7 +155,7 @@ export function createApp({ repository, config }) {
     try {
       const link = repository.get(request.params.alias)
       if (!link) throw new NotFoundError()
-      if (link.owner_id !== userIdFrom(request, config)) throw new ForbiddenError()
+      if (link.owner_id !== userIdFrom(request, config, repository)) throw new ForbiddenError()
       const image = await QRCode.toBuffer(`${config.publicBaseUrl}/${encodeURIComponent(link.alias)}`, { type: 'png' })
       return response.type('png').send(image)
     } catch (error) {
@@ -158,7 +165,7 @@ export function createApp({ repository, config }) {
 
   app.patch('/api/v1/links/:alias', (request, response, next) => {
     try {
-      const link = repository.update(request.params.alias, userIdFrom(request, config), request.body)
+      const link = repository.update(request.params.alias, userIdFrom(request, config, repository), request.body)
       return response.json({ data: link })
     } catch (error) {
       return next(error)
@@ -167,7 +174,7 @@ export function createApp({ repository, config }) {
 
   app.delete('/api/v1/links/:alias', (request, response, next) => {
     try {
-      repository.remove(request.params.alias, userIdFrom(request, config))
+      repository.remove(request.params.alias, userIdFrom(request, config, repository))
       return response.status(204).end()
     } catch (error) {
       return next(error)

@@ -1,6 +1,10 @@
 # `simple-01/url-shortener`
 The browser surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
+Management can use scrypt-backed accounts with expiring HttpOnly sessions and
+CSRF-protected mutations. Anonymous creation is an explicit configuration
+option rather than an implicit development identity.
+
 This is the first implementation in the architecture laboratory. It keeps the
 application deliberately direct: Express route handlers call a small SQLite
 repository, validate request data, and format responses. The design is useful as

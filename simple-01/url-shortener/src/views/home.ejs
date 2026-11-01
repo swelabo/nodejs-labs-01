@@ -23,6 +23,7 @@
       <section class="rounded bg-white p-6 shadow">
         <h2 class="text-xl font-semibold">Create a link</h2>
         <form class="mt-4 grid gap-3" method="post" action="/links" hx-post="/links" hx-target="#link-list" hx-swap="afterbegin">
+          <% if (csrfToken) { %><input type="hidden" name="_csrf" value="<%= csrfToken %>"><% } %>
           <label>Destination URL <input class="mt-1 w-full rounded border p-2" name="destination_url" type="url" required maxlength="2048" placeholder="https://example.com"></label>
           <label>Custom alias <input class="mt-1 w-full rounded border p-2" name="alias" minlength="3" maxlength="64" pattern="[a-zA-Z0-9_-]+" placeholder="optional"></label>
           <button class="rounded bg-blue-700 px-4 py-2 font-semibold text-white" type="submit">Create link</button>

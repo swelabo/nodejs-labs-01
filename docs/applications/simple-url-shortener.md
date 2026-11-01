@@ -9,8 +9,9 @@ variant introduces explicit use cases.
 ## Follow one request
 
 When a client sends `POST /api/v1/links`, Express parses the JSON body and calls
-the route handler in `src/app.js`. The handler obtains the development identity
-from `X-User-Id`, then calls the repository with a plain JavaScript object. The
+the route handler in `src/app.js`. The handler obtains the session identity (or
+the explicit development `X-User-Id` seam), then calls the repository with a
+plain JavaScript object. The
 repository validates the destination with the platform `URL` class, validates
 the optional alias, and executes a parameterized SQLite `INSERT`.
 
@@ -30,10 +31,10 @@ Analytics are best effort in this baseline. A failed click insert does not turn 
 valid redirect into an error response. That policy is visible in the repository
 and should be revisited when the application needs durable event delivery.
 
-The dashboard is an EJS page with HTMX-compatible form actions, Alpine.js
-initialization, and Tailwind utility classes. The browser dependencies are
-loaded from CDNs in this teaching slice; a production deployment would pin and
-serve reviewed assets locally. Owned links can also produce a PNG QR code. The
+The dashboard is an EJS page with local HTMX and Alpine.js assets and Tailwind
+utility classes compiled by the reproducible frontend build. Accounts use
+scrypt-backed passwords, expiring HttpOnly sessions, and CSRF-protected
+mutations. Owned links can also produce a PNG QR code. The
 creation endpoint has an in-memory per-process rate limit, which protects a
 single process but is not a distributed abuse-control system.
 

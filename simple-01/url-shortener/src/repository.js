@@ -115,7 +115,23 @@ export function createRepository(database) {
     return row ? mapLink(row) : null
   }
 
+  function passwordHash(password, salt = crypto.randomBytes(16).toString('hex')) { return `${salt}:${crypto.scryptSync(password, salt, 32).toString('hex')}` }
+  function verifyPassword(password, encoded) { if (!encoded) return false; const [salt, digest] = encoded.split(':'); const actual = crypto.scryptSync(password, salt, 32); const expected = Buffer.from(digest, 'hex'); return expected.length === actual.length && crypto.timingSafeEqual(expected, actual) }
+
   return {
+    register({ id, password }) {
+      if (typeof id !== 'string' || !/^[a-zA-Z0-9_-]{3,64}$/.test(id) || typeof password !== 'string' || password.length < 10 || password.length > 256) throw new ValidationError('id or password is invalid')
+      try { database.prepare('INSERT INTO users (id, password_hash, created_at) VALUES (?, ?, ?)').run(id, passwordHash(password), new Date().toISOString()) } catch (error) { if (error.code === 'SQLITE_CONSTRAINT_PRIMARYKEY') throw new ValidationError('account already exists'); throw error }
+      return { id }
+    },
+    login({ id, password }) {
+      const user = database.prepare('SELECT id, password_hash FROM users WHERE id = ?').get(id)
+      if (!user || !verifyPassword(password, user.password_hash)) throw new ForbiddenError('Invalid credentials')
+      const token = crypto.randomBytes(32).toString('base64url'); const tokenHash = crypto.createHash('sha256').update(token).digest('hex'); const expiresAt = new Date(Date.now() + 86_400_000).toISOString()
+      database.prepare('INSERT INTO sessions (token_hash, user_id, expires_at) VALUES (?, ?, ?)').run(tokenHash, user.id, expiresAt); return { token, user: { id: user.id }, expires_at: expiresAt }
+    },
+    sessionUser(token) { if (!token) return null; const hash = crypto.createHash('sha256').update(token).digest('hex'); return database.prepare('SELECT user_id AS id FROM sessions WHERE token_hash = ? AND expires_at > ?').get(hash, new Date().toISOString()) ?? null },
+    logout(token) { if (token) database.prepare('DELETE FROM sessions WHERE token_hash = ?').run(crypto.createHash('sha256').update(token).digest('hex')) },
     create(input) {
       const destinationUrl = parseDestination(input.destination_url)
       const alias = parseAlias(input.alias)

@@ -44,6 +44,17 @@ test('does not treat an anonymous request as the development user', async () => 
   assert.equal(response.status, 401)
 })
 
+test('supports password accounts, sessions, and CSRF-protected management', async () => {
+  const registration = await request(app).post('/api/v1/auth/register').send({ id: 'alice', password: 'correct horse battery staple' })
+  assert.equal(registration.status, 201)
+  const cookies = registration.headers['set-cookie']
+  const csrf = cookies.find((value) => value.startsWith('shortener_csrf=')).split(';')[0].split('=')[1]
+  const agent = request.agent(app); agent.jar.setCookie(cookies[0]); agent.jar.setCookie(cookies[1])
+  assert.equal((await agent.post('/api/v1/links').send({ destination_url: 'https://blocked.example', alias: 'blocked' })).status, 403)
+  const created = await agent.post('/api/v1/links').set('x-csrf-token', csrf).send({ destination_url: 'https://owned.example', alias: 'owned' })
+  assert.equal(created.status, 201); assert.equal(created.body.data.owner_id, 'alice')
+})
+
 test('returns owned analytics and a PNG QR code', async () => {
   await request(app).post('/api/v1/links').set('x-user-id', 'alice').send({ destination_url: 'https://example.com', alias: 'stats' })
   await request(app).get('/stats').set('referer', 'https://reader.example')
