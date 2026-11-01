@@ -19,6 +19,12 @@ export function createApp({ repository, config }) {
   const archive = (request, response, next) => { try { return response.render('home', { title: `Archive ${request.params.year}${request.params.month ? `-${request.params.month}` : ''}`, posts: repository.archive(request.params.year, request.params.month) }) } catch (error) { return next(error) } }
   app.get('/archives/:year', archive)
   app.get('/archives/:year/:month', archive)
+  app.get('/author/:slug', (request, response, next) => { try { const author = repository.authorBySlug(request.params.slug); return response.render('home', { title: `Posts by ${author.display_name}`, posts: author.posts }) } catch (error) { return next(error) } })
+  app.get('/archive/:year', archive)
+  app.get('/archive/:year/:month', archive)
+  app.get('/category/:slug', (request, response, next) => { try { return response.render('home', { title: `Category ${request.params.slug}`, posts: repository.list({ category: request.params.slug }).items }) } catch (error) { return next(error) } })
+  app.get('/tag/:slug', (request, response, next) => { try { return response.render('home', { title: `Tag ${request.params.slug}`, posts: repository.list({ tag: request.params.slug }).items }) } catch (error) { return next(error) } })
+  app.get('/search', (request, response, next) => { try { const query = typeof request.query.q === 'string' ? request.query.q.slice(0, 100) : ''; return response.render('home', { title: `Search${query ? `: ${query}` : ''}`, posts: repository.list({ query }).items }) } catch (error) { return next(error) } })
   app.get('/admin', (request, response, next) => { try { const user = identity(request, config, repository); return response.render('admin', repository.adminContent(user.role)) } catch (error) { return next(error) } })
   app.get('/api/v1/posts', (request, response, next) => { try { return response.json(repository.list({ query: typeof request.query.q === 'string' ? request.query.q.slice(0, 100) : '', tag: request.query.tag, category: request.query.category, page: page(request.query.page, 1), pageSize: Math.min(page(request.query.page_size, 20), MAX_PAGE_SIZE) })) } catch (error) { return next(error) } })
   app.get('/api/v1/categories', (_request, response) => response.json({ data: repository.categories() }))
