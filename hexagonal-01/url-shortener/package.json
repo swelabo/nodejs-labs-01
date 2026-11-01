@@ -1,0 +1,26 @@
+{
+  "name": "hexagonal-01-url-shortener",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=26.13.0" },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "node src/seed.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "better-sqlite3": "13.0.3",
+    "express": "5.3.0"
+  },
+  "devDependencies": {
+    "prisma": "7.10.1",
+    "supertest": "7.3.1"
+  }
+}
+

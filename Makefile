@@ -53,6 +53,9 @@ usecases-pastebin-test: ## Run the use-case Pastebin test suite
 usecases-blog-test: ## Run the use-case blog test suite
 	$(MAKE) -C usecases-01/blog test
 
+hexagonal-url-shortener-test: ## Run the hexagonal URL-shortener test suite
+	$(MAKE) -C hexagonal-01/url-shortener test
+
 clean: ## Remove generated documentation output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist
 

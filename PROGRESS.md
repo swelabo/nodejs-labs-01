@@ -29,6 +29,8 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 - Added explicit use-case layers to `usecases-01/pastebin` and
   `usecases-01/blog`, preserving their Prisma behavior and adding delegation
   tests.
+- Started `hexagonal-01/url-shortener` with a validated port, Prisma adapter,
+  composition root, and in-memory port test.
 
 ## Verification
 
@@ -47,6 +49,7 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 - `make usecases-url-shortener-test` — passed: 3 tests under Node.js 26.13.0.
 - `usecases-01/pastebin` — passed: 3 tests.
 - `usecases-01/blog` — passed: 3 tests.
+- `make hexagonal-url-shortener-test` — passed: 4 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -66,6 +69,6 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 
 ## Next action
 
-Begin `hexagonal-01` with ports, adapters, and a composition root around the
-verified use-case workflows.
+Implement `hexagonal-01/pastebin` and `hexagonal-01/blog` with the same port and
+adapter boundary.
 

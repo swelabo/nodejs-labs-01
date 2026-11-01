@@ -39,9 +39,13 @@ Separate application operations from HTTP delivery with explicit use cases.
 - [x] Pastebin: explicit use-case layer and delegation test.
 - [x] Blog: explicit use-case layer and delegation test.
 
-## Phase 4 — `hexagonal-01`
+## Phase 4 — `hexagonal-01` (in progress)
 
 Introduce ports, adapters, dependency inversion, and composition roots.
+
+- [x] URL shortener: link port, Prisma adapter, composition root, tests.
+- [ ] Pastebin.
+- [ ] Blog.
 
 ## Phase 5 — `typescript-01`
 
