@@ -27,6 +27,11 @@ paths:
     get: {summary: Atom feed of published posts, responses: {'200': {description: Atom feed}}}
   /sitemap.xml:
     get: {summary: Sitemap of published posts, responses: {'200': {description: Sitemap}}}
+  /api/v1/admin/users:
+    get: {summary: List users, security: [{DevelopmentUser: []}], responses: {'200': {description: Users}, '403': {description: Forbidden}}}
+  /api/v1/admin/users/{id}:
+    parameters: [{in: path, name: id, required: true, schema: {type: string}}]
+    patch: {summary: Change a user role, security: [{DevelopmentUser: []}], responses: {'200': {description: Updated user}, '403': {description: Forbidden}}}
 components:
   securitySchemes: {DevelopmentUser: {type: apiKey, in: header, name: X-User-Id}}
   parameters: {Slug: {in: path, name: slug, required: true, schema: {type: string, pattern: '^[a-z0-9-]{1,128}$'}}}

@@ -9,7 +9,7 @@ import { openDatabase } from '../src/db/database.js'
 
 let database
 let app
-beforeEach(() => { database = openDatabase(':memory:'); app = createApp({ repository: createRepository(database), config: { editorUserIds: new Set(['editor']) } }) })
+beforeEach(() => { database = openDatabase(':memory:'); app = createApp({ repository: createRepository(database), config: { editorUserIds: new Set(['editor']), administratorUserIds: new Set(['admin']) } }) })
 afterEach(() => database.close())
 
 test('requires an editor to create and publish posts', async () => {
@@ -68,5 +68,14 @@ test('rejects category hierarchy cycles and emits feed and sitemap', async () =>
   await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'feed-post', title: 'Feed', body: 'body', status: 'published' })
   assert.match((await request(app).get('/feed.xml')).text, /Feed/)
   assert.match((await request(app).get('/sitemap.xml')).text, /feed-post/)
+})
+
+test('provides administrator-only user management', async () => {
+  await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'admin-seed', title: 'Seed', body: 'body' })
+  assert.equal((await request(app).get('/api/v1/admin/users').set('x-user-id', 'editor')).status, 403)
+  const users = await request(app).get('/api/v1/admin/users').set('x-user-id', 'admin')
+  assert.equal(users.status, 200); assert.equal(users.body.data[0].id, 'editor')
+  const changed = await request(app).patch('/api/v1/admin/users/editor').set('x-user-id', 'admin').send({ role: 'administrator' })
+  assert.equal(changed.status, 200); assert.equal(changed.body.data.role, 'administrator')
 })
 

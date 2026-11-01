@@ -2,7 +2,7 @@ import express from 'express'
 import { ForbiddenError, NotFoundError, ValidationError, MAX_PAGE_SIZE, xml } from './repository.js'
 function problem(status, title, detail, errors) { return { type: 'about:blank', title, status, detail, ...(errors ? { errors } : {}) } }
 function sendProblem(response, status, title, detail, errors) { return response.type('application/problem+json').status(status).json(problem(status, title, detail, errors)) }
-function identity(request, config) { const id = request.get('x-user-id'); return { id, role: id && config.editorUserIds.has(id) ? 'editor' : 'author' } }
+function identity(request, config) { const id = request.get('x-user-id'); return { id, role: id && config.administratorUserIds.has(id) ? 'administrator' : id && config.editorUserIds.has(id) ? 'editor' : 'author' } }
 function page(value, fallback) { const n = Number.parseInt(value ?? '', 10); return Number.isInteger(n) && n > 0 ? n : fallback }
 export function createApp({ repository, config }) {
   const app = express(); app.disable('x-powered-by'); app.use(express.json({ limit: '256kb' })); app.use(express.urlencoded({ extended: false, limit: '256kb' })); app.set('view engine', 'ejs'); app.set('views', new URL('./views', import.meta.url).pathname)
@@ -15,6 +15,8 @@ export function createApp({ repository, config }) {
   app.get('/api/v1/comments/pending', (request, response, next) => { try { const user = identity(request, config); return response.json({ data: repository.pendingComments(user.role) }) } catch (error) { return next(error) } })
   app.patch('/api/v1/comments/:id', (request, response, next) => { try { const user = identity(request, config); return response.json({ data: repository.moderateComment(Number(request.params.id), user.role, request.body.status) }) } catch (error) { return next(error) } })
   app.post('/api/v1/categories', (request, response, next) => { try { const user = identity(request, config); return response.status(201).json({ data: repository.createCategory(user.role, request.body) }) } catch (error) { return next(error) } })
+  app.get('/api/v1/admin/users', (request, response, next) => { try { const user = identity(request, config); return response.json({ data: repository.listUsers(user.role) }) } catch (error) { return next(error) } })
+  app.patch('/api/v1/admin/users/:id', (request, response, next) => { try { const user = identity(request, config); return response.json({ data: repository.updateUserRole(user.role, request.params.id, request.body.role) }) } catch (error) { return next(error) } })
   app.get('/api/v1/posts/:slug', (request, response, next) => { try { return response.json({ data: repository.publicBySlug(request.params.slug) }) } catch (error) { return next(error) } })
   app.get('/feed.xml', (request, response) => { const entries = repository.feed().map((post) => `<entry><title>${xml(post.title)}</title><link href="/posts/${xml(post.slug)}"/><updated>${xml(post.updated_at)}</updated><content>${xml(post.body)}</content></entry>`).join(''); return response.type('application/atom+xml').send(`<?xml version="1.0"?><feed><title>Engineering Blog</title>${entries}</feed>`) })
   app.get('/sitemap.xml', (request, response) => { const urls = repository.sitemap().map((post) => `<url><loc>/posts/${xml(post.slug)}</loc><lastmod>${xml(post.updated_at)}</lastmod></url>`).join(''); return response.type('application/xml').send(`<?xml version="1.0"?><urlset>${urls}</urlset>`) })

@@ -76,6 +76,14 @@ export function createRepository(database) {
       if (value.parent_id != null) { let current = Number(value.parent_id); const seen = new Set(); while (current) { if (seen.has(current)) throw new ValidationError('category hierarchy contains a cycle'); seen.add(current); current = database.prepare('SELECT parent_id FROM categories WHERE id = ?').get(current)?.parent_id ?? 0 } }
       const result = database.prepare('INSERT INTO categories (slug, name, parent_id) VALUES (?, ?, ?)').run(value.slug, value.name, value.parent_id ?? null); return database.prepare('SELECT * FROM categories WHERE id = ?').get(result.lastInsertRowid)
     },
+    listUsers(role) { if (role !== 'administrator') throw new ForbiddenError(); return database.prepare('SELECT id, slug, display_name, role FROM users ORDER BY id').all() },
+    updateUserRole(role, id, newRole) {
+      if (role !== 'administrator') throw new ForbiddenError()
+      if (!['author', 'editor', 'administrator'].includes(newRole)) throw new ValidationError('invalid user role', { role: 'must be author, editor, or administrator' })
+      const result = database.prepare('UPDATE users SET role = ? WHERE id = ?').run(newRole, id)
+      if (!result.changes) throw new NotFoundError('User not found')
+      return database.prepare('SELECT id, slug, display_name, role FROM users WHERE id = ?').get(id)
+    },
     feed() { return this.list({ page: 1, pageSize: 20 }).items },
     sitemap() { return database.prepare("SELECT slug, updated_at FROM posts WHERE status = 'published' AND (publish_at IS NULL OR publish_at <= @now) ORDER BY slug").all({ now: new Date().toISOString() }) },
   }

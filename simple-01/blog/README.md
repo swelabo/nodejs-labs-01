@@ -28,5 +28,7 @@ in the browser view; this slice does not interpret Markdown or HTML.
 The baseline includes posts, roles, categories, tags, publication workflow,
 search, pagination, public rendering, comments pending moderation, feeds,
 sitemaps, one-time arithmetic challenges, hierarchy-cycle checks, and OpenAPI.
-Accounts, richer CAPTCHA, and full administration remain later increments.
+The development baseline also includes administrator-only user-role management.
+The `X-User-Id` identity remains a local teaching seam; production accounts and
+sessions remain later increments.
 

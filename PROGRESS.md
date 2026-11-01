@@ -40,11 +40,13 @@ Phase 1 — `simple-01/url-shortener` core slice.
 - Blog first slice is implemented and verified.
 - Blog comments, moderation, feeds, sitemap generation, hierarchy checks, and a
   one-time challenge are now implemented and tested.
+- Blog administrator-only user-role management is implemented and tested.
 - The book currently contains the foundation, URL-shortener, Pastebin, and blog
   chapters.
 - Dependency versions require review when the first application begins.
 
 ## Next action
 
-Extend the blog with accounts, richer CAPTCHA, media, and full administration.
+Add production-style account/session boundaries, richer CAPTCHA protections, and
+media handling before starting Prisma.
 
