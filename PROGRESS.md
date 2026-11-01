@@ -115,6 +115,9 @@ Phase 7 — consolidation and acceptance audit.
   variant.
 - Added `npm run verify:start`, which starts and gracefully stops all eighteen
   servers on ephemeral ports successfully.
+- Added published static pages and slug permalinks to the direct Blog slice,
+  including an HTML route, API route, idempotent seed data, and a visibility test
+  that shares the public publication boundary.
 
 ## Known limitations
 
@@ -122,7 +125,9 @@ Phase 7 — consolidation and acceptance audit.
   limiter.
 - Pastebin still lacks a browser dashboard, accounts, moderation, and syntax
   highlighting output.
-- Blog first slice is implemented and verified.
+- Blog first slice is implemented and verified; direct static-page permalinks are
+  now covered, while archive, author, media, and custom-taxonomy administration
+  remain documented follow-on scope.
 - Blog comments, moderation, feeds, sitemap generation, hierarchy checks, and a
   one-time challenge are now implemented and tested.
 - Blog administrator-only user-role management is implemented and tested.

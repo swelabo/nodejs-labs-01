@@ -22,12 +22,14 @@ function input(value) {
 }
 function published(row) { return row?.status === 'published' && (!row.publish_at || new Date(row.publish_at) <= new Date()) }
 function mapPost(row, categories, tags, comments = []) { return { id: row.id, slug: row.slug, title: row.title, body: row.body, author_id: row.author_id, author_name: row.author_name, status: row.status, publish_at: row.publish_at, created_at: row.created_at, updated_at: row.updated_at, categories, tags, comments } }
+function mapPage(row) { return { id: row.id, slug: row.slug, title: row.title, body: row.body, author_id: row.author_id, author_name: row.author_name, status: row.status, publish_at: row.publish_at, created_at: row.created_at, updated_at: row.updated_at } }
 function xml(value) { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;') }
 
 export function createRepository(database) {
   function postRow(idOrSlug, bySlug = false) {
     return database.prepare(`SELECT posts.*, users.display_name AS author_name FROM posts JOIN users ON users.id = posts.author_id WHERE posts.${bySlug ? 'slug' : 'id'} = ?`).get(idOrSlug)
   }
+  function pageRow(slugValue) { return database.prepare('SELECT pages.*, users.display_name AS author_name FROM pages JOIN users ON users.id = pages.author_id WHERE pages.slug = ?').get(slugValue) }
   function taxonomy(table, joinTable, postId) { return database.prepare(`SELECT ${table}.slug, ${table}.name FROM ${table} JOIN ${joinTable} ON ${joinTable}.${table === 'categories' ? 'category_id' : 'tag_id'} = ${table}.id WHERE ${joinTable}.post_id = ? ORDER BY ${table}.name`).all(postId) }
   function get(id) { const row = postRow(id); return row ? mapPost(row, taxonomy('categories', 'post_categories', id), taxonomy('tags', 'post_tags', id)) : null }
   function approvedComments(postId) { return database.prepare("SELECT id, author_name, body, created_at FROM comments WHERE post_id = ? AND status = 'approved' ORDER BY created_at").all(postId) }
@@ -44,6 +46,7 @@ export function createRepository(database) {
     },
     get,
     publicBySlug(value) { const row = postRow(value, true); if (!published(row)) throw new NotFoundError(); return mapPublic(row) },
+    publicPageBySlug(value) { const row = pageRow(value); if (!published(row)) throw new NotFoundError('Page not found'); return mapPage(row) },
     list({ query = '', page = 1, pageSize = 20, tag, category }) {
       const size = Math.min(MAX_PAGE_SIZE, Math.max(1, Number.isInteger(pageSize) ? pageSize : 20)); const currentPage = Math.max(1, Number.isInteger(page) ? page : 1)
       const clauses = ["posts.status = 'published'", '(posts.publish_at IS NULL OR posts.publish_at <= @now)', '(posts.title LIKE @query OR posts.body LIKE @query)']; const parameters = { now: new Date().toISOString(), query: `%${query}%` }

@@ -41,6 +41,17 @@ test('renders escaped public content and documents the contract', async () => {
   assert.ok(document.paths['/api/v1/posts']); assert.ok(document.paths['/api/v1/posts/{slug}']); assert.ok(document.paths['/feed.xml'])
 })
 
+test('publishes pages through HTML and API routes', async () => {
+  database.prepare("INSERT INTO users (id, slug, display_name, role) VALUES ('page-editor', 'page-editor', 'Page Editor', 'editor')").run()
+  database.prepare("INSERT INTO pages (slug, title, body, author_id, status, publish_at, created_at, updated_at) VALUES ('about', 'About', 'About body', 'page-editor', 'published', NULL, datetime('now'), datetime('now'))").run()
+  const page = await request(app).get('/pages/about')
+  assert.equal(page.status, 200)
+  assert.match(page.text, /About/)
+  const api = await request(app).get('/api/v1/pages/about')
+  assert.equal(api.status, 200)
+  assert.equal(api.body.data.slug, 'about')
+})
+
 test('submits a one-time comment challenge and moderates the result', async () => {
   const post = await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'commented', title: 'Commented', body: 'body', status: 'published' })
   const challenge = await request(app).get('/api/v1/posts/commented/comments/challenge')

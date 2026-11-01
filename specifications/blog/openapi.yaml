@@ -4,6 +4,11 @@ info:
   version: 0.1.0
   description: Architecture-neutral contract for the progressive blog implementations.
 paths:
+  /api/v1/pages/{slug}:
+    get:
+      summary: Read a published page
+      parameters: [{in: path, name: slug, required: true, schema: {type: string}}]
+      responses: {'200': {description: Published page}, '404': {description: Not found}}
   /api/v1/posts:
     get:
       summary: List published posts

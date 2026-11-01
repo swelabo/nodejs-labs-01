@@ -47,6 +47,20 @@ CREATE TABLE IF NOT EXISTS post_tags (
 
 CREATE INDEX IF NOT EXISTS posts_public_order ON posts(status, publish_at, created_at);
 
+CREATE TABLE IF NOT EXISTS pages (
+  id INTEGER PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL CHECK (length(title) BETWEEN 1 AND 200),
+  body TEXT NOT NULL,
+  author_id TEXT NOT NULL REFERENCES users(id),
+  status TEXT NOT NULL CHECK (status IN ('draft', 'scheduled', 'published')),
+  publish_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS pages_public_order ON pages(status, publish_at, created_at);
+
 CREATE TABLE IF NOT EXISTS comments (
   id INTEGER PRIMARY KEY,
   post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,

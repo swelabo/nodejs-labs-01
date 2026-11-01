@@ -39,6 +39,20 @@ The application also emits a small Atom feed and sitemap from the same public
 publication predicate. This keeps drafts and future posts out of syndication and
 search-engine inventories.
 
+## Static pages and permalinks
+
+Published pages are stored separately from posts and are addressed by a stable
+slug at `/pages/:slug`. The page query applies the same public-state boundary as
+post queries: drafts and future publications return a not-found response rather
+than leaking their existence. The browser route and `/api/v1/pages/:slug` use the
+same repository function, which keeps the HTML and API representations aligned.
+
+The direct variant currently treats the page route as the first incremental
+implementation of the broader blog specification. Archives, author pages, media
+management, and custom taxonomy administration remain explicit follow-on work;
+the comparison documents record this scope instead of implying that a first slice
+is a complete WordPress replacement.
+
 Run the tests with:
 
 ```sh
