@@ -36,8 +36,8 @@ behavior and comparing ORM queries with raw SQL.
 Separate application operations from HTTP delivery with explicit use cases.
 
 - [x] URL shortener: explicit use-case layer and delegation test.
-- [ ] Pastebin.
-- [ ] Blog.
+- [x] Pastebin: explicit use-case layer and delegation test.
+- [x] Blog: explicit use-case layer and delegation test.
 
 ## Phase 4 — `hexagonal-01`
 

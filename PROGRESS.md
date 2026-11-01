@@ -26,6 +26,9 @@ Phase 2 — `prisma-01/url-shortener` first slice.
   publication timing, slug uniqueness, and tests.
 - Started `usecases-01/url-shortener` by extracting explicit application
   operations and testing HTTP delegation.
+- Added explicit use-case layers to `usecases-01/pastebin` and
+  `usecases-01/blog`, preserving their Prisma behavior and adding delegation
+  tests.
 
 ## Verification
 
@@ -42,6 +45,8 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 - `make prisma-pastebin-test` — passed: 2 tests under Node.js 26.13.0.
 - `make prisma-blog-test` — passed: 2 tests under Node.js 26.13.0.
 - `make usecases-url-shortener-test` — passed: 3 tests under Node.js 26.13.0.
+- `usecases-01/pastebin` — passed: 3 tests.
+- `usecases-01/blog` — passed: 3 tests.
 
 ## Known limitations
 
@@ -61,6 +66,6 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 
 ## Next action
 
-Implement `usecases-01/pastebin` and `usecases-01/blog` with the same explicit
-workflow boundary.
+Begin `hexagonal-01` with ports, adapters, and a composition root around the
+verified use-case workflows.
 
