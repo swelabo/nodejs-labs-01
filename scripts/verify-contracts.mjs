@@ -4,7 +4,7 @@ const families = ['simple-01', 'prisma-01', 'usecases-01', 'hexagonal-01', 'type
 const expectations = {
   'url-shortener': ['/api/v1/links:', '/api/v1/links/{alias}:'],
   pastebin: ['/api/v1/snippets:', '/api/v1/snippets/{id}:'],
-  blog: ['/api/v1/posts:', '/api/v1/posts/{slug}:'],
+  blog: ['/api/v1/posts:', '/api/v1/posts/{slug}:', '/api/v1/pages/{slug}:'],
 }
 
 for (const family of families) {
