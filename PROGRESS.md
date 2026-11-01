@@ -85,6 +85,8 @@ Phase 7 — consolidation and acceptance audit.
   document in-process event semantics and the absence of durable delivery.
 - Added and tested a double-submit CSRF boundary for authenticated mutations in
   the direct Blog session flow.
+- Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
+  comparison chapters with Mermaid diagrams and exercises.
 
 ## Known limitations
 
