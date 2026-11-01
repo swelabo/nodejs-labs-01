@@ -4,6 +4,9 @@ The built-in `node:test` runner is sufficient for the introductory variants.
 `supertest` sends requests directly to an Express application without opening a
 TCP port, which keeps HTTP tests deterministic. Each test creates or clears its
 own SQLite state; a shared long-lived database would make ordering accidental.
+Prisma-backed suites prepare a separate `data/test.db` from migrations before
+running and never reset the development database. The direct SQLite suites use
+in-memory databases where the app factory allows it.
 
 The repository's test matrix has three layers:
 

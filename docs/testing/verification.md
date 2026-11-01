@@ -14,6 +14,12 @@ scope of each gate:
 - `npm audit --omit=dev` is run per application when a dependency milestone is
   committed.
 
+Prisma-backed suites set `NODE_ENV=test`, prepare a separate `data/test.db`
+through the local migration set, and only clear that test database. The normal
+development database is never the suite's reset target. This distinction matters
+because a test that deletes rows from a developer's seeded database is not
+reproducible isolation.
+
 No one command proves browser accessibility, production capacity, backup
 recovery, or distributed rate limiting. Those claims require separate tests and
 operational evidence; the book should say so rather than infer them from a
