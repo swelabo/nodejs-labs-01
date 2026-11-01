@@ -77,6 +77,8 @@ Phase 4 — `hexagonal-01` implementation.
 - Expanded the VitePress book with executable chapters for modules, async
   programming, Node testing, Express, SQLite, TypeScript contracts,
   server-driven frontend work, verification, and operations.
+- Added six-variant architecture and application matrices plus a security
+  baseline tied to the actual implementation boundaries.
 
 ## Known limitations
 
@@ -97,5 +99,5 @@ Phase 4 — `hexagonal-01` implementation.
 ## Next action
 
 Extend `ddd-01` with transaction boundaries and domain events, then complete
-cross-variant architectural comparisons and remaining book chapters.
+the final contract and acceptance audit.
 

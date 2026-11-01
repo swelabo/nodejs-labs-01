@@ -41,10 +41,13 @@ export default defineConfig({
         { text: 'Operations', items: [{ text: 'Local runbook', link: '/operations/runbook' }] },
       ],
       '/architecture/': [
-        { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }, { text: 'Prisma comparison', link: '/architecture/prisma-comparison' }, { text: 'Use-case comparison', link: '/architecture/usecases-comparison' }, { text: 'Hexagonal comparison', link: '/architecture/hexagonal-comparison' }, { text: 'DDD comparison', link: '/architecture/ddd-comparison' }] },
+        { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }, { text: 'Prisma comparison', link: '/architecture/prisma-comparison' }, { text: 'Use-case comparison', link: '/architecture/usecases-comparison' }, { text: 'Hexagonal comparison', link: '/architecture/hexagonal-comparison' }, { text: 'DDD comparison', link: '/architecture/ddd-comparison' }, { text: 'Variant matrix', link: '/architecture/variant-matrix' }] },
       ],
       '/applications/': [
-        { text: 'Applications', items: [{ text: 'Simple URL shortener', link: '/applications/simple-url-shortener' }, { text: 'Simple Pastebin', link: '/applications/simple-pastebin' }, { text: 'Simple blog', link: '/applications/simple-blog' }] },
+        { text: 'Applications', items: [{ text: 'Simple URL shortener', link: '/applications/simple-url-shortener' }, { text: 'Simple Pastebin', link: '/applications/simple-pastebin' }, { text: 'Simple blog', link: '/applications/simple-blog' }, { text: 'Variant matrix', link: '/applications/variant-matrix' }] },
+      ],
+      '/security/': [
+        { text: 'Security', items: [{ text: 'Baseline', link: '/security/baseline' }] },
       ],
       '/research/': [
         { text: 'Research', items: [{ text: 'Technology decisions', link: '/research/technology-decisions' }] },
