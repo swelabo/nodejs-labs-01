@@ -55,6 +55,9 @@ export function createRepository(database) {
       }); transaction(); return get(id)
     },
     remove(id, ownerId) { const current = getRow(id); if (!current || !active(current)) throw new NotFoundError(); if (current.owner_id !== ownerId) throw new ForbiddenError(); database.prepare('DELETE FROM snippets WHERE id = ?').run(id) },
+    purgeExpired() {
+      return database.prepare("DELETE FROM snippets WHERE expires_at IS NOT NULL AND expires_at <= datetime('now')").run().changes
+    },
   }
 }
 export { MAX_CONTENT_LENGTH, MAX_PAGE_SIZE }

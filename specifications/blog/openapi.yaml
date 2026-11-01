@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: Simple Blog API
+  version: 0.1.0
+  description: Architecture-neutral contract for the progressive blog implementations.
+paths:
+  /api/v1/posts:
+    get:
+      summary: List published posts
+      parameters:
+        - {in: query, name: page, schema: {type: integer, minimum: 1}}
+        - {in: query, name: page_size, schema: {type: integer, minimum: 1, maximum: 100}}
+        - {in: query, name: q, schema: {type: string, maxLength: 100}}
+      responses: {'200': {description: Paginated published posts}}
+    post:
+      summary: Create a post draft
+      security: [{DevelopmentUser: []}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/PostInput'}}}}
+      responses: {'201': {description: Draft created}, '403': {description: Insufficient role}}
+  /api/v1/posts/{slug}:
+    parameters: [{'$ref': '#/components/parameters/Slug'}]
+    get:
+      summary: Read a published post
+      responses: {'200': {description: Published post}, '404': {description: Not found}}
+    patch:
+      summary: Edit a post or change publication state
+      security: [{DevelopmentUser: []}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/PostInput'}}}}
+      responses: {'200': {description: Updated post}, '403': {description: Insufficient role}, '404': {description: Not found}}
+  /api/v1/categories:
+    get: {summary: List categories, responses: {'200': {description: Categories}}}
+  /api/v1/tags:
+    get: {summary: List tags, responses: {'200': {description: Tags}}}
+components:
+  securitySchemes:
+    DevelopmentUser: {type: apiKey, in: header, name: X-User-Id}
+  parameters:
+    Slug: {in: path, name: slug, required: true, schema: {type: string, pattern: '^[a-z0-9-]{1,128}$'}}
+  schemas:
+    PostInput:
+      type: object
+      required: [title, body]
+      properties:
+        title: {type: string, minLength: 1, maxLength: 200}
+        body: {type: string, minLength: 1}
+        slug: {type: string, pattern: '^[a-z0-9-]{1,128}$'}
+        status: {type: string, enum: [draft, scheduled, published]}
+        publish_at: {type: string, format: date-time}
+        category_ids: {type: array, items: {type: string}}
+        tag_ids: {type: array, items: {type: string}}
+

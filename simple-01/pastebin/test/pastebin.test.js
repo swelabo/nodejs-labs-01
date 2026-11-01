@@ -22,6 +22,18 @@ test('creates, reads, and returns raw text without HTML interpretation', async (
   assert.equal(raw.status, 200); assert.match(raw.headers['content-type'], /^text\/plain/)
 })
 
+test('renders escaped browser output and accepts a form submission', async () => {
+  const page = await request(app).get('/')
+  assert.equal(page.status, 200)
+  assert.match(page.text, /Create snippet/)
+  const created = await request(app).post('/snippets').type('form').send({ content: '<img src=x onerror=alert(1)>', language: 'html', visibility: 'public' })
+  assert.equal(created.status, 303)
+  const detail = await request(app).get(created.headers.location)
+  assert.equal(detail.status, 200)
+  assert.match(detail.text, /&lt;img src=x onerror=alert\(1\)&gt;/)
+  assert.doesNotMatch(detail.text, /<img src=x onerror=/)
+})
+
 test('distinguishes public, unlisted, and private visibility', async () => {
   const unlisted = await request(app).post('/api/v1/snippets').set('x-user-id', 'alice').send({ content: 'unlisted', visibility: 'unlisted' })
   const privateSnippet = await request(app).post('/api/v1/snippets').set('x-user-id', 'alice').send({ content: 'private', visibility: 'private' })

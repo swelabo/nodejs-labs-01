@@ -15,6 +15,7 @@ Phase 1 — `simple-01/url-shortener` core slice.
   ownership checks, expiration, analytics, OpenAPI, tests, and documentation.
 - Implemented the Pastebin core slice with visibility controls, raw text,
   ownership checks, tags, search, OpenAPI, tests, and documentation.
+- Prepared the blog data model, OpenAPI contract, and first implementation plan.
 
 ## Verification
 
@@ -34,12 +35,12 @@ Phase 1 — `simple-01/url-shortener` core slice.
   limiter.
 - Pastebin still lacks a browser dashboard, accounts, moderation, and syntax
   highlighting output.
+- Blog application code has not started; its first slice is planned.
 - The book currently contains the foundation, URL-shortener, and Pastebin
   chapters.
 - Dependency versions require review when the first application begins.
 
 ## Next action
 
-Complete the remaining Pastebin baseline controls, then prepare the blog schema
-and canonical API contract.
+Implement the first tested `simple-01/blog` slice from the recorded plan.
 
