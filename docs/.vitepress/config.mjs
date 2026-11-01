@@ -20,10 +20,10 @@ export default defineConfig({
         { text: 'JavaScript', items: [{ text: 'Execution model', link: '/javascript/execution-model' }, { text: 'Modules', link: '/javascript/modules' }, { text: 'Async programming', link: '/javascript/async' }] },
       ],
       '/nodejs/': [
-        { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }, { text: 'Testing', link: '/nodejs/testing' }] },
+        { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }, { text: 'Testing', link: '/nodejs/testing' }, { text: 'Concurrency', link: '/nodejs/concurrency' }] },
       ],
       '/express/': [
-        { text: 'Express', items: [{ text: 'Fundamentals', link: '/express/fundamentals' }] },
+        { text: 'Express', items: [{ text: 'Fundamentals', link: '/express/fundamentals' }, { text: 'Security', link: '/express/security' }] },
       ],
       '/sqlite/': [
         { text: 'SQLite', items: [{ text: 'Persistence', link: '/sqlite/persistence' }] },
@@ -32,13 +32,22 @@ export default defineConfig({
         { text: 'TypeScript', items: [{ text: 'Contracts', link: '/typescript/contracts' }] },
       ],
       '/frontend/': [
-        { text: 'Frontend', items: [{ text: 'Server-driven UI', link: '/frontend/server-driven' }] },
+        { text: 'Frontend', items: [{ text: 'Server-driven UI', link: '/frontend/server-driven' }, { text: 'Accessibility', link: '/frontend/accessibility' }] },
       ],
       '/testing/': [
         { text: 'Testing', items: [{ text: 'Verification', link: '/testing/verification' }] },
       ],
       '/operations/': [
         { text: 'Operations', items: [{ text: 'Local runbook', link: '/operations/runbook' }, { text: 'Production boundaries', link: '/operations/production' }] },
+      ],
+      '/tooling/': [
+        { text: 'Tooling', items: [{ text: 'npm', link: '/tooling/npm' }] },
+      ],
+      '/glossary/': [
+        { text: 'Glossary', items: [{ text: 'Terms', link: '/glossary/' }] },
+      ],
+      '/references/': [
+        { text: 'References', items: [{ text: 'Official references', link: '/references/' }] },
       ],
       '/prisma/': [
         { text: 'Prisma', items: [{ text: 'Guide', link: '/prisma/guide' }] },
