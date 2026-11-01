@@ -39,6 +39,11 @@ test('creates a link and redirects to its validated destination', async () => {
   assert.equal(stored.referrer_host, 'reader.example')
 })
 
+test('does not treat an anonymous request as the development user', async () => {
+  const response = await request(app).post('/api/v1/links').send({ destination_url: 'https://example.com' })
+  assert.equal(response.status, 401)
+})
+
 test('returns owned analytics and a PNG QR code', async () => {
   await request(app).post('/api/v1/links').set('x-user-id', 'alice').send({ destination_url: 'https://example.com', alias: 'stats' })
   await request(app).get('/stats').set('referer', 'https://reader.example')

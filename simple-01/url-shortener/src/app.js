@@ -12,7 +12,9 @@ function sendProblem(response, status, title, detail, errors) {
 }
 
 function userIdFrom(request, config) {
-  return request.get('x-user-id') || (config.allowAnonymousCreation ? null : config.developmentUserId)
+  // The development header is an explicit identity seam. Falling back to a
+  // configured user would turn an anonymous request into an authorized one.
+  return request.get('x-user-id') || (config.allowAnonymousCreation ? null : null)
 }
 
 function parsePage(value, fallback) {
