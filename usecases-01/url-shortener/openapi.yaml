@@ -11,4 +11,21 @@ paths:
   /{alias}:
     parameters: [{in: path, name: alias, required: true, schema: {type: string}}]
     get: {summary: Resolve a link, responses: {'302': {description: Redirect}, '404': {description: Unavailable}}}
+components:
+  securitySchemes:
+    DevelopmentUser: {type: apiKey, in: header, name: X-User-Id}
+  parameters:
+    Alias: {in: path, name: alias, required: true, schema: {type: string, pattern: '^[a-zA-Z0-9_-]{3,64}$'}}
+  schemas:
+    CreateLink:
+      type: object
+      required: [destination_url]
+      properties:
+        destination_url: {type: string, format: uri, maxLength: 2048}
+        alias: {type: string, pattern: '^[a-zA-Z0-9_-]{3,64}$'}
+        expires_at: {type: string, format: date-time}
+    LinkResponse:
+      type: object
+      required: [data]
+      properties: {data: {type: object}}
 

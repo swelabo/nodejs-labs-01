@@ -14,6 +14,7 @@ paths:
     get: {summary: Render the administration dashboard, security: [{DevelopmentUser: []}], responses: {'200': {description: Dashboard}, '403': {description: Forbidden}}}
   /api/v1/categories:
     get: {summary: List hierarchical categories, responses: {'200': {description: Categories}}}
+    post: {summary: Create a category, security: [{DevelopmentUser: []}], responses: {'201': {description: Category}, '400': {description: Invalid category}, '403': {description: Forbidden}}}
   /api/v1/tags:
     get: {summary: List tags, responses: {'200': {description: Tags}}}
     post: {summary: Create a tag, security: [{DevelopmentUser: []}], responses: {'201': {description: Tag}, '403': {description: Forbidden}}}
@@ -68,6 +69,8 @@ paths:
   /api/v1/posts/{slug}/comments:
     parameters: [{'$ref': '#/components/parameters/Slug'}]
     post: {summary: Submit a comment for moderation, responses: {'201': {description: Pending comment}, '400': {description: Invalid challenge}}}
+  /api/v1/comments/pending:
+    get: {summary: List comments awaiting moderation, security: [{DevelopmentUser: []}], responses: {'200': {description: Pending comments}, '403': {description: Forbidden}}}
   /api/v1/comments/{id}:
     parameters: [{in: path, name: id, required: true, schema: {type: integer}}]
     patch: {summary: Moderate a comment, security: [{DevelopmentUser: []}], responses: {'200': {description: Moderated comment}, '403': {description: Forbidden}}}

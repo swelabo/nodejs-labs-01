@@ -64,35 +64,6 @@ paths:
               schema: { $ref: '#/components/schemas/LinkResponse' }
         '403': { $ref: '#/components/responses/Forbidden' }
         '404': { $ref: '#/components/responses/NotFound' }
-  /api/v1/links/{alias}/analytics:
-    parameters:
-      - $ref: '#/components/parameters/Alias'
-    get:
-      summary: Read aggregate click analytics
-      security:
-        - DevelopmentUser: []
-      responses:
-        '200':
-          description: Aggregate click analytics
-          content:
-            application/json:
-              schema: { type: object, required: [data], properties: { data: { type: object } } }
-        '403': { $ref: '#/components/responses/Forbidden' }
-        '404': { $ref: '#/components/responses/NotFound' }
-  /api/v1/links/{alias}/qr:
-    parameters:
-      - $ref: '#/components/parameters/Alias'
-    get:
-      summary: Generate a QR code for an owned short link
-      security:
-        - DevelopmentUser: []
-      responses:
-        '200':
-          description: PNG QR code
-          content:
-            image/png: {}
-        '403': { $ref: '#/components/responses/Forbidden' }
-        '404': { $ref: '#/components/responses/NotFound' }
     patch:
       summary: Activate or deactivate a link
       security:
@@ -120,6 +91,35 @@ paths:
         - DevelopmentUser: []
       responses:
         '204': { description: Link deleted }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/links/{alias}/analytics:
+    parameters:
+      - $ref: '#/components/parameters/Alias'
+    get:
+      summary: Read aggregate click analytics
+      security:
+        - DevelopmentUser: []
+      responses:
+        '200':
+          description: Aggregate click analytics
+          content:
+            application/json:
+              schema: { type: object, required: [data], properties: { data: { type: object } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/links/{alias}/qr:
+    parameters:
+      - $ref: '#/components/parameters/Alias'
+    get:
+      summary: Generate a QR code for an owned short link
+      security:
+        - DevelopmentUser: []
+      responses:
+        '200':
+          description: PNG QR code
+          content:
+            image/png: {}
         '403': { $ref: '#/components/responses/Forbidden' }
         '404': { $ref: '#/components/responses/NotFound' }
   /{alias}:

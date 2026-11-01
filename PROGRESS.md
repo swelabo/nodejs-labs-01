@@ -80,7 +80,8 @@ Phase 7 — consolidation and acceptance audit.
 - Added six-variant architecture and application matrices plus a security
   baseline tied to the actual implementation boundaries.
 - Added OpenAPI documents to every application variant and an executable
-  contract-presence/path verifier.
+  contract verifier that checks metadata, operation summaries/responses, and
+  implemented API/feed/redirect route coverage.
 - Added blog domain events and an explicit transaction boundary with tests that
   document in-process event semantics and the absence of durable delivery.
 - Added and tested a double-submit CSRF boundary for authenticated mutations in

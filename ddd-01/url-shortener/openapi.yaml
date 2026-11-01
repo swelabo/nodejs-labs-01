@@ -58,6 +58,35 @@ paths:
               schema: { $ref: '#/components/schemas/LinkResponse' }
         '403': { $ref: '#/components/responses/Forbidden' }
         '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      summary: Activate or deactivate a link
+      security:
+        - DevelopmentUser: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active: { type: boolean }
+                expires_at: { type: [string, 'null'], format: date-time }
+      responses:
+        '200':
+          description: Updated link
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LinkResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Delete an owned link
+      security:
+        - DevelopmentUser: []
+      responses:
+        '204': { description: Link deleted }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
   /api/v1/links/{alias}/analytics:
     parameters:
       - $ref: '#/components/parameters/Alias'
