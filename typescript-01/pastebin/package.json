@@ -7,7 +7,8 @@
   "scripts": {
     "start": "tsx src/server.ts",
     "dev": "tsx watch src/server.ts",
-    "test": "tsx --test test/*.test.ts",
+    "pretest": "node ../../scripts/prepare-test-db.mjs",
+    "test": "NODE_ENV=test tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",

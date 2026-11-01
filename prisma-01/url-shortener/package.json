@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test",
+    "pretest": "node ../../scripts/prepare-test-db.mjs",
+    "test": "NODE_ENV=test node --test",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "node ../../scripts/seed-prisma.mjs"

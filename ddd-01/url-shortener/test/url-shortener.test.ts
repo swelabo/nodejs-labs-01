@@ -9,7 +9,7 @@ import { requireLinkPort } from '../src/ports.js'
 
 let database
 let app
-before(async () => { database = createDatabase('file:./data/url-shortener.db'); await database.$executeRawUnsafe('DELETE FROM Click'); await database.$executeRawUnsafe('DELETE FROM Link'); const repository = createRepository(database); app = createApp({ repository, useCases: createUseCases(repository) }) })
+before(async () => { database = createDatabase('file:./data/test.db'); await database.$executeRawUnsafe('DELETE FROM Click'); await database.$executeRawUnsafe('DELETE FROM Link'); const repository = createRepository(database); app = createApp({ repository, useCases: createUseCases(repository) }) })
 after(async () => database.$disconnect())
 
 test('Prisma persists links and resolves redirects', async () => {

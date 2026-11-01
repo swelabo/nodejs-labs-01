@@ -7,7 +7,7 @@ import { createApp } from '../src/app.js'
 
 let database
 let app
-before(async () => { database = createDatabase('file:./data/url-shortener.db'); await database.$executeRawUnsafe('DELETE FROM Click'); await database.$executeRawUnsafe('DELETE FROM Link'); app = createApp({ repository: createRepository(database) }) })
+before(async () => { database = createDatabase('file:./data/test.db'); await database.$executeRawUnsafe('DELETE FROM Click'); await database.$executeRawUnsafe('DELETE FROM Link'); app = createApp({ repository: createRepository(database) }) })
 after(async () => database.$disconnect())
 
 test('Prisma persists links and resolves redirects', async () => {
