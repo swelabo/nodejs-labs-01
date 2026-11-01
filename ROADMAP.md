@@ -17,8 +17,9 @@ parameterized SQL, SQLite, EJS, HTMX, Alpine.js, and Tailwind CSS.
 - [x] URL shortener core slice: API, redirects, persistence, tests, OpenAPI.
 - [ ] URL shortener browser interface and remaining baseline controls.
 - [x] Pastebin core slice: visibility, raw text, tags, search, tests, OpenAPI.
-- [ ] Pastebin browser interface, expiration cleanup, and moderation controls.
-- [ ] Blog first slice: publication workflow, taxonomy, tests, and OpenAPI.
+- [x] Pastebin browser interface and expiration cleanup; moderation remains.
+- [x] Blog first slice: publication workflow, roles, public reads, tests, and OpenAPI.
+- [ ] Blog comments, moderation, feeds, taxonomies, CAPTCHA, and administration.
 
 ## Phase 2 — `prisma-01`
 

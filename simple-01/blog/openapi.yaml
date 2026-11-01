@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info: {title: Simple Blog API, version: 0.1.0}
+paths:
+  /api/v1/posts:
+    get: {summary: List published posts, responses: {'200': {description: Paginated posts}}}
+    post:
+      summary: Create a post draft
+      security: [{DevelopmentUser: []}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/PostInput'}}}}
+      responses: {'201': {description: Draft created}, '403': {description: Insufficient role}}
+  /api/v1/posts/{slug}:
+    parameters: [{'$ref': '#/components/parameters/Slug'}]
+    get: {summary: Read a published post, responses: {'200': {description: Published post}, '404': {description: Not found}}}
+  /api/v1/posts/{id}:
+    parameters: [{in: path, name: id, required: true, schema: {type: integer}}]
+    patch: {summary: Edit a post, security: [{DevelopmentUser: []}], responses: {'200': {description: Updated}, '403': {description: Forbidden}, '404': {description: Not found}}}
+components:
+  securitySchemes: {DevelopmentUser: {type: apiKey, in: header, name: X-User-Id}}
+  parameters: {Slug: {in: path, name: slug, required: true, schema: {type: string, pattern: '^[a-z0-9-]{1,128}$'}}}
+  schemas:
+    PostInput:
+      type: object
+      required: [slug, title, body]
+      properties:
+        slug: {type: string, pattern: '^[a-z0-9-]{1,128}$'}
+        title: {type: string, minLength: 1, maxLength: 200}
+        body: {type: string, minLength: 1}
+        status: {type: string, enum: [draft, scheduled, published]}
+        publish_at: {type: string, format: date-time}
+

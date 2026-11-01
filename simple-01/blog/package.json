@@ -1,0 +1,12 @@
+{
+  "name": "simple-01-blog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The direct-handler blog baseline from Node.js Architecture Labs.",
+  "engines": { "node": ">=26.13.0" },
+  "scripts": { "start": "node src/server.js", "dev": "node --watch src/server.js", "test": "node --test", "db:init": "node src/db/init.js" },
+  "dependencies": { "better-sqlite3": "13.0.3", "ejs": "7.0.2", "express": "5.3.0" },
+  "devDependencies": { "supertest": "7.3.1", "yaml": "2.9.1" }
+}
+

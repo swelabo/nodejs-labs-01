@@ -3,7 +3,7 @@
 
 NPM ?= npm
 
-.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test clean
+.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test clean
 
 help: ## Show available foundation commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -31,6 +31,9 @@ simple-url-shortener-test: ## Run the first application test suite
 
 pastebin-test: ## Run the Pastebin application test suite
 	$(MAKE) -C simple-01/pastebin test
+
+blog-test: ## Run the blog application test suite
+	$(MAKE) -C simple-01/blog test
 
 clean: ## Remove generated documentation output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist
