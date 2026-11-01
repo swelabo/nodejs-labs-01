@@ -1,0 +1,14 @@
+openapi: 3.1.0
+info: {title: Prisma URL Shortener API, version: 0.1.0}
+paths:
+  /api/v1/links:
+    post: {summary: Create a link, responses: {'201': {description: Created}, '400': {description: Invalid request}}}
+    get: {summary: List owned links, responses: {'200': {description: Links}}}
+  /api/v1/links/{alias}:
+    parameters: [{in: path, name: alias, required: true, schema: {type: string}}]
+    patch: {summary: Update a link, responses: {'200': {description: Updated}, '403': {description: Forbidden}}}
+    delete: {summary: Delete a link, responses: {'204': {description: Deleted}, '403': {description: Forbidden}}}
+  /{alias}:
+    parameters: [{in: path, name: alias, required: true, schema: {type: string}}]
+    get: {summary: Resolve a link, responses: {'302': {description: Redirect}, '404': {description: Unavailable}}}
+

@@ -31,9 +31,13 @@ behavior and comparing ORM queries with raw SQL.
 - [x] Pastebin: Prisma schema, migration, JavaScript client, tests.
 - [x] Blog: Prisma schema, migration, JavaScript client, tests.
 
-## Phase 3 — `usecases-01`
+## Phase 3 — `usecases-01` (in progress)
 
 Separate application operations from HTTP delivery with explicit use cases.
+
+- [x] URL shortener: explicit use-case layer and delegation test.
+- [ ] Pastebin.
+- [ ] Blog.
 
 ## Phase 4 — `hexagonal-01`
 

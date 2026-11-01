@@ -24,6 +24,8 @@ Phase 2 — `prisma-01/url-shortener` first slice.
   raw text, tags, search, ownership, and tests.
 - Implemented `prisma-01/blog` with Prisma 7.10.1, migration, role checks,
   publication timing, slug uniqueness, and tests.
+- Started `usecases-01/url-shortener` by extracting explicit application
+  operations and testing HTTP delegation.
 
 ## Verification
 
@@ -39,6 +41,7 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 - `make prisma-url-shortener-test` — passed: 2 tests under Node.js 26.13.0.
 - `make prisma-pastebin-test` — passed: 2 tests under Node.js 26.13.0.
 - `make prisma-blog-test` — passed: 2 tests under Node.js 26.13.0.
+- `make usecases-url-shortener-test` — passed: 3 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -58,5 +61,6 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 
 ## Next action
 
-Complete Prisma comparisons and begin `usecases-01` with explicit application operations.
+Implement `usecases-01/pastebin` and `usecases-01/blog` with the same explicit
+workflow boundary.
 
