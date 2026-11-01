@@ -1,4 +1,5 @@
 # `simple-01/blog`
+The browser surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This is the first blog implementation in the direct-handler variant. It teaches
 publication state, role-aware administration, slugs, taxonomy relations, and

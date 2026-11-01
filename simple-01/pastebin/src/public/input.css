@@ -1,3 +1,4 @@
 @import "tailwindcss";
 @source "../views";
 @source "../app.js";
+.token-keyword { color: #7c3aed; font-weight: 600; }

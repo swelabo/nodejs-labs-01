@@ -1,4 +1,5 @@
 # `usecases-01/blog`
+The server-rendered surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This Prisma 7.10.1 implementation preserves the direct blog's publication
 workflow while moving persistence to Prisma Client and SQLite. Application code

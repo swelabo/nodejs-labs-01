@@ -34,6 +34,14 @@ test('renders escaped browser output and accepts a form submission', async () =>
   assert.doesNotMatch(detail.text, /<img src=x onerror=/)
 })
 
+test('highlights selected languages only after escaping source text', async () => {
+  const created = await request(app).post('/api/v1/snippets').send({ content: 'const answer = "<script>"', language: 'javascript' })
+  const detail = await request(app).get(`/snippets/${created.body.data.id}`)
+  assert.match(detail.text, /token-keyword/)
+  assert.match(detail.text, /&lt;script&gt;/)
+  assert.doesNotMatch(detail.text, /<script>/)
+})
+
 test('distinguishes public, unlisted, and private visibility', async () => {
   const unlisted = await request(app).post('/api/v1/snippets').set('x-user-id', 'alice').send({ content: 'unlisted', visibility: 'unlisted' })
   const privateSnippet = await request(app).post('/api/v1/snippets').set('x-user-id', 'alice').send({ content: 'private', visibility: 'private' })

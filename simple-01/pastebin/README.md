@@ -1,4 +1,5 @@
 # `simple-01/pastebin`
+The browser surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This direct-handler Pastebin implementation stores untrusted text snippets in
 SQLite. Its primary teaching boundary is visibility: public snippets are

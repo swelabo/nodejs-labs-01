@@ -21,7 +21,14 @@ function validate(input) {
   if (tags.some((tag) => typeof tag !== 'string' || !/^[a-zA-Z0-9_-]{1,32}$/.test(tag))) throw new ValidationError('tags contain invalid values', { tags: 'invalid tag' })
   return { content: input.content, visibility: input.visibility ?? 'public', language: typeof input.language === 'string' && input.language.length <= 32 ? input.language : 'text', expiresAt: expiresAt?.toISOString() ?? null, tags: [...new Set(tags)] }
 }
-function mapSnippet(row, tags) { return { id: row.id, content: row.content, owner_id: row.owner_id, visibility: row.visibility, language: row.language, expires_at: row.expires_at, created_at: row.created_at, updated_at: row.updated_at, tags } }
+function highlighted(content, language) {
+  // Highlighting starts from escaped text, never from the original snippet.
+  // This keeps presentation separate from HTML trust: a pasted script remains inert.
+  const escaped = content.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;')
+  if (!['javascript', 'js', 'typescript', 'ts', 'json'].includes(language.toLowerCase())) return escaped
+  return escaped.replace(/\b(const|let|var|function|return|async|await|true|false|null|undefined)\b/g, '<span class="token-keyword">$1</span>')
+}
+function mapSnippet(row, tags) { return { id: row.id, content: row.content, highlighted_html: highlighted(row.content, row.language), owner_id: row.owner_id, visibility: row.visibility, language: row.language, expires_at: row.expires_at, created_at: row.created_at, updated_at: row.updated_at, tags } }
 function active(row) { return row && (!row.expires_at || new Date(row.expires_at) > new Date()) }
 
 export function createRepository(database) {

@@ -1,4 +1,5 @@
 # `ddd-01/blog`
+The server-rendered surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This DDD implementation preserves the hexagonal boundary while isolating the
 publication language in a `Post` aggregate and immutable `Slug` value object.

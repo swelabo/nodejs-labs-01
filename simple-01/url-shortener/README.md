@@ -1,4 +1,5 @@
 # `simple-01/url-shortener`
+The browser surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This is the first implementation in the architecture laboratory. It keeps the
 application deliberately direct: Express route handlers call a small SQLite

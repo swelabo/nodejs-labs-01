@@ -1,4 +1,5 @@
 # `ddd-01/url-shortener`
+The server-rendered surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This DDD implementation preserves the hexagonal URL-shortener boundary while
 making destination and alias rules explicit in a `Link` aggregate. The Prisma

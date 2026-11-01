@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 NPM ?= npm
-.PHONY: help install generate migrate db-init db-seed db-reset lint typecheck test start dev clean
+.PHONY: help install generate migrate frontend-build db-init db-seed db-reset lint typecheck test start dev clean
 
 help: ## Show commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-10s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -13,6 +13,8 @@ generate: ## Generate Prisma Client
 
 migrate: ## Apply migrations
 	$(NPM) run db:migrate
+
+db-migrate: migrate
 
 db-init: migrate
 
@@ -37,6 +39,9 @@ test: ## Run tests
 
 start: ## Start the application
 	$(NPM) start
+
+frontend-build: ## Build local HTMX, Alpine.js, and Tailwind assets
+	$(NPM) run frontend:build
 
 clean: ## Remove local database files
 	rm -f data/*.db data/*.db-shm data/*.db-wal

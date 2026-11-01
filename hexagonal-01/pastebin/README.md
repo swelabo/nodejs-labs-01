@@ -1,4 +1,5 @@
 # `hexagonal-01/pastebin`
+The server-rendered surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This hexagonal implementation preserves the Pastebin contract while placing a
 validated snippet port between the use cases and the Prisma/SQLite adapter.

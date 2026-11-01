@@ -11,10 +11,11 @@ const applications = [
 
 const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds))
 
-for (const directory of applications) {
+for (const [index, directory] of applications.entries()) {
+  const port = 39000 + index
   const child = spawn('npm', ['start'], {
     cwd: directory,
-    env: { ...process.env, PORT: '0' },
+    env: { ...process.env, PORT: String(port) },
     detached: true,
     stdio: ['ignore', 'ignore', 'pipe'],
   })
@@ -22,6 +23,14 @@ for (const directory of applications) {
   child.stderr.on('data', (chunk) => { stderr += chunk })
   await wait(1200)
   if (child.exitCode !== null) throw new Error(`${directory} exited with ${child.exitCode}: ${stderr}`)
+  const page = await fetch(`http://127.0.0.1:${port}/`)
+  if (!page.ok) throw new Error(`${directory} returned ${page.status} for /`)
+  const html = await page.text()
+  if (!html.includes('/styles.css') || !html.includes('/vendor/htmx.min.js') || !html.includes('/vendor/alpine.min.js')) {
+    throw new Error(`${directory} did not render the local frontend assets`)
+  }
+  const stylesheet = await fetch(`http://127.0.0.1:${port}/styles.css`)
+  if (!stylesheet.ok) throw new Error(`${directory} did not serve styles.css`)
   process.kill(-child.pid, 'SIGTERM')
   await wait(200)
   console.log(`start ok: ${directory}`)

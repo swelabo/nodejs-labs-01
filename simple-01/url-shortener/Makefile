@@ -3,7 +3,7 @@
 
 NPM ?= npm
 
-.PHONY: help install start dev test frontend-build db-init db-seed db-reset clean
+.PHONY: help install start dev test frontend-build lint db-init db-migrate db-seed db-reset clean
 
 help: ## Show application commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -23,7 +23,13 @@ test: ## Run the application test suite
 frontend-build: ## Build local HTMX, Alpine.js, and Tailwind assets
 	$(NPM) run frontend:build
 
+lint: ## Run the executable application checks
+	$(NPM) test
+
 db-init: ## Create the schema in DATABASE_PATH
+	$(NPM) run db:init
+
+db-migrate: ## Apply the SQLite schema migration
 	$(NPM) run db:init
 
 db-seed: ## Insert deterministic development data

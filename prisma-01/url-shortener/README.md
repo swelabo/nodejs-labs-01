@@ -1,4 +1,5 @@
 # `prisma-01/url-shortener`
+The server-rendered surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This is the first Prisma reimplementation of the URL shortener. Its observable
 behavior matches `simple-01/url-shortener`, but persistence uses Prisma Client

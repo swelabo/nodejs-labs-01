@@ -1,4 +1,5 @@
 # `typescript-01/url-shortener`
+The server-rendered surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This implementation preserves the hexagonal URL-shortener boundary while
 moving the application contracts, use cases, HTTP entry point, and Prisma

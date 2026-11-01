@@ -5,7 +5,7 @@
     <p><a href="/">Back to public snippets</a></p>
     <h1>Snippet <%= snippet.id %></h1>
     <p>Language: <%= snippet.language %> · Visibility: <%= snippet.visibility %></p>
-    <pre style="overflow: auto; background: #f3f4f6; padding: 1rem;"><code><%= snippet.content %></code></pre>
+    <pre style="overflow: auto; background: #f3f4f6; padding: 1rem;"><code><%- snippet.highlighted_html %></code></pre>
   </body>
 </html>
 

@@ -1,4 +1,5 @@
 # `usecases-01/url-shortener`
+The server-rendered surface uses local EJS, HTMX, Alpine.js, and Tailwind assets; run `npm run frontend:build` to reproduce it.
 
 This implementation adds an explicit application use-case layer while preserving
 the URL-shortener behavior from `prisma-01`. HTTP routes delegate workflows to
