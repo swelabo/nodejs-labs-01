@@ -1,0 +1,212 @@
+openapi: 3.1.0
+info:
+  title: Simple URL Shortener API
+  version: 0.1.0
+  description: The direct-handler baseline API for Node.js Architecture Labs.
+servers:
+  - url: http://localhost:3001
+paths:
+  /api/v1/links:
+    post:
+      summary: Create a short link
+      security:
+        - DevelopmentUser: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLink'
+      responses:
+        '201':
+          description: Link created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkResponse'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+    get:
+      summary: List links owned by the current development user
+      security:
+        - DevelopmentUser: []
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - in: query
+          name: q
+          schema: { type: string, maxLength: 100 }
+      responses:
+        '200':
+          description: Paginated links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkList'
+  /api/v1/links/{alias}:
+    parameters:
+      - $ref: '#/components/parameters/Alias'
+    get:
+      summary: Get link metadata
+      security:
+        - DevelopmentUser: []
+      responses:
+        '200':
+          description: Link metadata
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LinkResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/links/{alias}/analytics:
+    parameters:
+      - $ref: '#/components/parameters/Alias'
+    get:
+      summary: Read aggregate click analytics
+      security:
+        - DevelopmentUser: []
+      responses:
+        '200':
+          description: Aggregate click analytics
+          content:
+            application/json:
+              schema: { type: object, required: [data], properties: { data: { type: object } } }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/links/{alias}/qr:
+    parameters:
+      - $ref: '#/components/parameters/Alias'
+    get:
+      summary: Generate a QR code for an owned short link
+      security:
+        - DevelopmentUser: []
+      responses:
+        '200':
+          description: PNG QR code
+          content:
+            image/png: {}
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      summary: Activate or deactivate a link
+      security:
+        - DevelopmentUser: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active: { type: boolean }
+                expires_at: { type: [string, 'null'], format: date-time }
+      responses:
+        '200':
+          description: Updated link
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LinkResponse' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Delete an owned link
+      security:
+        - DevelopmentUser: []
+      responses:
+        '204': { description: Link deleted }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /{alias}:
+    parameters:
+      - $ref: '#/components/parameters/Alias'
+    get:
+      summary: Redirect to an active link destination
+      responses:
+        '302':
+          description: Temporary redirect
+          headers:
+            Location:
+              required: true
+              schema: { type: string, format: uri }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  securitySchemes:
+    DevelopmentUser:
+      type: apiKey
+      in: header
+      name: X-User-Id
+  parameters:
+    Alias:
+      in: path
+      name: alias
+      required: true
+      schema: { type: string, pattern: '^[a-zA-Z0-9_-]{3,64}$' }
+    Page:
+      in: query
+      name: page
+      schema: { type: integer, minimum: 1, default: 1 }
+    PageSize:
+      in: query
+      name: page_size
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+  schemas:
+    CreateLink:
+      type: object
+      required: [destination_url]
+      properties:
+        destination_url: { type: string, format: uri, maxLength: 2048 }
+        alias: { type: string, pattern: '^[a-zA-Z0-9_-]{3,64}$' }
+        expires_at: { type: string, format: date-time }
+    Link:
+      type: object
+      required: [alias, destination_url, active, click_count]
+      properties:
+        alias: { type: string }
+        destination_url: { type: string, format: uri }
+        owner_id: { type: [string, 'null'] }
+        active: { type: boolean }
+        expires_at: { type: [string, 'null'], format: date-time }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        click_count: { type: integer, minimum: 0 }
+    LinkResponse:
+      type: object
+      required: [data]
+      properties:
+        data: { $ref: '#/components/schemas/Link' }
+    LinkList:
+      type: object
+      required: [items, page, page_size, total]
+      properties:
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/Link' }
+        page: { type: integer }
+        page_size: { type: integer }
+        total: { type: integer }
+    Problem:
+      type: object
+      required: [type, title, status, detail]
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        errors: { type: object, additionalProperties: { type: string } }
+  responses:
+    InvalidRequest:
+      description: Invalid request
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Forbidden:
+      description: The caller does not own the link
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    NotFound:
+      description: The link is unavailable
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+

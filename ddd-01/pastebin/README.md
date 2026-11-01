@@ -1,8 +1,9 @@
-# `hexagonal-01/pastebin`
+# `ddd-01/pastebin`
 
-This hexagonal implementation preserves the Pastebin contract while placing a
-validated snippet port between the use cases and the Prisma/SQLite adapter.
-The composition root is the only place that wires the production adapter.
+This DDD implementation preserves the Pastebin contract while placing a
+validated `Snippet` value boundary between the use cases and the Prisma/SQLite
+adapter. The composition root is the only place that wires the production
+adapter.
 
 ```sh
 npm install
