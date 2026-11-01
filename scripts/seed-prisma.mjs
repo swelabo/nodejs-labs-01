@@ -14,6 +14,7 @@ if (application === 'url-shortener') {
 } else if (application === 'blog') {
   await database.user.upsert({ where: { id: 'seed-editor' }, update: { role: 'editor' }, create: { id: 'seed-editor', role: 'editor', displayName: 'Seed Editor' } })
   await database.post.upsert({ where: { slug: 'seed-post' }, update: { title: 'Seed post' }, create: { slug: 'seed-post', title: 'Seed post', body: 'Seed content', authorId: 'seed-editor', status: 'published' } })
+  await database.page.upsert({ where: { slug: 'about' }, update: { title: 'About' }, create: { slug: 'about', title: 'About', body: 'Seed page', authorId: 'seed-editor', status: 'published' } })
 } else throw new Error(`unsupported application directory: ${application}`)
 
 await database.$disconnect()

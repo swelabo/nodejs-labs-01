@@ -1,4 +1,4 @@
-const methods = ['list', 'create', 'publicBySlug', 'update']
+const methods = ['list', 'create', 'publicBySlug', 'publicPageBySlug', 'update']
 
 export function requirePostPort(candidate) {
   for (const method of methods) {
