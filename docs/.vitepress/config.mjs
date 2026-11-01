@@ -23,7 +23,7 @@ export default defineConfig({
         { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }, { text: 'Platform and operations', link: '/nodejs/platform' }, { text: 'Testing', link: '/nodejs/testing' }, { text: 'Concurrency', link: '/nodejs/concurrency' }] },
       ],
       '/express/': [
-        { text: 'Express', items: [{ text: 'Fundamentals', link: '/express/fundamentals' }, { text: 'Security', link: '/express/security' }] },
+        { text: 'Express', items: [{ text: 'Fundamentals', link: '/express/fundamentals' }, { text: 'Web development', link: '/express/web-development' }, { text: 'Security', link: '/express/security' }] },
       ],
       '/sqlite/': [
         { text: 'SQLite', items: [{ text: 'Persistence', link: '/sqlite/persistence' }] },
