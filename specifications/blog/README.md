@@ -27,9 +27,10 @@ strong bot protection.
 ## API surface
 
 The first API contract includes `POST`, `GET`, `PATCH`, and `DELETE` operations
-for `/api/v1/posts`, plus read endpoints for categories, tags, comments, and
-site configuration. Exact schemas are versioned with each implementation and
-must preserve publication and authorization semantics.
+for `/api/v1/posts`, plus category/tag management, custom taxonomy terms,
+comments, authentication, and administrator-only site configuration. Exact
+schemas are versioned with each implementation and must preserve publication
+and authorization semantics.
 
 ## Required tests
 

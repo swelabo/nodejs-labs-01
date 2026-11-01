@@ -25,6 +25,11 @@ plain text with a safe content type.
 The service must not reveal whether a private identifier exists to an
 unauthorized caller. Expired snippets behave as unavailable resources.
 
+Implementations may permit anonymous creation by configuration, but they must
+also provide an authenticated account/session path for owned edits and
+administration. Browser rendering and syntax highlighting must remain safe
+representations of untrusted text.
+
 ## Required tests
 
 - visibility rules are enforced for list, HTML, and raw views;
