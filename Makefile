@@ -3,7 +3,7 @@
 
 NPM ?= npm
 
-.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck typescript-pastebin-test typescript-pastebin-typecheck clean
+.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck typescript-pastebin-test typescript-pastebin-typecheck typescript-blog-test typescript-blog-typecheck clean
 
 help: ## Show available foundation commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -73,6 +73,12 @@ typescript-pastebin-test: ## Run the TypeScript Pastebin test suite
 
 typescript-pastebin-typecheck: ## Type-check the TypeScript Pastebin
 	$(MAKE) -C typescript-01/pastebin typecheck
+
+typescript-blog-test: ## Run the TypeScript blog test suite
+	$(MAKE) -C typescript-01/blog test
+
+typescript-blog-typecheck: ## Type-check the TypeScript blog
+	$(MAKE) -C typescript-01/blog typecheck
 
 clean: ## Remove generated documentation output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist

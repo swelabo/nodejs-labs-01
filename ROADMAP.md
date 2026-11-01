@@ -54,12 +54,16 @@ contracts.
 
 - [x] URL shortener: typed port/use-case contracts, `tsx` tests, and typecheck.
 - [x] Pastebin: typed port/use-case contracts, `tsx` tests, and typecheck.
-- [ ] Blog.
+- [x] Blog: typed port/use-case contracts, `tsx` tests, and typecheck.
 
-## Phase 6 — `ddd-01`
+## Phase 6 — `ddd-01` (in progress)
 
 Introduce tactical DDD, domain events, bounded contexts, and Clean Architecture
 where the domain complexity justifies them.
+
+- [ ] URL shortener.
+- [ ] Pastebin.
+- [ ] Blog.
 
 ## Phase 7 — Consolidation
 

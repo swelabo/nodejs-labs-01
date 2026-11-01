@@ -37,6 +37,8 @@ Phase 4 — `hexagonal-01` implementation.
   `tsx` execution, and a passing TypeScript compiler check.
 - Implemented `typescript-01/pastebin` with a typed snippet port, `tsx` tests,
   and a passing TypeScript compiler check.
+- Implemented `typescript-01/blog` with a typed post port, `tsx` tests, and a
+  passing TypeScript compiler check.
 
 ## Verification
 
@@ -62,6 +64,8 @@ Phase 4 — `hexagonal-01` implementation.
 - `make typescript-url-shortener-test` — passed: 4 tests under Node.js 26.13.0.
 - `make typescript-pastebin-typecheck` — passed under Node.js 26.13.0.
 - `make typescript-pastebin-test` — passed: 4 tests under Node.js 26.13.0.
+- `make typescript-blog-typecheck` — passed under Node.js 26.13.0.
+- `make typescript-blog-test` — passed: 4 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -81,6 +85,5 @@ Phase 4 — `hexagonal-01` implementation.
 
 ## Next action
 
-Continue the TypeScript migration with Blog, preserving its hexagonal port
-boundary.
+Begin `ddd-01` with a domain model for the blog publication workflow.
 
