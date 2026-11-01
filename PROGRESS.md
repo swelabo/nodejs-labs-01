@@ -2,7 +2,7 @@
 
 ## Current milestone
 
-Phase 0 — foundation.
+Phase 1 — `simple-01/url-shortener` core slice.
 
 ## Completed
 
@@ -11,6 +11,8 @@ Phase 0 — foundation.
 - Added root conventions, Makefile, package manifest, and agent instructions.
 - Recorded the initial technology baseline.
 - Created the VitePress book outline and canonical specifications.
+- Implemented the first URL-shortener slice with SQLite, Express, redirects,
+  ownership checks, expiration, analytics, OpenAPI, tests, and documentation.
 
 ## Verification
 
@@ -18,15 +20,21 @@ Phase 0 — foundation.
   project baseline is Node 26.13.0.
 - `npm run docs:build` — passed.
 - `npm run docs:lint` — passed.
+- `make test` — passed: 10 tests under Node.js 26.13.0.
+- `make simple-url-shortener-test` — passed.
+- Manual database initialization, seed, server startup, API creation, and `302`
+  redirect smoke test — passed.
 
 ## Known limitations
 
-- No application implementation exists yet.
-- The book currently contains the foundation chapters only.
+- The URL-shortener core slice is implemented; dashboard, QR generation, real
+  authentication, and production rate limiting remain out of scope.
+- The book currently contains the foundation and URL-shortener chapters only.
 - Dependency versions require review when the first application begins.
 
 ## Next action
 
-Implement the first tested slice of `simple-01/url-shortener` from
-`.development/plans/2026-11-01-simple-url-shortener.md`.
+Extend `simple-01/url-shortener` with browser HTML routes, a safer development
+authentication seam, and the remaining planned baseline features before moving
+to Pastebin.
 

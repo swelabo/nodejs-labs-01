@@ -1,0 +1,11 @@
+<article class="flex items-center justify-between gap-4 py-4">
+  <div class="min-w-0">
+    <a class="font-semibold text-blue-700 underline" href="/<%= encodeURIComponent(link.alias) %>">/<%= link.alias %></a>
+    <p class="truncate text-sm text-slate-600"><%= link.destination_url %></p>
+    <p class="text-xs text-slate-500"><%= link.click_count %> clicks · <%= link.active ? 'active' : 'inactive' %></p>
+  </div>
+  <form method="post" action="/links/<%= encodeURIComponent(link.alias) %>/toggle" hx-post="/links/<%= encodeURIComponent(link.alias) %>/toggle" hx-target="closest article" hx-swap="outerHTML">
+    <button class="rounded border px-3 py-1 text-sm" type="submit"><%= link.active ? 'Deactivate' : 'Activate' %></button>
+  </form>
+</article>
+

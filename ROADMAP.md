@@ -9,10 +9,15 @@
 - [ ] Complete the introductory book chapters and foundation verification.
 - [ ] Prepare the detailed `simple-01/url-shortener` implementation plan.
 
-## Phase 1 — `simple-01`
+## Phase 1 — `simple-01` (in progress)
 
 Implement URL shortener, Pastebin, then blog using JavaScript, Express, raw
 parameterized SQL, SQLite, EJS, HTMX, Alpine.js, and Tailwind CSS.
+
+- [x] URL shortener core slice: API, redirects, persistence, tests, OpenAPI.
+- [ ] URL shortener browser interface and remaining baseline controls.
+- [ ] Pastebin.
+- [ ] Blog.
 
 ## Phase 2 — `prisma-01`
 
