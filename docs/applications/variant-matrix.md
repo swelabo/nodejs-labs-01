@@ -32,7 +32,7 @@ teaching deviation, not an accidental claim of full parity.
 | Published posts and scheduled visibility | tested | tested |
 | Static-page permalink and visibility | tested in HTML and API | tested through API and port/use-case boundaries |
 | Author pages and yearly/monthly archives | tested | not carried forward yet |
-| Categories, tags, custom taxonomies | hierarchical category/tag reads and writes tested | not carried forward yet |
+| Categories, tags, custom taxonomies | hierarchical category/tag and generic taxonomy/term checks tested | not carried forward yet |
 | Comments, moderation, challenge, feed, sitemap | tested | not carried forward yet |
 | Authentication and administration | session, CSRF, role/user tests | development identity only |
 | Media uploads | intentionally out of scope | intentionally out of scope |

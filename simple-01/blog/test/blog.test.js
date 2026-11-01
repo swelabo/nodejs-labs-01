@@ -64,6 +64,20 @@ test('supports author, archive, category, and tag discovery', async () => {
   assert.equal((await request(app).get('/api/v1/tags')).body.data[0].slug, 'release')
 })
 
+test('supports arbitrary hierarchical taxonomies with scoped parent checks', async () => {
+  const taxonomy = await request(app).post('/api/v1/taxonomies').set('x-user-id', 'editor').send({ slug: 'series', name: 'Series', hierarchical: true })
+  assert.equal(taxonomy.status, 201)
+  const root = await request(app).post('/api/v1/taxonomies/series/terms').set('x-user-id', 'editor').send({ slug: 'node', name: 'Node' })
+  assert.equal(root.status, 201)
+  const child = await request(app).post('/api/v1/taxonomies/series/terms').set('x-user-id', 'editor').send({ slug: 'runtime', name: 'Runtime', parent_id: root.body.data.id })
+  assert.equal(child.status, 201)
+  const flat = await request(app).post('/api/v1/taxonomies').set('x-user-id', 'editor').send({ slug: 'audience', name: 'Audience' })
+  assert.equal(flat.status, 201)
+  const invalidParent = await request(app).post('/api/v1/taxonomies/audience/terms').set('x-user-id', 'editor').send({ slug: 'senior', name: 'Senior', parent_id: root.body.data.id })
+  assert.equal(invalidParent.status, 400)
+  assert.equal((await request(app).get('/api/v1/taxonomies/series/terms')).body.data.length, 2)
+})
+
 test('submits a one-time comment challenge and moderates the result', async () => {
   const post = await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'commented', title: 'Commented', body: 'body', status: 'published' })
   const challenge = await request(app).get('/api/v1/posts/commented/comments/challenge')

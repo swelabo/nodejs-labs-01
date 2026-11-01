@@ -69,6 +69,32 @@ export function createRepository(database) {
     },
     categories() { return database.prepare('SELECT id, slug, name, parent_id FROM categories ORDER BY name').all() },
     tags() { return database.prepare('SELECT id, slug, name FROM tags ORDER BY name').all() },
+    listTaxonomies() { return database.prepare('SELECT id, slug, name, hierarchical FROM taxonomies ORDER BY name').all() },
+    createTaxonomy(role, value) {
+      if (!canManage(role)) throw new ForbiddenError()
+      if (typeof value.slug !== 'string' || !/^[a-z0-9-]{1,128}$/.test(value.slug) || typeof value.name !== 'string' || !value.name.trim()) throw new ValidationError('taxonomy fields are invalid')
+      try { const result = database.prepare('INSERT INTO taxonomies (slug, name, hierarchical) VALUES (?, ?, ?)').run(value.slug, value.name.trim(), value.hierarchical ? 1 : 0); return database.prepare('SELECT * FROM taxonomies WHERE id = ?').get(result.lastInsertRowid) } catch (error) { if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') throw new ValidationError('taxonomy slug is already in use'); throw error }
+    },
+    listTaxonomyTerms(taxonomySlug) {
+      const taxonomy = database.prepare('SELECT id FROM taxonomies WHERE slug = ?').get(taxonomySlug)
+      if (!taxonomy) throw new NotFoundError('Taxonomy not found')
+      return database.prepare('SELECT id, slug, name, parent_id FROM taxonomy_terms WHERE taxonomy_id = ? ORDER BY name').all(taxonomy.id)
+    },
+    createTaxonomyTerm(role, taxonomySlug, value) {
+      if (!canManage(role)) throw new ForbiddenError()
+      const taxonomy = database.prepare('SELECT id, hierarchical FROM taxonomies WHERE slug = ?').get(taxonomySlug)
+      if (!taxonomy) throw new NotFoundError('Taxonomy not found')
+      if (typeof value.slug !== 'string' || !/^[a-z0-9-]{1,128}$/.test(value.slug) || typeof value.name !== 'string' || !value.name.trim()) throw new ValidationError('term fields are invalid')
+      const parentId = value.parent_id == null ? null : Number(value.parent_id)
+      if (parentId !== null) {
+        if (!taxonomy.hierarchical) throw new ValidationError('taxonomy is not hierarchical')
+        const parent = database.prepare('SELECT taxonomy_id FROM taxonomy_terms WHERE id = ?').get(parentId)
+        if (!parent || parent.taxonomy_id !== taxonomy.id) throw new ValidationError('parent term belongs to another taxonomy')
+        let current = parentId; const seen = new Set()
+        while (current) { if (seen.has(current)) throw new ValidationError('term hierarchy contains a cycle'); seen.add(current); current = database.prepare('SELECT parent_id FROM taxonomy_terms WHERE id = ?').get(current)?.parent_id ?? 0 }
+      }
+      try { const result = database.prepare('INSERT INTO taxonomy_terms (taxonomy_id, slug, name, parent_id) VALUES (?, ?, ?, ?)').run(taxonomy.id, value.slug, value.name.trim(), parentId); return database.prepare('SELECT * FROM taxonomy_terms WHERE id = ?').get(result.lastInsertRowid) } catch (error) { if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') throw new ValidationError('term slug is already in use'); throw error }
+    },
     update(id, userId, role, value) {
       const current = postRow(id); if (!current) throw new NotFoundError(); if (current.author_id !== userId && role !== 'administrator') throw new ForbiddenError(); if (!canManage(role)) throw new ForbiddenError()
       const post = input({ ...current, ...value }); const now = new Date().toISOString(); database.prepare('UPDATE posts SET slug = @slug, title = @title, body = @body, status = @status, publish_at = @publishAt, updated_at = @now WHERE id = @id').run({ ...post, id, now }); return get(id)

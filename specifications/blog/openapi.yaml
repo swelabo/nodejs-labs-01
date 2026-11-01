@@ -36,6 +36,12 @@ paths:
     get: {summary: List categories, responses: {'200': {description: Categories}}}
   /api/v1/tags:
     get: {summary: List tags, responses: {'200': {description: Tags}}}
+  /api/v1/taxonomies:
+    get: {summary: List custom taxonomies, responses: {'200': {description: Taxonomies}}}
+    post: {summary: Create a custom taxonomy, security: [{DevelopmentUser: []}], responses: {'201': {description: Taxonomy}}}
+  /api/v1/taxonomies/{taxonomy}/terms:
+    get: {summary: List taxonomy terms, responses: {'200': {description: Terms}}}
+    post: {summary: Create a taxonomy term, security: [{DevelopmentUser: []}], responses: {'201': {description: Term}}}
   /authors/{slug}:
     get: {summary: Render an author's published posts, responses: {'200': {description: Author archive}, '404': {description: Not found}}}
   /archives/{year}:

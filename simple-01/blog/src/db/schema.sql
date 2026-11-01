@@ -86,3 +86,25 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE INDEX IF NOT EXISTS comments_post_status ON comments(post_id, status, created_at);
 
+CREATE TABLE IF NOT EXISTS taxonomies (
+  id INTEGER PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  hierarchical INTEGER NOT NULL DEFAULT 0 CHECK (hierarchical IN (0, 1))
+);
+
+CREATE TABLE IF NOT EXISTS taxonomy_terms (
+  id INTEGER PRIMARY KEY,
+  taxonomy_id INTEGER NOT NULL REFERENCES taxonomies(id) ON DELETE CASCADE,
+  slug TEXT NOT NULL,
+  name TEXT NOT NULL,
+  parent_id INTEGER REFERENCES taxonomy_terms(id) ON DELETE SET NULL,
+  UNIQUE (taxonomy_id, slug)
+);
+
+CREATE TABLE IF NOT EXISTS post_taxonomy_terms (
+  post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  term_id INTEGER NOT NULL REFERENCES taxonomy_terms(id) ON DELETE CASCADE,
+  PRIMARY KEY (post_id, term_id)
+);
+

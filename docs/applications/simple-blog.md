@@ -49,9 +49,10 @@ same repository function, which keeps the HTML and API representations aligned.
 
 The direct variant now implements author pages, yearly/monthly archives, and
 category/tag discovery. Media management and arbitrary custom-taxonomy
-administration remain explicit follow-on scope; the comparison documents record
-that boundary instead of implying that a small teaching application is a
-complete WordPress replacement.
+administration is also represented by a generic taxonomy/term API with scoped
+hierarchy validation. Media management remains explicit follow-on scope; the
+comparison documents record that boundary instead of implying that a small
+teaching application is a complete WordPress replacement.
 
 Run the tests with:
 
