@@ -3,6 +3,8 @@
 export interface LinkInput { destination: string; alias?: string; expires_at?: string | null; owner_id?: string }
 export type LinkRecord = Record<string, unknown>
 export interface LinkPort {
+  // The interface is a compile-time contract; requireLinkPort below remains
+  // necessary because HTTP input and JavaScript adapters exist at runtime.
   create(input: LinkInput): Promise<LinkRecord>
   list(ownerId: string): Promise<unknown>
   update(alias: string, ownerId: string, changes: Partial<LinkInput>): Promise<LinkRecord>

@@ -8,6 +8,10 @@ export class NotFoundError extends Error { constructor(message = 'Snippet not fo
 export class ForbiddenError extends Error { constructor(message = 'You do not own this snippet') { super(message); this.name = 'ForbiddenError' } }
 
 function validate(input) {
+  // Request bodies are ordinary JavaScript objects and may contain values from
+  // an untrusted client. Validate before opening a transaction so malformed
+  // data never reaches SQL; parameter placeholders protect the query itself,
+  // but they do not define the application's visibility policy.
   if (typeof input.content !== 'string' || input.content.length === 0 || input.content.length > MAX_CONTENT_LENGTH) throw new ValidationError('content must contain 1-100000 characters', { content: 'must contain 1-100000 characters' })
   if (!VISIBILITIES.has(input.visibility ?? 'public')) throw new ValidationError('visibility must be public, unlisted, or private', { visibility: 'invalid visibility' })
   const expiresAt = input.expires_at == null || input.expires_at === '' ? null : new Date(input.expires_at)
@@ -28,6 +32,9 @@ export function createRepository(database) {
   return {
     create(input) {
       const value = validate(input); const id = crypto.randomBytes(8).toString('base64url'); const now = new Date().toISOString()
+      // better-sqlite3 transactions are synchronous callbacks. This is useful
+      // here because the driver completes the whole write atomically before the
+      // handler returns; it is not the same as an async Promise transaction.
       const transaction = database.transaction(() => {
         database.prepare('INSERT INTO snippets (id, content, owner_id, visibility, language, expires_at, created_at, updated_at) VALUES (@id, @content, @ownerId, @visibility, @language, @expiresAt, @now, @now)').run({ id, content: value.content, ownerId: input.owner_id ?? null, ...value, now })
         const insertTag = database.prepare('INSERT INTO tags (snippet_id, tag) VALUES (?, ?)')

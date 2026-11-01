@@ -19,6 +19,9 @@ export class Post {
   }
 
   static draft(input: Record<string, unknown>): Post {
+    // The aggregate accepts a transport-shaped object only at this boundary.
+    // Once constructed, callers receive persistence data and events through
+    // named operations rather than mutating fields from a Prisma row.
     const title = typeof input.title === 'string' ? input.title.trim() : ''
     const body = typeof input.body === 'string' ? input.body : ''
     if (!title || !body) throw new InvalidPublicationStateError('title and body are required')

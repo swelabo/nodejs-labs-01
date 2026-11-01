@@ -97,6 +97,8 @@ Phase 7 — consolidation and acceptance audit.
   zero vulnerabilities at the high-severity threshold.
 - Added explicit SQL-injection, oversized-request, and concurrent-alias
   security tests to the direct application baselines.
+- Added explanatory comments at representative SQL, Prisma, port, TypeScript,
+  and domain boundaries; focused tests and typechecks remain green.
 - Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
   comparison chapters with Mermaid diagrams and exercises.
 - Added tooling, concurrency, Express security, accessibility, reflections,
