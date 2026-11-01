@@ -12,6 +12,7 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "docs:lint": "python3 docs/scripts/lint_docs.py docs --banned docs/assets/checklists/banned-words.txt --check-links",
+    "verify:apps": "node scripts/verify-apps.mjs",
     "test": "node --test simple-01/url-shortener/test/url-shortener.test.js simple-01/pastebin/test/pastebin.test.js simple-01/blog/test/blog.test.js"
   },
   "devDependencies": {

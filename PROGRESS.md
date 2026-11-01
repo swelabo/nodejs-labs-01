@@ -72,6 +72,8 @@ Phase 4 — `hexagonal-01` implementation.
 - `ddd-01/url-shortener` — passed typecheck and 5 tests.
 - `ddd-01/pastebin` — passed typecheck and 5 tests.
 - `ddd-01/blog` — passed typecheck and 6 tests.
+- `npm run verify:apps` — passed across all 18 application variants and their
+  TypeScript compiler checks.
 
 ## Known limitations
 
