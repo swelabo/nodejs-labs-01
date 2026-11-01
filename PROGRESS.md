@@ -115,6 +115,10 @@ Phase 7 — consolidation and acceptance audit.
   variant.
 - Added `npm run verify:start`, which starts and gracefully stops all eighteen
   servers on ephemeral ports successfully.
+- Isolated all Prisma-backed application tests in per-application
+  `data/test.db` files prepared from migrations under `NODE_ENV=test`; the full
+  application matrix and final structure, contract, dependency, startup, and
+  documentation gates pass.
 - Added published static pages and slug permalinks to the direct Blog slice,
   including an HTML route, API route, idempotent seed data, and a visibility test
   that shares the public publication boundary.
@@ -130,11 +134,16 @@ Phase 7 — consolidation and acceptance audit.
   remain documented follow-on scope.
 - Blog comments, moderation, feeds, sitemap generation, hierarchy checks, and a
   one-time challenge are now implemented and tested.
+- Direct Blog generic taxonomies, static-page management, and an editor status
+  dashboard are implemented and tested; media uploads remain intentionally out
+  of scope.
 - Blog administrator-only user-role management is implemented and tested.
 - Blog password hashing, session cookies, login, logout, and administrator user
   creation are implemented and tested.
-- The book currently contains the foundation, URL-shortener, Pastebin, and blog
-  chapters.
+- The book contains the platform foundation, application chapters, architecture
+  comparisons, security/testing/operations material, and expanded JavaScript,
+  Node.js, and Express chapters; the final audit still checks depth against the
+  complete prompt syllabus.
 - Dependency versions require review when the first application begins.
 
 ## Next action
