@@ -3,6 +3,9 @@ import test from 'node:test'
 import { Post } from '../src/domain/post.js'
 import { InvalidPublicationStateError, InvalidSlugError } from '../src/domain/errors.js'
 import { createTransactionBoundary } from '../src/application/transaction.js'
+import { PostFactory } from '../src/domain/factory.js'
+import { isPubliclyAvailable } from '../src/domain/publication-policy.js'
+import { toPublishingAuthor } from '../src/domain/contexts.js'
 
 test('Post aggregate enforces publication invariants', () => {
   assert.throws(() => Post.draft({ slug: 'Bad Slug', title: 'Title', body: 'body' }), InvalidSlugError)
@@ -27,4 +30,11 @@ test('application work is expressed through a transaction boundary', async () =>
   const boundary = createTransactionBoundary({ $transaction: async (work) => { calls += 1; return work() } })
   assert.equal(await boundary.run(async () => 'committed'), 'committed')
   assert.equal(calls, 1)
+})
+
+test('domain factory, policy, and context mapping keep vocabulary explicit', () => {
+  const post = PostFactory.create({ slug: 'factory', title: 'Factory', body: 'body' })
+  assert.equal(post.toPersistence().slug, 'factory')
+  assert.equal(isPubliclyAvailable('published', new Date('2026-01-01'), new Date('2026-02-01')), true)
+  assert.deepEqual(toPublishingAuthor({ subject: 'u1', label: 'Writer' }), { id: 'u1', displayName: 'Writer' })
 })

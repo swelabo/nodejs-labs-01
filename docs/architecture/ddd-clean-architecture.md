@@ -20,7 +20,10 @@ framework or database package; application code coordinates a workflow; outer
 adapters translate transport and persistence. This is a dependency direction,
 not a requirement to create one class per noun. A small URL shortener may need
 only a value object and a few validation functions, while the blog's publishing
-workflow justifies an aggregate and event vocabulary.
+workflow justifies an aggregate and event vocabulary. The example also names a
+factory, a publication policy service, a repository abstraction, and an
+Identity-to-Publishing anti-corruption mapping. These are useful only because
+the workflows have corresponding language; they are not folder-count goals.
 
 An aggregate is a consistency boundary. The caller changes it through methods
 that preserve invariants, then persists the resulting state in one transaction.

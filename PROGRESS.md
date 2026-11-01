@@ -92,6 +92,8 @@ Phase 7 — consolidation and acceptance audit.
 - Added a dedicated TypeScript comparison and an eighteen-entry application
   reflection matrix covering design, testing, performance, security, and
   evolution tradeoffs.
+- Extended the DDD Blog with a domain factory, publication policy service,
+  aggregate-oriented repository abstraction, and identity context mapping.
 - Added idempotent seed commands to all eighteen applications; the matrix now
   initializes, migrates, seeds, type-checks where applicable, and tests each
   variant.
