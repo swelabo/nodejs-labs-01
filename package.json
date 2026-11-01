@@ -15,6 +15,7 @@
     "verify:apps": "node scripts/verify-apps.mjs",
     "verify:contracts": "node scripts/verify-contracts.mjs",
     "verify:start": "node scripts/verify-start.mjs",
+    "verify:structure": "node scripts/verify-structure.mjs",
     "test": "node --test simple-01/url-shortener/test/url-shortener.test.js simple-01/pastebin/test/pastebin.test.js simple-01/blog/test/blog.test.js"
   },
   "devDependencies": {

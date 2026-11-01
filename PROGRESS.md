@@ -87,6 +87,10 @@ Phase 7 — consolidation and acceptance audit.
   the direct Blog session flow.
 - Corrected the direct URL shortener's anonymous-creation boundary so a missing
   identity cannot silently become the development user; added a regression test.
+- Added `.development/DECISIONS.md`, `.tool-versions`, and a CI workflow that
+  runs contracts, seeded applications, lifecycle, and documentation gates.
+- Added a structure verifier proving all eighteen local Makefiles and package
+  manifests expose the required lifecycle commands.
 - Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
   comparison chapters with Mermaid diagrams and exercises.
 - Added tooling, concurrency, Express security, accessibility, reflections,

@@ -1,0 +1,19 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: asdf-vm/actions/install@v3
+      - run: npm ci
+      - run: npm run verify:structure
+      - run: npm run verify:contracts
+      - run: npm run verify:apps
+      - run: npm run verify:start
+      - run: npm run docs:build
+      - run: npm run docs:lint
