@@ -11,6 +11,7 @@ Before a milestone is considered complete, run:
 
 ```sh
 npm run verify:apps
+npm run verify:start
 npm run docs:build
 npm run docs:lint
 ```

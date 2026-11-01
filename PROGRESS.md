@@ -90,6 +90,8 @@ Phase 7 — consolidation and acceptance audit.
 - Added idempotent seed commands to all eighteen applications; the matrix now
   initializes, migrates, seeds, type-checks where applicable, and tests each
   variant.
+- Added `npm run verify:start`, which starts and gracefully stops all eighteen
+  servers on ephemeral ports successfully.
 
 ## Known limitations
 

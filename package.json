@@ -14,6 +14,7 @@
     "docs:lint": "python3 docs/scripts/lint_docs.py docs --banned docs/assets/checklists/banned-words.txt --check-links",
     "verify:apps": "node scripts/verify-apps.mjs",
     "verify:contracts": "node scripts/verify-contracts.mjs",
+    "verify:start": "node scripts/verify-start.mjs",
     "test": "node --test simple-01/url-shortener/test/url-shortener.test.js simple-01/pastebin/test/pastebin.test.js simple-01/blog/test/blog.test.js"
   },
   "devDependencies": {
