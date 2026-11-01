@@ -47,11 +47,11 @@ post queries: drafts and future publications return a not-found response rather
 than leaking their existence. The browser route and `/api/v1/pages/:slug` use the
 same repository function, which keeps the HTML and API representations aligned.
 
-The direct variant currently treats the page route as the first incremental
-implementation of the broader blog specification. Archives, author pages, media
-management, and custom taxonomy administration remain explicit follow-on work;
-the comparison documents record this scope instead of implying that a first slice
-is a complete WordPress replacement.
+The direct variant now implements author pages, yearly/monthly archives, and
+category/tag discovery. Media management and arbitrary custom-taxonomy
+administration remain explicit follow-on scope; the comparison documents record
+that boundary instead of implying that a small teaching application is a
+complete WordPress replacement.
 
 Run the tests with:
 
