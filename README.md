@@ -11,10 +11,11 @@ variants:
 - a Pastebin-style snippet service; and
 - a traditional blog engine.
 
-The first milestone establishes the technical book, architecture-neutral
-specifications, development conventions, and reproducible tooling. The
-applications are added incrementally; empty future variants are deliberately
-not presented as finished work.
+The repository now contains eighteen independently runnable implementations,
+the canonical contracts, executable verification gates, and the VitePress
+book. Later variants intentionally document narrower feature slices where the
+architecture experiment would otherwise be obscured by duplicated product
+work.
 
 ## Start the book
 
@@ -44,6 +45,7 @@ for the version and compatibility record.
 
 ## Status
 
-Phase 0 is in progress. The foundation and first book chapters are available;
-the first implementation milestone is planned but not yet complete.
+Phase 7 consolidation is in progress. All six variant families, frontend
+assets, lifecycle checks, contracts, tests, and documentation builds are
+present; the remaining work is the final requirement-by-requirement audit.
 

@@ -45,8 +45,8 @@ Phase 7 — consolidation and acceptance audit.
 
 ## Verification
 
-- `npm install` — passed under Node 22.12.0 with an engine warning because the
-  project baseline is Node 26.13.0.
+- `npm install` and all application installs — passed under asdf-managed Node
+  26.13.0.
 - `npm run docs:build` — passed.
 - `npm run docs:lint` — passed.
 - `make test` — passed: 20 tests under Node.js 26.13.0.
@@ -125,16 +125,23 @@ Phase 7 — consolidation and acceptance audit.
 - Added published static pages and slug permalinks to the direct Blog slice,
   including an HTML route, API route, idempotent seed data, and a visibility test
   that shares the public publication boundary.
+- Added local EJS, HTMX, Alpine.js, and Tailwind frontend builds to all eighteen
+  applications, with live startup assertions for the rendered page and assets.
+- Added direct Pastebin account registration/login/logout, scrypt password
+  hashes, expiring sessions, CSRF checks, authenticated administration, and
+  escaped-before-token syntax highlighting.
+- Added direct Blog tag creation, protected site settings, post deletion, and
+  canonical public discovery aliases.
 
 ## Known limitations
 
 - The URL shortener still lacks real authentication and a distributed rate
   limiter.
-- Pastebin still lacks a browser dashboard, accounts, moderation, and syntax
-  highlighting output.
-- Blog first slice is implemented and verified; direct static-page permalinks are
-  now covered, while archive, author, media, and custom-taxonomy administration
-  remain documented follow-on scope.
+- Pastebin moderation remains intentionally outside the direct baseline; the
+  dashboard, accounts, sessions, CSRF, and safe highlighting are implemented.
+- Blog public archives, author pages, search, categories/tags, custom taxonomy
+  administration, and static-page management are implemented in the direct
+  reference; media uploads remain intentionally out of scope.
 - Blog comments, moderation, feeds, sitemap generation, hierarchy checks, and a
   one-time challenge are now implemented and tested.
 - Direct Blog generic taxonomies, static-page management, and an editor status
@@ -147,7 +154,8 @@ Phase 7 — consolidation and acceptance audit.
   comparisons, security/testing/operations material, and expanded JavaScript,
   Node.js, and Express chapters; the final audit still checks depth against the
   complete prompt syllabus.
-- Dependency versions require review when the first application begins.
+- Later Blog variants intentionally retain a smaller publication-focused slice;
+  the application matrix and each README record those deviations.
 
 ## Next action
 
