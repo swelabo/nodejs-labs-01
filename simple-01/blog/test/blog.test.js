@@ -83,10 +83,12 @@ test('supports hashed-password login and session-cookie administration', async (
   const created = await request(app).post('/api/v1/admin/users').set('x-user-id', 'admin').send({ id: 'session-admin', display_name: 'Session Admin', password: 'correct horse battery staple', role: 'administrator' })
   assert.equal(created.status, 201)
   const login = await request(app).post('/api/v1/auth/login').send({ user_id: 'session-admin', password: 'correct horse battery staple' })
-  assert.equal(login.status, 200); assert.match(login.headers['set-cookie'][0], /blog_session=/)
+  assert.equal(login.status, 200); assert.match(login.headers['set-cookie'][0], /blog_session=/); assert.match(login.headers['set-cookie'][1], /blog_csrf=/)
   const users = await request(app).get('/api/v1/admin/users').set('cookie', login.headers['set-cookie'])
   assert.equal(users.status, 200)
-  const logout = await request(app).post('/api/v1/auth/logout').set('cookie', login.headers['set-cookie'])
+  const csrfToken = login.headers['set-cookie'][1].split(';')[0].split('=')[1]
+  const denied = await request(app).post('/api/v1/auth/logout').set('cookie', login.headers['set-cookie']).set('x-csrf-token', 'wrong'); assert.equal(denied.status, 403)
+  const logout = await request(app).post('/api/v1/auth/logout').set('cookie', login.headers['set-cookie']).set('x-csrf-token', csrfToken)
   assert.equal(logout.status, 204)
 })
 

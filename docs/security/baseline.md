@@ -9,6 +9,7 @@ The applications treat security as a boundary property:
 - HTML output is escaped, while raw snippets use a plain-text content type;
 - JSON bodies and list sizes are bounded;
 - session cookies are HttpOnly and password material uses a password KDF;
+- the direct Blog's authenticated mutations require a double-submit CSRF token;
 - generated secrets and local credentials stay out of Git.
 
 These controls are deliberately educational rather than a production security

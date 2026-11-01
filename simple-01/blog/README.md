@@ -31,6 +31,9 @@ The baseline includes posts, roles, categories, tags, publication workflow,
 search, pagination, public rendering, comments pending moderation, feeds,
 sitemaps, one-time arithmetic challenges, hierarchy-cycle checks, and OpenAPI.
 The development baseline also includes administrator-only user-role management.
-The `X-User-Id` identity remains a local teaching seam; account recovery, CSRF
-defenses, audit logging, and secure deployment configuration remain later work.
+The `X-User-Id` identity remains a local teaching seam. Password sessions use
+HttpOnly, SameSite cookies, and authenticated state-changing requests require a
+double-submit `X-CSRF-Token` paired with the `blog_csrf` cookie. Account
+recovery, audit logging, and secure deployment configuration remain out of
+scope.
 

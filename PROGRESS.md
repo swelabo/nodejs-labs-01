@@ -83,6 +83,8 @@ Phase 7 — consolidation and acceptance audit.
   contract-presence/path verifier.
 - Added blog domain events and an explicit transaction boundary with tests that
   document in-process event semantics and the absence of durable delivery.
+- Added and tested a double-submit CSRF boundary for authenticated mutations in
+  the direct Blog session flow.
 
 ## Known limitations
 
