@@ -1,109 +1,168 @@
-.DEFAULT_GOAL := help
+SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c
+.ONESHELL:
+.DELETE_ON_ERROR:
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+MAKEFLAGS += --no-builtin-variables
+.DEFAULT_GOAL := help
 
 NPM ?= npm
 
-.PHONY: help install docs-dev docs-build docs-preview docs-lint test verify-apps verify-contracts verify-start verify-structure verify-dependencies simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck typescript-pastebin-test typescript-pastebin-typecheck typescript-blog-test typescript-blog-typecheck ddd-url-shortener-test ddd-pastebin-test ddd-blog-test clean
+##@ Documentation
 
-help: ## Show available foundation commands
-	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-
-install: ## Install the locked root documentation dependencies
-	$(NPM) install
-
+.PHONY: docs-dev
 docs-dev: ## Start the VitePress development server
 	$(NPM) run docs:dev
 
+.PHONY: docs-build
 docs-build: ## Build the static VitePress book
 	$(NPM) run docs:build
 
-docs-preview: ## Preview a production documentation build
+.PHONY: docs-preview
+docs-preview: ## Preview the production documentation build
 	$(NPM) run docs:preview
 
-docs-lint: ## Run the documentation quality checks
+.PHONY: docs-lint
+docs-lint: ## Run documentation quality and link checks
 	$(NPM) run docs:lint
 
-test: ## Run the root test suite
+##@ Verification
+
+.PHONY: test
+test: ## Run the root smoke-test suite
 	$(NPM) test
 
-verify-apps: ## Verify every application variant
+.PHONY: verify-apps
+verify-apps: ## Run setup and tests for all 18 applications
 	$(NPM) run verify:apps
 
-verify-contracts: ## Verify OpenAPI contracts exist for every variant
+.PHONY: verify-contracts
+verify-contracts: ## Verify OpenAPI metadata and implemented routes
 	$(NPM) run verify:contracts
 
-verify-start: ## Start and gracefully stop every application
+.PHONY: verify-start
+verify-start: ## Start and gracefully stop all applications
 	$(NPM) run verify:start
 
-verify-structure: ## Verify local application manifests and Makefiles
+.PHONY: verify-structure
+verify-structure: ## Verify application lifecycle and frontend structure
 	$(NPM) run verify:structure
 
-verify-dependencies: ## Audit runtime dependencies across all variants
+.PHONY: verify-dependencies
+verify-dependencies: ## Audit runtime dependencies in every application
 	$(NPM) run verify:dependencies
 
-simple-url-shortener-test: ## Run the first application test suite
-	$(MAKE) -C simple-01/url-shortener test
+.PHONY: check
+check: verify-apps verify-contracts verify-structure verify-start verify-dependencies docs-build docs-lint ## Run the complete project verification
 
-pastebin-test: ## Run the Pastebin application test suite
-	$(MAKE) -C simple-01/pastebin test
+.PHONY: build
+build: docs-build ## Build the documentation artifact
 
-blog-test: ## Run the blog application test suite
-	$(MAKE) -C simple-01/blog test
+.PHONY: all
+all: check ## Run the complete verification target
 
-prisma-url-shortener-test: ## Run the Prisma URL-shortener test suite
-	$(MAKE) -C prisma-01/url-shortener test
+##@ Installation
 
-prisma-pastebin-test: ## Run the Prisma Pastebin test suite
-	$(MAKE) -C prisma-01/pastebin test
+.PHONY: install
+install: ## Install locked root documentation dependencies
+	$(NPM) ci
 
-prisma-blog-test: ## Run the Prisma blog test suite
-	$(MAKE) -C prisma-01/blog test
+##@ Focused application tests
 
-usecases-url-shortener-test: ## Run the use-case URL-shortener test suite
-	$(MAKE) -C usecases-01/url-shortener test
+.PHONY: simple-url-shortener-test
+simple-url-shortener-test: ## Test the direct URL shortener
+	$(NPM) test --prefix simple-01/url-shortener
 
-usecases-pastebin-test: ## Run the use-case Pastebin test suite
-	$(MAKE) -C usecases-01/pastebin test
+.PHONY: pastebin-test
+pastebin-test: ## Test the direct Pastebin
+	$(NPM) test --prefix simple-01/pastebin
 
-usecases-blog-test: ## Run the use-case blog test suite
-	$(MAKE) -C usecases-01/blog test
+.PHONY: blog-test
+blog-test: ## Test the direct Blog
+	$(NPM) test --prefix simple-01/blog
 
-hexagonal-url-shortener-test: ## Run the hexagonal URL-shortener test suite
-	$(MAKE) -C hexagonal-01/url-shortener test
+.PHONY: prisma-url-shortener-test
+prisma-url-shortener-test: ## Test the Prisma URL shortener
+	$(NPM) test --prefix prisma-01/url-shortener
 
-hexagonal-pastebin-test: ## Run the hexagonal Pastebin test suite
-	$(MAKE) -C hexagonal-01/pastebin test
+.PHONY: prisma-pastebin-test
+prisma-pastebin-test: ## Test the Prisma Pastebin
+	$(NPM) test --prefix prisma-01/pastebin
 
-hexagonal-blog-test: ## Run the hexagonal blog test suite
-	$(MAKE) -C hexagonal-01/blog test
+.PHONY: prisma-blog-test
+prisma-blog-test: ## Test the Prisma Blog
+	$(NPM) test --prefix prisma-01/blog
 
-typescript-url-shortener-test: ## Run the TypeScript URL-shortener test suite
-	$(MAKE) -C typescript-01/url-shortener test
+.PHONY: usecases-url-shortener-test
+usecases-url-shortener-test: ## Test the use-case URL shortener
+	$(NPM) test --prefix usecases-01/url-shortener
 
-typescript-url-shortener-typecheck: ## Type-check the TypeScript URL-shortener
-	$(MAKE) -C typescript-01/url-shortener typecheck
+.PHONY: usecases-pastebin-test
+usecases-pastebin-test: ## Test the use-case Pastebin
+	$(NPM) test --prefix usecases-01/pastebin
 
-typescript-pastebin-test: ## Run the TypeScript Pastebin test suite
-	$(MAKE) -C typescript-01/pastebin test
+.PHONY: usecases-blog-test
+usecases-blog-test: ## Test the use-case Blog
+	$(NPM) test --prefix usecases-01/blog
 
+.PHONY: hexagonal-url-shortener-test
+hexagonal-url-shortener-test: ## Test the hexagonal URL shortener
+	$(NPM) test --prefix hexagonal-01/url-shortener
+
+.PHONY: hexagonal-pastebin-test
+hexagonal-pastebin-test: ## Test the hexagonal Pastebin
+	$(NPM) test --prefix hexagonal-01/pastebin
+
+.PHONY: hexagonal-blog-test
+hexagonal-blog-test: ## Test the hexagonal Blog
+	$(NPM) test --prefix hexagonal-01/blog
+
+.PHONY: typescript-url-shortener-test
+typescript-url-shortener-test: ## Test the TypeScript URL shortener
+	$(NPM) test --prefix typescript-01/url-shortener
+
+.PHONY: typescript-url-shortener-typecheck
+typescript-url-shortener-typecheck: ## Type-check the TypeScript URL shortener
+	$(NPM) run typecheck --prefix typescript-01/url-shortener
+
+.PHONY: typescript-pastebin-test
+typescript-pastebin-test: ## Test the TypeScript Pastebin
+	$(NPM) test --prefix typescript-01/pastebin
+
+.PHONY: typescript-pastebin-typecheck
 typescript-pastebin-typecheck: ## Type-check the TypeScript Pastebin
-	$(MAKE) -C typescript-01/pastebin typecheck
+	$(NPM) run typecheck --prefix typescript-01/pastebin
 
-typescript-blog-test: ## Run the TypeScript blog test suite
-	$(MAKE) -C typescript-01/blog test
+.PHONY: typescript-blog-test
+typescript-blog-test: ## Test the TypeScript Blog
+	$(NPM) test --prefix typescript-01/blog
 
-typescript-blog-typecheck: ## Type-check the TypeScript blog
-	$(MAKE) -C typescript-01/blog typecheck
+.PHONY: typescript-blog-typecheck
+typescript-blog-typecheck: ## Type-check the TypeScript Blog
+	$(NPM) run typecheck --prefix typescript-01/blog
 
-ddd-url-shortener-test: ## Run the DDD URL-shortener tests
-	$(MAKE) -C ddd-01/url-shortener test
+.PHONY: ddd-url-shortener-test
+ddd-url-shortener-test: ## Test the DDD URL shortener
+	$(NPM) test --prefix ddd-01/url-shortener
 
-ddd-pastebin-test: ## Run the DDD Pastebin tests
-	$(MAKE) -C ddd-01/pastebin test
+.PHONY: ddd-pastebin-test
+ddd-pastebin-test: ## Test the DDD Pastebin
+	$(NPM) test --prefix ddd-01/pastebin
 
-ddd-blog-test: ## Run the DDD blog tests
-	$(MAKE) -C ddd-01/blog test
+.PHONY: ddd-blog-test
+ddd-blog-test: ## Test the DDD Blog
+	$(NPM) test --prefix ddd-01/blog
 
-clean: ## Remove generated documentation output
+##@ Maintenance
+
+.PHONY: clean
+clean: ## Remove generated VitePress output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist
 
+.PHONY: help
+help: ## Show this help
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} \
+		/^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } \
+		/^[a-zA-Z0-9_.-]+:.*##/ { printf "  \033[36m%-28s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+	@echo

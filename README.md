@@ -20,16 +20,19 @@ work.
 ## Start the book
 
 ```sh
-npm install
-npm run docs:dev
+make install
+make docs-dev
 ```
 
 Build and inspect the static site with:
 
 ```sh
-npm run docs:build
-npm run docs:preview
+make docs-build
+make docs-preview
 ```
+
+Run `make help` to see the documentation, verification, and focused application
+test targets. `make check` runs the complete project gate.
 
 The current runtime baseline is Node.js 26.13.0. See
 [`docs/research/technology-decisions.md`](docs/research/technology-decisions.md)
@@ -45,7 +48,7 @@ for the version and compatibility record.
 
 ## Status
 
-Phase 7 consolidation is in progress. All six variant families, frontend
-assets, lifecycle checks, contracts, tests, and documentation builds are
-present; the remaining work is the final requirement-by-requirement audit.
+The six variant families, frontend assets, lifecycle checks, contracts, tests,
+and documentation gates are implemented and verified. Intentional feature
+boundaries in later variants are recorded in the application matrix.
 
