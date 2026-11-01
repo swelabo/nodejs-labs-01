@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-architecture-labs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An executable architecture laboratory for experienced Python and Go developers learning Node.js.",
+  "type": "module",
+  "engines": {
+    "node": ">=26.13.0"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "docs:lint": "python3 docs/scripts/lint_docs.py docs --banned docs/assets/checklists/banned-words.txt --check-links",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "vitepress": "1.6.4"
+  }
+}
+

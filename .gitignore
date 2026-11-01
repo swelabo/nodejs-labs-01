@@ -1,0 +1,12 @@
+.development/
+node_modules/
+dist/
+.vitepress/cache/
+.vitepress/dist/
+*.db
+*.db-shm
+*.db-wal
+.env
+.env.*
+!.env.example
+
