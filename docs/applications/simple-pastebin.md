@@ -34,7 +34,8 @@ non-disclosure, owner authorization, tag validation, search, and OpenAPI paths.
 make -C simple-01/pastebin test
 ```
 
-The current slice does not include accounts, moderation, syntax-highlighting
-output, or a browser dashboard. Those features would add policy and rendering
-surfaces that deserve their own tests.
+The current slice includes scrypt-backed accounts, expiring HttpOnly sessions,
+CSRF-protected mutations, a small authenticated administration listing, safe
+JavaScript/TypeScript keyword highlighting, and an EJS browser dashboard. Full
+moderation remains a deliberately separate extension with its own policy tests.
 

@@ -16,6 +16,10 @@ paths:
     get: {summary: List hierarchical categories, responses: {'200': {description: Categories}}}
   /api/v1/tags:
     get: {summary: List tags, responses: {'200': {description: Tags}}}
+    post: {summary: Create a tag, security: [{DevelopmentUser: []}], responses: {'201': {description: Tag}, '403': {description: Forbidden}}}
+  /api/v1/site-config:
+    get: {summary: Read site configuration, security: [{DevelopmentUser: []}], responses: {'200': {description: Configuration}, '403': {description: Forbidden}}}
+    patch: {summary: Update site configuration, security: [{DevelopmentUser: []}], responses: {'200': {description: Configuration}, '403': {description: Forbidden}}}
   /api/v1/taxonomies:
     get: {summary: List custom taxonomies, responses: {'200': {description: Taxonomies}}}
     post: {summary: Create a custom taxonomy, security: [{DevelopmentUser: []}], responses: {'201': {description: Taxonomy}, '403': {description: Forbidden}}}
@@ -57,6 +61,7 @@ paths:
   /api/v1/posts/{id}:
     parameters: [{in: path, name: id, required: true, schema: {type: integer}}]
     patch: {summary: Edit a post, security: [{DevelopmentUser: []}], responses: {'200': {description: Updated}, '403': {description: Forbidden}, '404': {description: Not found}}}
+    delete: {summary: Delete a post, security: [{DevelopmentUser: []}], responses: {'204': {description: Deleted}, '403': {description: Forbidden}, '404': {description: Not found}}}
   /api/v1/posts/{slug}/comments/challenge:
     parameters: [{'$ref': '#/components/parameters/Slug'}]
     get: {summary: Issue a short-lived one-time comment challenge, responses: {'200': {description: Challenge}}}

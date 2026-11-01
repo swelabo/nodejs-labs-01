@@ -128,6 +128,16 @@ test('provides administrator-only user management', async () => {
   assert.equal(changed.status, 200); assert.equal(changed.body.data.role, 'administrator')
 })
 
+test('supports tag and site configuration administration plus deletion', async () => {
+  const tag = await request(app).post('/api/v1/tags').set('x-user-id', 'editor').send({ slug: 'release', name: 'Release' })
+  assert.equal(tag.status, 201)
+  assert.equal((await request(app).get('/api/v1/site-config').set('x-user-id', 'editor')).status, 403)
+  const setting = await request(app).patch('/api/v1/site-config').set('x-user-id', 'admin').send({ site_name: 'Lab Blog', theme: 'compact' })
+  assert.equal(setting.status, 200); assert.equal(setting.body.data.theme, 'compact')
+  const post = await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'deletable', title: 'Delete me', body: 'body' })
+  assert.equal((await request(app).delete(`/api/v1/posts/${post.body.data.id}`).set('x-user-id', 'editor')).status, 204)
+})
+
 test('supports hashed-password login and session-cookie administration', async () => {
   const created = await request(app).post('/api/v1/admin/users').set('x-user-id', 'admin').send({ id: 'session-admin', display_name: 'Session Admin', password: 'correct horse battery staple', role: 'administrator' })
   assert.equal(created.status, 201)

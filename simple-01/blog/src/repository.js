@@ -110,6 +110,10 @@ export function createRepository(database) {
       const current = postRow(id); if (!current) throw new NotFoundError(); if (current.author_id !== userId && role !== 'administrator') throw new ForbiddenError(); if (!canManage(role)) throw new ForbiddenError()
       const post = input({ ...current, ...value }); const now = new Date().toISOString(); database.prepare('UPDATE posts SET slug = @slug, title = @title, body = @body, status = @status, publish_at = @publishAt, updated_at = @now WHERE id = @id').run({ ...post, id, now }); return get(id)
     },
+    remove(id, userId, role) {
+      const current = postRow(id); if (!current) throw new NotFoundError(); if (current.author_id !== userId && role !== 'administrator') throw new ForbiddenError(); if (!canManage(role)) throw new ForbiddenError()
+      database.prepare('DELETE FROM posts WHERE id = ?').run(id); return { id: Number(id), deleted: true }
+    },
     seedTaxonomy() {
       database.prepare('INSERT OR IGNORE INTO categories (slug, name) VALUES (?, ?)').run('engineering', 'Engineering')
       database.prepare('INSERT OR IGNORE INTO tags (slug, name) VALUES (?, ?)').run('nodejs', 'Node.js')
@@ -131,6 +135,16 @@ export function createRepository(database) {
       if (!canManage(role)) throw new ForbiddenError(); if (typeof value.slug !== 'string' || !/^[a-z0-9-]{1,128}$/.test(value.slug) || typeof value.name !== 'string' || !value.name.trim()) throw new ValidationError('category fields are invalid')
       if (value.parent_id != null) { let current = Number(value.parent_id); const seen = new Set(); while (current) { if (seen.has(current)) throw new ValidationError('category hierarchy contains a cycle'); seen.add(current); current = database.prepare('SELECT parent_id FROM categories WHERE id = ?').get(current)?.parent_id ?? 0 } }
       const result = database.prepare('INSERT INTO categories (slug, name, parent_id) VALUES (?, ?, ?)').run(value.slug, value.name, value.parent_id ?? null); return database.prepare('SELECT * FROM categories WHERE id = ?').get(result.lastInsertRowid)
+    },
+    createTag(role, value) {
+      if (!canManage(role) || typeof value.slug !== 'string' || !/^[a-z0-9-]{1,128}$/.test(value.slug) || typeof value.name !== 'string' || !value.name.trim()) throw new ValidationError('tag fields are invalid')
+      try { const result = database.prepare('INSERT INTO tags (slug, name) VALUES (?, ?)').run(value.slug, value.name.trim()); return database.prepare('SELECT * FROM tags WHERE id = ?').get(result.lastInsertRowid) } catch (error) { if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') throw new ValidationError('tag slug is already in use'); throw error }
+    },
+    siteConfig(role) { if (role !== 'administrator') throw new ForbiddenError(); return Object.fromEntries(database.prepare('SELECT key, value FROM site_settings ORDER BY key').all().map((row) => [row.key, row.value])) },
+    updateSiteConfig(role, values) {
+      if (role !== 'administrator' || !values || typeof values !== 'object') throw new ForbiddenError()
+      const allowed = new Set(['site_name', 'site_description', 'theme']); const transaction = database.transaction(() => { for (const [key, value] of Object.entries(values)) { if (!allowed.has(key) || typeof value !== 'string' || value.length > 500) throw new ValidationError('invalid site setting'); database.prepare('INSERT INTO site_settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(key, value) } })
+      transaction(); return this.siteConfig(role)
     },
     listUsers(role) { if (role !== 'administrator') throw new ForbiddenError(); return database.prepare('SELECT id, slug, display_name, role FROM users ORDER BY id').all() },
     updateUserRole(role, id, newRole) {

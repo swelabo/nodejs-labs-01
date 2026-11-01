@@ -86,6 +86,11 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE INDEX IF NOT EXISTS comments_post_status ON comments(post_id, status, created_at);
 
+CREATE TABLE IF NOT EXISTS site_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS taxonomies (
   id INTEGER PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
