@@ -20,6 +20,8 @@ Phase 2 — `prisma-01/url-shortener` first slice.
   escaped rendering, and OpenAPI tests.
 - Started `prisma-01/url-shortener` with Prisma 7.10.1, migration, JavaScript
   client generation, API tests, and comparison documentation.
+- Implemented `prisma-01/pastebin` with Prisma 7.10.1, migration, visibility,
+  raw text, tags, search, ownership, and tests.
 
 ## Verification
 
@@ -33,6 +35,7 @@ Phase 2 — `prisma-01/url-shortener` first slice.
   redirect smoke test — passed.
 - `make pastebin-test` — passed: 5 tests under Node.js 26.13.0.
 - `make prisma-url-shortener-test` — passed: 2 tests under Node.js 26.13.0.
+- `make prisma-pastebin-test` — passed: 2 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -52,5 +55,5 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 
 ## Next action
 
-Implement `prisma-01/pastebin` with the direct baseline's visibility contract.
+Implement `prisma-01/blog` with the direct baseline's publication contract.
 

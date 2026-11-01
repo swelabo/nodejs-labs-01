@@ -38,6 +38,9 @@ blog-test: ## Run the blog application test suite
 prisma-url-shortener-test: ## Run the Prisma URL-shortener test suite
 	$(MAKE) -C prisma-01/url-shortener test
 
+prisma-pastebin-test: ## Run the Prisma Pastebin test suite
+	$(MAKE) -C prisma-01/pastebin test
+
 clean: ## Remove generated documentation output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist
 

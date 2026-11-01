@@ -28,7 +28,7 @@ Reimplement the same applications with Prisma while preserving observable
 behavior and comparing ORM queries with raw SQL.
 
 - [x] URL shortener: Prisma schema, migration, JavaScript client, tests.
-- [ ] Pastebin.
+- [x] Pastebin: Prisma schema, migration, JavaScript client, tests.
 - [ ] Blog.
 
 ## Phase 3 — `usecases-01`

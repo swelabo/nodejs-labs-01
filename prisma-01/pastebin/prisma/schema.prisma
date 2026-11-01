@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+model Snippet {
+  id String @id
+  content String
+  ownerId String?
+  visibility String @default("public")
+  language String @default("text")
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tags SnippetTag[]
+}
+model SnippetTag {
+  snippetId String
+  tag String
+  snippet Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  @@id([snippetId, tag])
+  @@index([tag])
+}
+
