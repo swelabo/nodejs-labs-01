@@ -29,7 +29,7 @@ behavior and comparing ORM queries with raw SQL.
 
 - [x] URL shortener: Prisma schema, migration, JavaScript client, tests.
 - [x] Pastebin: Prisma schema, migration, JavaScript client, tests.
-- [ ] Blog.
+- [x] Blog: Prisma schema, migration, JavaScript client, tests.
 
 ## Phase 3 — `usecases-01`
 
