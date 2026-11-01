@@ -3,7 +3,7 @@
 
 NPM ?= npm
 
-.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test clean
+.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test clean
 
 help: ## Show available foundation commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -55,6 +55,12 @@ usecases-blog-test: ## Run the use-case blog test suite
 
 hexagonal-url-shortener-test: ## Run the hexagonal URL-shortener test suite
 	$(MAKE) -C hexagonal-01/url-shortener test
+
+hexagonal-pastebin-test: ## Run the hexagonal Pastebin test suite
+	$(MAKE) -C hexagonal-01/pastebin test
+
+hexagonal-blog-test: ## Run the hexagonal blog test suite
+	$(MAKE) -C hexagonal-01/blog test
 
 clean: ## Remove generated documentation output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist

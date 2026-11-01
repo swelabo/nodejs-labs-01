@@ -2,7 +2,7 @@
 
 ## Current milestone
 
-Phase 2 — `prisma-01/url-shortener` first slice.
+Phase 4 — `hexagonal-01` implementation.
 
 ## Completed
 
@@ -31,6 +31,8 @@ Phase 2 — `prisma-01/url-shortener` first slice.
   tests.
 - Started `hexagonal-01/url-shortener` with a validated port, Prisma adapter,
   composition root, and in-memory port test.
+- Implemented `hexagonal-01/pastebin` and `hexagonal-01/blog` with validated
+  ports, Prisma adapters, composition roots, and in-memory port tests.
 
 ## Verification
 
@@ -50,6 +52,8 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 - `usecases-01/pastebin` — passed: 3 tests.
 - `usecases-01/blog` — passed: 3 tests.
 - `make hexagonal-url-shortener-test` — passed: 4 tests under Node.js 26.13.0.
+- `make hexagonal-pastebin-test` — passed: 4 tests under Node.js 26.13.0.
+- `make hexagonal-blog-test` — passed: 4 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -69,6 +73,6 @@ Phase 2 — `prisma-01/url-shortener` first slice.
 
 ## Next action
 
-Implement `hexagonal-01/pastebin` and `hexagonal-01/blog` with the same port and
-adapter boundary.
+Begin the TypeScript migration with `typescript-01/url-shortener`, preserving
+the hexagonal port boundary.
 

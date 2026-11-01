@@ -44,8 +44,8 @@ Separate application operations from HTTP delivery with explicit use cases.
 Introduce ports, adapters, dependency inversion, and composition roots.
 
 - [x] URL shortener: link port, Prisma adapter, composition root, tests.
-- [ ] Pastebin.
-- [ ] Blog.
+- [x] Pastebin: snippet port, Prisma adapter, composition root, tests.
+- [x] Blog: post port, Prisma adapter, composition root, tests.
 
 ## Phase 5 — `typescript-01`
 
