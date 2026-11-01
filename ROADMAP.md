@@ -47,10 +47,14 @@ Introduce ports, adapters, dependency inversion, and composition roots.
 - [x] Pastebin: snippet port, Prisma adapter, composition root, tests.
 - [x] Blog: post port, Prisma adapter, composition root, tests.
 
-## Phase 5 — `typescript-01`
+## Phase 5 — `typescript-01` (in progress)
 
 Migrate the hexagonal implementation to TypeScript and teach meaningful static
 contracts.
+
+- [x] URL shortener: typed port/use-case contracts, `tsx` tests, and typecheck.
+- [ ] Pastebin.
+- [ ] Blog.
 
 ## Phase 6 — `ddd-01`
 

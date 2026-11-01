@@ -3,7 +3,7 @@
 
 NPM ?= npm
 
-.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test clean
+.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck clean
 
 help: ## Show available foundation commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -61,6 +61,12 @@ hexagonal-pastebin-test: ## Run the hexagonal Pastebin test suite
 
 hexagonal-blog-test: ## Run the hexagonal blog test suite
 	$(MAKE) -C hexagonal-01/blog test
+
+typescript-url-shortener-test: ## Run the TypeScript URL-shortener test suite
+	$(MAKE) -C typescript-01/url-shortener test
+
+typescript-url-shortener-typecheck: ## Type-check the TypeScript URL-shortener
+	$(MAKE) -C typescript-01/url-shortener typecheck
 
 clean: ## Remove generated documentation output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist

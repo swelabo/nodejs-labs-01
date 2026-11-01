@@ -33,6 +33,8 @@ Phase 4 — `hexagonal-01` implementation.
   composition root, and in-memory port test.
 - Implemented `hexagonal-01/pastebin` and `hexagonal-01/blog` with validated
   ports, Prisma adapters, composition roots, and in-memory port tests.
+- Started `typescript-01/url-shortener` with typed port/use-case contracts,
+  `tsx` execution, and a passing TypeScript compiler check.
 
 ## Verification
 
@@ -54,6 +56,8 @@ Phase 4 — `hexagonal-01` implementation.
 - `make hexagonal-url-shortener-test` — passed: 4 tests under Node.js 26.13.0.
 - `make hexagonal-pastebin-test` — passed: 4 tests under Node.js 26.13.0.
 - `make hexagonal-blog-test` — passed: 4 tests under Node.js 26.13.0.
+- `make typescript-url-shortener-typecheck` — passed under Node.js 26.13.0.
+- `make typescript-url-shortener-test` — passed: 4 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -73,6 +77,6 @@ Phase 4 — `hexagonal-01` implementation.
 
 ## Next action
 
-Begin the TypeScript migration with `typescript-01/url-shortener`, preserving
-the hexagonal port boundary.
+Continue the TypeScript migration with Pastebin and Blog, preserving their
+hexagonal port boundaries.
 
