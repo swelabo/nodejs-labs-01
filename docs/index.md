@@ -25,6 +25,7 @@ idea. Tests and reflections make the tradeoffs visible.
 
 ## Project status
 
-The foundation milestone is in progress. Application code is added only after
-its contract, test strategy, and teaching material are ready.
+The six-variant application matrix is executable. The remaining consolidation
+work expands the book, contract checks, and cross-variant reflections without
+changing the verified application behavior.
 

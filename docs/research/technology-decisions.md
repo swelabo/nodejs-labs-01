@@ -14,7 +14,7 @@ variants must re-check compatibility before adding their own dependencies.
 | npm | shipped with Node.js | Root package manager and lockfile format for the foundation. |
 | VitePress | 1.6.4 | Current stable npm release; VitePress requires Node.js 22+. |
 | Express | 5.3.0 | Current stable Express 5 line for the first application milestone. |
-| TypeScript | 7.0.2 | Current package release; introduced only in `typescript-01`. |
+| TypeScript | 5.9.3 | Pinned compiler used by the TypeScript and DDD variants; introduced only after the JavaScript variants. |
 | Prisma | 7.10.1 | Stable Prisma 7 line; Prisma 8 is a release candidate and its SQLite extension is experimental. |
 | SQLite | system/library integration | Small, inspectable relational database suitable for local architectural experiments. |
 

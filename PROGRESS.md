@@ -74,6 +74,9 @@ Phase 4 — `hexagonal-01` implementation.
 - `ddd-01/blog` — passed typecheck and 6 tests.
 - `npm run verify:apps` — passed across all 18 application variants and their
   TypeScript compiler checks.
+- Expanded the VitePress book with executable chapters for modules, async
+  programming, Node testing, Express, SQLite, TypeScript contracts,
+  server-driven frontend work, verification, and operations.
 
 ## Known limitations
 
@@ -93,6 +96,6 @@ Phase 4 — `hexagonal-01` implementation.
 
 ## Next action
 
-Extend `ddd-01` with transaction boundaries, domain events, and cross-variant
-architectural comparisons.
+Extend `ddd-01` with transaction boundaries and domain events, then complete
+cross-variant architectural comparisons and remaining book chapters.
 

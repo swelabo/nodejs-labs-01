@@ -17,10 +17,28 @@ export default defineConfig({
         { text: 'Introduction', items: [{ text: 'Curriculum', link: '/introduction/curriculum' }, { text: 'Development environment', link: '/introduction/development-environment' }] },
       ],
       '/javascript/': [
-        { text: 'JavaScript', items: [{ text: 'Execution model', link: '/javascript/execution-model' }] },
+        { text: 'JavaScript', items: [{ text: 'Execution model', link: '/javascript/execution-model' }, { text: 'Modules', link: '/javascript/modules' }, { text: 'Async programming', link: '/javascript/async' }] },
       ],
       '/nodejs/': [
-        { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }] },
+        { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }, { text: 'Testing', link: '/nodejs/testing' }] },
+      ],
+      '/express/': [
+        { text: 'Express', items: [{ text: 'Fundamentals', link: '/express/fundamentals' }] },
+      ],
+      '/sqlite/': [
+        { text: 'SQLite', items: [{ text: 'Persistence', link: '/sqlite/persistence' }] },
+      ],
+      '/typescript/': [
+        { text: 'TypeScript', items: [{ text: 'Contracts', link: '/typescript/contracts' }] },
+      ],
+      '/frontend/': [
+        { text: 'Frontend', items: [{ text: 'Server-driven UI', link: '/frontend/server-driven' }] },
+      ],
+      '/testing/': [
+        { text: 'Testing', items: [{ text: 'Verification', link: '/testing/verification' }] },
+      ],
+      '/operations/': [
+        { text: 'Operations', items: [{ text: 'Local runbook', link: '/operations/runbook' }] },
       ],
       '/architecture/': [
         { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }, { text: 'Prisma comparison', link: '/architecture/prisma-comparison' }, { text: 'Use-case comparison', link: '/architecture/usecases-comparison' }, { text: 'Hexagonal comparison', link: '/architecture/hexagonal-comparison' }, { text: 'DDD comparison', link: '/architecture/ddd-comparison' }] },
