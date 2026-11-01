@@ -32,6 +32,11 @@ comments, authentication, and administrator-only site configuration. Exact
 schemas are versioned with each implementation and must preserve publication
 and authorization semantics.
 
+The direct reference also implements a deliberately bounded media scope: an
+administrator may upload PNG, JPEG, GIF, or WebP bytes up to 5 MiB using the
+raw binary API, then serve or delete them. Filesystem storage and arbitrary
+document formats remain outside this curriculum.
+
 ## Required tests
 
 - drafts and scheduled posts are not publicly visible early;

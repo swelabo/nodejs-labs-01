@@ -91,6 +91,15 @@ CREATE TABLE IF NOT EXISTS site_settings (
   value TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS media (
+  id INTEGER PRIMARY KEY,
+  filename TEXT NOT NULL,
+  media_type TEXT NOT NULL,
+  bytes BLOB NOT NULL,
+  uploaded_by TEXT NOT NULL REFERENCES users(id),
+  created_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS taxonomies (
   id INTEGER PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,

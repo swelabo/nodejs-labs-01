@@ -22,8 +22,9 @@ parameterized SQL, SQLite, EJS, HTMX, Alpine.js, and Tailwind CSS.
 - [x] Blog comments, moderation, feeds, sitemap, hierarchy checks, and one-time challenge.
 - [x] Blog accounts, password hashing, sessions, moderation, and challenge
   baseline.
-- [ ] Blog media uploads and the remaining administration surface; keep this
-  explicitly open until implemented and tested.
+- [x] Blog media uploads and the remaining administration surface; the direct
+  reference stores bounded, signature-checked image bytes in SQLite and tests
+  administrator authorization and deletion.
 
 ## Phase 2 — `prisma-01` (complete for the implemented baseline)
 

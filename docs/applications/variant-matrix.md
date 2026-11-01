@@ -35,7 +35,7 @@ teaching deviation, not an accidental claim of full parity.
 | Categories, tags, custom taxonomies | hierarchical category/tag and generic taxonomy/term checks tested | not carried forward yet |
 | Comments, moderation, challenge, feed, sitemap | tested | not carried forward yet |
 | Authentication and administration | session, CSRF, role/user tests | session/role slices vary by application; READMEs state the boundary |
-| Media uploads | intentionally out of scope | intentionally out of scope |
+| Media uploads | bounded image upload, signature checks, and admin deletion tested | intentionally out of scope |
 
 The matrix is part of the acceptance evidence: a route or OpenAPI file is not
 described as proof of a feature when the corresponding implementation and test

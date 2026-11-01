@@ -142,13 +142,13 @@ Phase 7 — consolidation and acceptance audit.
 - Pastebin moderation remains intentionally outside the direct baseline; the
   dashboard, accounts, sessions, CSRF, and safe highlighting are implemented.
 - Blog public archives, author pages, search, categories/tags, custom taxonomy
-  administration, and static-page management are implemented in the direct
-  reference; media uploads remain intentionally out of scope.
+  administration, static-page management, and bounded image media uploads are
+  implemented in the direct reference.
 - Blog comments, moderation, feeds, sitemap generation, hierarchy checks, and a
   one-time challenge are now implemented and tested.
-- Direct Blog generic taxonomies, static-page management, and an editor status
-  dashboard are implemented and tested; media uploads remain intentionally out
-  of scope.
+- Direct Blog generic taxonomies, static-page management, an editor status
+  dashboard, and signature-checked media administration are implemented and
+  tested.
 - Blog administrator-only user-role management is implemented and tested.
 - Blog password hashing, session cookies, login, logout, and administrator user
   creation are implemented and tested.
@@ -161,5 +161,6 @@ Phase 7 — consolidation and acceptance audit.
 
 ## Next action
 
-Complete the final contract, security, and acceptance audit.
+Maintain the focused later-variant scope and rerun the complete verification
+matrix when future curriculum changes are introduced.
 

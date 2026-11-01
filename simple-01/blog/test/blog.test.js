@@ -143,6 +143,19 @@ test('supports tag and site configuration administration plus deletion', async (
   assert.equal((await request(app).delete(`/api/v1/posts/${post.body.data.id}`).set('x-user-id', 'editor')).status, 204)
 })
 
+test('supports bounded, signature-checked administrator media uploads', async () => {
+  const png = Buffer.from('89504e470d0a1a0a00000000', 'hex')
+  const denied = await request(app).post('/api/v1/admin/media').set('x-user-id', 'author').set('x-filename', 'pixel.png').set('content-type', 'image/png').send(png)
+  assert.equal(denied.status, 403)
+  const uploaded = await request(app).post('/api/v1/admin/media').set('x-user-id', 'admin').set('x-filename', 'pixel.png').set('content-type', 'image/png').send(png)
+  assert.equal(uploaded.status, 201); assert.equal(uploaded.body.data.media_type, 'image/png')
+  const media = await request(app).get(`/media/${uploaded.body.data.id}`)
+  assert.equal(media.status, 200); assert.equal(media.headers['content-type'], 'image/png'); assert.deepEqual(media.body, png)
+  const invalid = await request(app).post('/api/v1/admin/media').set('x-user-id', 'admin').set('x-filename', '../unsafe.png').set('content-type', 'image/png').send(png)
+  assert.equal(invalid.status, 400)
+  assert.equal((await request(app).delete(`/api/v1/admin/media/${uploaded.body.data.id}`).set('x-user-id', 'admin')).status, 204)
+})
+
 test('supports hashed-password login and session-cookie administration', async () => {
   const created = await request(app).post('/api/v1/admin/users').set('x-user-id', 'admin').send({ id: 'session-admin', display_name: 'Session Admin', password: 'correct horse battery staple', role: 'administrator' })
   assert.equal(created.status, 201)

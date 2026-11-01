@@ -24,6 +24,13 @@ function published(row) { return row?.status === 'published' && (!row.publish_at
 function mapPost(row, categories, tags, comments = []) { return { id: row.id, slug: row.slug, title: row.title, body: row.body, author_id: row.author_id, author_name: row.author_name, status: row.status, publish_at: row.publish_at, created_at: row.created_at, updated_at: row.updated_at, categories, tags, comments } }
 function mapPage(row) { return { id: row.id, slug: row.slug, title: row.title, body: row.body, author_id: row.author_id, author_name: row.author_name, status: row.status, publish_at: row.publish_at, created_at: row.created_at, updated_at: row.updated_at } }
 function xml(value) { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;') }
+function mediaName(value) { if (typeof value !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(value) || value.includes('..')) throw new ValidationError('filename is invalid') ; return value }
+function validMedia(type, bytes) {
+  if (!Buffer.isBuffer(bytes) || bytes.length < 4 || bytes.length > 5 * 1024 * 1024) throw new ValidationError('media payload must be between 4 bytes and 5 MiB')
+  const signatures = { 'image/png': bytes.subarray(0, 8).equals(Buffer.from('89504e470d0a1a0a', 'hex')), 'image/jpeg': bytes.subarray(0, 3).equals(Buffer.from('ffd8ff', 'hex')), 'image/gif': bytes.subarray(0, 4).toString() === 'GIF8', 'image/webp': bytes.subarray(0, 4).toString() === 'RIFF' && bytes.subarray(8, 12).toString() === 'WEBP' }
+  if (!signatures[type]) throw new ValidationError('media type does not match the image signature')
+}
+function mapMedia(row) { return { id: row.id, filename: row.filename, media_type: row.media_type, bytes: row.bytes.length, uploaded_by: row.uploaded_by, created_at: row.created_at } }
 
 export function createRepository(database) {
   function postRow(idOrSlug, bySlug = false) {
@@ -146,6 +153,15 @@ export function createRepository(database) {
       const allowed = new Set(['site_name', 'site_description', 'theme']); const transaction = database.transaction(() => { for (const [key, value] of Object.entries(values)) { if (!allowed.has(key) || typeof value !== 'string' || value.length > 500) throw new ValidationError('invalid site setting'); database.prepare('INSERT INTO site_settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(key, value) } })
       transaction(); return this.siteConfig(role)
     },
+    uploadMedia(userId, role, filename, mediaType, bytes) {
+      if (!userId || !canManage(role)) throw new ForbiddenError()
+      const safeName = mediaName(filename); validMedia(mediaType, bytes); ensureUser(userId, role); const now = new Date().toISOString()
+      const result = database.prepare('INSERT INTO media (filename, media_type, bytes, uploaded_by, created_at) VALUES (?, ?, ?, ?, ?)').run(safeName, mediaType, bytes, userId, now)
+      return mapMedia(database.prepare('SELECT id, filename, media_type, bytes, uploaded_by, created_at FROM media WHERE id = ?').get(result.lastInsertRowid))
+    },
+    listMedia(role) { if (!canManage(role)) throw new ForbiddenError(); return database.prepare('SELECT id, filename, media_type, bytes, uploaded_by, created_at FROM media ORDER BY created_at DESC').all().map(mapMedia) },
+    getMedia(id) { const row = database.prepare('SELECT id, filename, media_type, bytes, uploaded_by, created_at FROM media WHERE id = ?').get(id); if (!row) throw new NotFoundError('Media not found'); return row },
+    deleteMedia(role, id) { if (!canManage(role)) throw new ForbiddenError(); const result = database.prepare('DELETE FROM media WHERE id = ?').run(id); if (!result.changes) throw new NotFoundError('Media not found') },
     listUsers(role) { if (role !== 'administrator') throw new ForbiddenError(); return database.prepare('SELECT id, slug, display_name, role FROM users ORDER BY id').all() },
     updateUserRole(role, id, newRole) {
       if (role !== 'administrator') throw new ForbiddenError()

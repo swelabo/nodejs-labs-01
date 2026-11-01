@@ -34,6 +34,9 @@ author and archive pages, an escaped editor dashboard, public rendering,
 comments pending moderation, feeds, sitemaps, one-time arithmetic challenges,
 hierarchy-cycle checks, and OpenAPI.
 The development baseline also includes administrator-only user-role management.
+It supports bounded administrator image uploads: PNG, JPEG, GIF, and WebP bytes
+are stored in SQLite after filename, size, MIME, and signature checks, and are
+served through a separate media URL.
 The `X-User-Id` identity remains a local teaching seam. Password sessions use
 HttpOnly, SameSite cookies, and authenticated state-changing requests require a
 double-submit `X-CSRF-Token` paired with the `blog_csrf` cookie. Account

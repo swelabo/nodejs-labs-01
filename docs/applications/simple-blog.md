@@ -12,9 +12,9 @@ Posts are created as drafts. A public query selects only posts whose status is
 to both collection queries and slug reads, so a scheduled post cannot leak
 through an individual URL while remaining absent from the homepage.
 
-The development identity uses `X-User-Id: dev-editor` as an editor seam. It is
-not authentication. A later implementation must replace that seam with a real
-identity and authorization boundary without weakening the publication invariant.
+The direct implementation also supports scrypt-backed accounts and expiring
+session cookies. `X-User-Id` remains an explicitly labeled local seam for
+architecture tests; it is not presented as production authentication.
 
 ## Why the blog is the capstone domain
 
@@ -47,12 +47,12 @@ post queries: drafts and future publications return a not-found response rather
 than leaking their existence. The browser route and `/api/v1/pages/:slug` use the
 same repository function, which keeps the HTML and API representations aligned.
 
-The direct variant now implements author pages, yearly/monthly archives, and
-category/tag discovery. Media management and arbitrary custom-taxonomy
-administration is also represented by a generic taxonomy/term API with scoped
-hierarchy validation. Media management remains explicit follow-on scope; the
-comparison documents record that boundary instead of implying that a small
-teaching application is a complete WordPress replacement.
+The direct variant now implements author pages, yearly/monthly archives,
+category/tag discovery, and bounded media management. Arbitrary custom-taxonomy
+administration is represented by a generic taxonomy/term API with scoped
+hierarchy validation. Media accepts only bounded, signature-checked image bytes
+and stores them in SQLite; it is not intended to imply a complete WordPress
+media library.
 
 Editors can create and publish pages through the API and use the escaped `/admin`
 dashboard to inspect post/page status. The dashboard uses the same development
