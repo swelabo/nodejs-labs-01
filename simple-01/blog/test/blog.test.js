@@ -52,6 +52,18 @@ test('publishes pages through HTML and API routes', async () => {
   assert.equal(api.body.data.slug, 'about')
 })
 
+test('supports author, archive, category, and tag discovery', async () => {
+  const created = await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'discoverable', title: 'Discoverable', body: 'body', status: 'published' })
+  assert.equal(created.status, 201)
+  assert.equal((await request(app).get('/authors/editor')).status, 200)
+  assert.match((await request(app).get(`/archives/${new Date().getUTCFullYear()}`)).text, /Discoverable/)
+  const category = await request(app).post('/api/v1/categories').set('x-user-id', 'editor').send({ slug: 'news', name: 'News' })
+  assert.equal(category.status, 201)
+  database.prepare('INSERT INTO tags (slug, name) VALUES (?, ?)').run('release', 'Release')
+  assert.equal((await request(app).get('/api/v1/categories')).body.data[0].slug, 'news')
+  assert.equal((await request(app).get('/api/v1/tags')).body.data[0].slug, 'release')
+})
+
 test('submits a one-time comment challenge and moderates the result', async () => {
   const post = await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'commented', title: 'Commented', body: 'body', status: 'published' })
   const challenge = await request(app).get('/api/v1/posts/commented/comments/challenge')

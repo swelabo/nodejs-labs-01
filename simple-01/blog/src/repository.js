@@ -47,14 +47,28 @@ export function createRepository(database) {
     get,
     publicBySlug(value) { const row = postRow(value, true); if (!published(row)) throw new NotFoundError(); return mapPublic(row) },
     publicPageBySlug(value) { const row = pageRow(value); if (!published(row)) throw new NotFoundError('Page not found'); return mapPage(row) },
-    list({ query = '', page = 1, pageSize = 20, tag, category }) {
+    list({ query = '', page = 1, pageSize = 20, tag, category, author, year, month }) {
       const size = Math.min(MAX_PAGE_SIZE, Math.max(1, Number.isInteger(pageSize) ? pageSize : 20)); const currentPage = Math.max(1, Number.isInteger(page) ? page : 1)
       const clauses = ["posts.status = 'published'", '(posts.publish_at IS NULL OR posts.publish_at <= @now)', '(posts.title LIKE @query OR posts.body LIKE @query)']; const parameters = { now: new Date().toISOString(), query: `%${query}%` }
       if (tag) { clauses.push('EXISTS (SELECT 1 FROM post_tags ptf JOIN tags tf ON tf.id = ptf.tag_id WHERE ptf.post_id = posts.id AND tf.slug = @tag)'); parameters.tag = tag }
       if (category) { clauses.push('EXISTS (SELECT 1 FROM post_categories pcf JOIN categories cf ON cf.id = pcf.category_id WHERE pcf.post_id = posts.id AND cf.slug = @category)'); parameters.category = category }
-      const where = clauses.join(' AND '); const rows = database.prepare(`SELECT posts.*, users.display_name AS author_name FROM posts JOIN users ON users.id = posts.author_id WHERE ${where} ORDER BY COALESCE(posts.publish_at, posts.created_at) DESC LIMIT @limit OFFSET @offset`).all({ ...parameters, limit: size, offset: (currentPage - 1) * size }); const total = database.prepare(`SELECT COUNT(*) AS count FROM posts WHERE ${where}`).get(parameters).count
+      if (author) { clauses.push('users.slug = @author'); parameters.author = author }
+      if (year) { clauses.push("strftime('%Y', COALESCE(posts.publish_at, posts.created_at)) = @year"); parameters.year = String(year).padStart(4, '0') }
+      if (month) { clauses.push("strftime('%m', COALESCE(posts.publish_at, posts.created_at)) = @month"); parameters.month = String(month).padStart(2, '0') }
+      const where = clauses.join(' AND '); const rows = database.prepare(`SELECT posts.*, users.display_name AS author_name FROM posts JOIN users ON users.id = posts.author_id WHERE ${where} ORDER BY COALESCE(posts.publish_at, posts.created_at) DESC LIMIT @limit OFFSET @offset`).all({ ...parameters, limit: size, offset: (currentPage - 1) * size }); const total = database.prepare(`SELECT COUNT(*) AS count FROM posts JOIN users ON users.id = posts.author_id WHERE ${where}`).get(parameters).count
       return { items: rows.map((row) => mapPost(row, taxonomy('categories', 'post_categories', row.id), taxonomy('tags', 'post_tags', row.id))), page: currentPage, page_size: size, total: Number(total) }
     },
+    authorBySlug(value) {
+      const user = database.prepare('SELECT id, slug, display_name FROM users WHERE slug = ?').get(value)
+      if (!user) throw new NotFoundError('Author not found')
+      return { ...user, posts: this.list({ author: value }).items }
+    },
+    archive(year, month) {
+      if (!/^\d{4}$/.test(String(year)) || (month !== undefined && !/^(0[1-9]|1[0-2])$/.test(String(month).padStart(2, '0')))) throw new NotFoundError('Archive not found')
+      return this.list({ year, month }).items
+    },
+    categories() { return database.prepare('SELECT id, slug, name, parent_id FROM categories ORDER BY name').all() },
+    tags() { return database.prepare('SELECT id, slug, name FROM tags ORDER BY name').all() },
     update(id, userId, role, value) {
       const current = postRow(id); if (!current) throw new NotFoundError(); if (current.author_id !== userId && role !== 'administrator') throw new ForbiddenError(); if (!canManage(role)) throw new ForbiddenError()
       const post = input({ ...current, ...value }); const now = new Date().toISOString(); database.prepare('UPDATE posts SET slug = @slug, title = @title, body = @body, status = @status, publish_at = @publishAt, updated_at = @now WHERE id = @id').run({ ...post, id, now }); return get(id)
@@ -109,7 +123,13 @@ export function createRepository(database) {
     },
     logout(token) { if (token) database.prepare('DELETE FROM sessions WHERE token_hash = ?').run(crypto.createHash('sha256').update(token).digest('hex')) },
     feed() { return this.list({ page: 1, pageSize: 20 }).items },
-    sitemap() { return database.prepare("SELECT slug, updated_at FROM posts WHERE status = 'published' AND (publish_at IS NULL OR publish_at <= @now) ORDER BY slug").all({ now: new Date().toISOString() }) },
+    sitemap() {
+      const now = new Date().toISOString()
+      return [
+        ...database.prepare("SELECT slug, updated_at, 'posts' AS kind FROM posts WHERE status = 'published' AND (publish_at IS NULL OR publish_at <= @now) ORDER BY slug").all({ now }),
+        ...database.prepare("SELECT slug, updated_at, 'pages' AS kind FROM pages WHERE status = 'published' AND (publish_at IS NULL OR publish_at <= @now) ORDER BY slug").all({ now }),
+      ]
+    },
   }
 }
 export { MAX_PAGE_SIZE, xml }

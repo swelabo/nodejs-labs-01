@@ -6,6 +6,16 @@ paths:
       summary: Read a published page
       parameters: [{in: path, name: slug, required: true, schema: {type: string}}]
       responses: {'200': {description: Published page}, '404': {description: Not found}}
+  /api/v1/categories:
+    get: {summary: List hierarchical categories, responses: {'200': {description: Categories}}}
+  /api/v1/tags:
+    get: {summary: List tags, responses: {'200': {description: Tags}}}
+  /authors/{slug}:
+    get: {summary: Render an author's published posts, responses: {'200': {description: Author archive}, '404': {description: Not found}}}
+  /archives/{year}:
+    get: {summary: Render a yearly archive, responses: {'200': {description: Archive}}}
+  /archives/{year}/{month}:
+    get: {summary: Render a monthly archive, responses: {'200': {description: Archive}}}
   /api/v1/auth/login:
     post: {summary: Create a session, responses: {'200': {description: Authenticated}, '403': {description: Invalid credentials}}}
   /api/v1/auth/logout:
