@@ -20,7 +20,10 @@ parameterized SQL, SQLite, EJS, HTMX, Alpine.js, and Tailwind CSS.
 - [x] Pastebin browser interface and expiration cleanup; moderation remains.
 - [x] Blog first slice: publication workflow, roles, public reads, tests, and OpenAPI.
 - [x] Blog comments, moderation, feeds, sitemap, hierarchy checks, and one-time challenge.
-- [x] Blog accounts, richer CAPTCHA, media, and full administration baseline.
+- [x] Blog accounts, password hashing, sessions, moderation, and challenge
+  baseline.
+- [ ] Blog media uploads and the remaining administration surface; keep this
+  explicitly open until implemented and tested.
 
 ## Phase 2 — `prisma-01` (complete for the implemented baseline)
 

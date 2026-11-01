@@ -17,10 +17,10 @@ export default defineConfig({
         { text: 'Introduction', items: [{ text: 'Curriculum', link: '/introduction/curriculum' }, { text: 'Development environment', link: '/introduction/development-environment' }] },
       ],
       '/javascript/': [
-        { text: 'JavaScript', items: [{ text: 'Execution model', link: '/javascript/execution-model' }, { text: 'Modules', link: '/javascript/modules' }, { text: 'Async programming', link: '/javascript/async' }] },
+        { text: 'JavaScript', items: [{ text: 'Execution model', link: '/javascript/execution-model' }, { text: 'Foundations', link: '/javascript/foundations' }, { text: 'Modules', link: '/javascript/modules' }, { text: 'Async programming', link: '/javascript/async' }] },
       ],
       '/nodejs/': [
-        { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }, { text: 'Testing', link: '/nodejs/testing' }, { text: 'Concurrency', link: '/nodejs/concurrency' }] },
+        { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }, { text: 'Platform and operations', link: '/nodejs/platform' }, { text: 'Testing', link: '/nodejs/testing' }, { text: 'Concurrency', link: '/nodejs/concurrency' }] },
       ],
       '/express/': [
         { text: 'Express', items: [{ text: 'Fundamentals', link: '/express/fundamentals' }, { text: 'Security', link: '/express/security' }] },
