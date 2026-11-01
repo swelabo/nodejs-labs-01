@@ -53,7 +53,7 @@ Migrate the hexagonal implementation to TypeScript and teach meaningful static
 contracts.
 
 - [x] URL shortener: typed port/use-case contracts, `tsx` tests, and typecheck.
-- [ ] Pastebin.
+- [x] Pastebin: typed port/use-case contracts, `tsx` tests, and typecheck.
 - [ ] Blog.
 
 ## Phase 6 — `ddd-01`
