@@ -1,5 +1,6 @@
 import { InvalidPublicationStateError } from './errors.js'
 import { Slug } from './slug.js'
+import { DomainEvent, PostPublished } from './events.js'
 
 export type PublicationStatus = 'draft' | 'scheduled' | 'published'
 
@@ -12,7 +13,10 @@ export interface PostAttributes {
 }
 
 export class Post {
-  private constructor(private readonly attributes: PostAttributes) {}
+  private readonly pendingEvents: DomainEvent[] = []
+  private constructor(private readonly attributes: PostAttributes) {
+    if (attributes.status === 'published') this.pendingEvents.push(new PostPublished({ slug: attributes.slug.value }))
+  }
 
   static draft(input: Record<string, unknown>): Post {
     const title = typeof input.title === 'string' ? input.title.trim() : ''
@@ -41,5 +45,9 @@ export class Post {
 
   toPersistence(): Record<string, unknown> {
     return { ...this.attributes, slug: this.attributes.slug.value }
+  }
+
+  pullEvents(): DomainEvent[] {
+    return this.pendingEvents.splice(0, this.pendingEvents.length)
   }
 }

@@ -79,6 +79,8 @@ Phase 4 — `hexagonal-01` implementation.
   server-driven frontend work, verification, and operations.
 - Added six-variant architecture and application matrices plus a security
   baseline tied to the actual implementation boundaries.
+- Added blog domain events and an explicit transaction boundary with tests that
+  document in-process event semantics and the absence of durable delivery.
 
 ## Known limitations
 
@@ -98,6 +100,5 @@ Phase 4 — `hexagonal-01` implementation.
 
 ## Next action
 
-Extend `ddd-01` with transaction boundaries and domain events, then complete
-the final contract and acceptance audit.
+Complete the final contract, security, and acceptance audit.
 
