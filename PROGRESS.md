@@ -95,6 +95,8 @@ Phase 7 — consolidation and acceptance audit.
   the workflow models a clean checkout rather than relying on local modules.
 - Added a dependency-audit gate; all eighteen runtime dependency graphs report
   zero vulnerabilities at the high-severity threshold.
+- Added explicit SQL-injection, oversized-request, and concurrent-alias
+  security tests to the direct application baselines.
 - Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
   comparison chapters with Mermaid diagrams and exercises.
 - Added tooling, concurrency, Express security, accessibility, reflections,

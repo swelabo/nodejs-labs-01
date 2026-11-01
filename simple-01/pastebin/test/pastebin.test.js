@@ -59,3 +59,11 @@ test('searches public snippets and documents essential paths', async () => {
   assert.ok(document.paths['/api/v1/snippets']); assert.ok(document.paths['/api/v1/snippets/{id}/raw'])
 })
 
+test('keeps search parameterized and rejects oversized payloads', async () => {
+  const injection = await request(app).get('/api/v1/snippets').query({ q: "' OR 1=1 --" })
+  assert.equal(injection.status, 200)
+  assert.equal(injection.body.total, 0)
+  const oversized = await request(app).post('/api/v1/snippets').send({ content: 'x'.repeat(200_000) })
+  assert.equal(oversized.status, 413)
+})
+

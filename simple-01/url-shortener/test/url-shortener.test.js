@@ -97,6 +97,14 @@ test('rejects unsafe destinations and duplicate aliases', async () => {
   assert.equal(duplicate.body.errors.alias, 'must be unique')
 })
 
+test('allows only one concurrent owner of a custom alias', async () => {
+  const responses = await Promise.all([
+    request(app).post('/api/v1/links').set('x-user-id', 'race').send({ destination_url: 'https://one.example', alias: 'race-alias' }),
+    request(app).post('/api/v1/links').set('x-user-id', 'race').send({ destination_url: 'https://two.example', alias: 'race-alias' }),
+  ])
+  assert.deepEqual(responses.map((response) => response.status).sort(), [201, 400])
+})
+
 test('does not redirect an expired link', async () => {
   await request(app).post('/api/v1/links').set('x-user-id', 'alice').send({
     destination_url: 'https://expired.example',
