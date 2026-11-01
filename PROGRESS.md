@@ -2,7 +2,7 @@
 
 ## Current milestone
 
-Phase 1 — `simple-01/url-shortener` core slice.
+Phase 2 — `prisma-01/url-shortener` first slice.
 
 ## Completed
 
@@ -18,6 +18,8 @@ Phase 1 — `simple-01/url-shortener` core slice.
 - Prepared the blog data model, OpenAPI contract, and first implementation plan.
 - Implemented the blog first slice with roles, drafts, scheduling, public reads,
   escaped rendering, and OpenAPI tests.
+- Started `prisma-01/url-shortener` with Prisma 7.10.1, migration, JavaScript
+  client generation, API tests, and comparison documentation.
 
 ## Verification
 
@@ -30,6 +32,7 @@ Phase 1 — `simple-01/url-shortener` core slice.
 - Manual database initialization, seed, server startup, API creation, and `302`
   redirect smoke test — passed.
 - `make pastebin-test` — passed: 5 tests under Node.js 26.13.0.
+- `make prisma-url-shortener-test` — passed: 2 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -49,6 +52,5 @@ Phase 1 — `simple-01/url-shortener` core slice.
 
 ## Next action
 
-Add session hardening, richer CAPTCHA protections, and media handling before
-starting Prisma.
+Implement `prisma-01/pastebin` with the direct baseline's visibility contract.
 

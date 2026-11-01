@@ -22,10 +22,14 @@ parameterized SQL, SQLite, EJS, HTMX, Alpine.js, and Tailwind CSS.
 - [x] Blog comments, moderation, feeds, sitemap, hierarchy checks, and one-time challenge.
 - [ ] Blog accounts, richer CAPTCHA, media, and full administration.
 
-## Phase 2 — `prisma-01`
+## Phase 2 — `prisma-01` (in progress)
 
 Reimplement the same applications with Prisma while preserving observable
 behavior and comparing ORM queries with raw SQL.
+
+- [x] URL shortener: Prisma schema, migration, JavaScript client, tests.
+- [ ] Pastebin.
+- [ ] Blog.
 
 ## Phase 3 — `usecases-01`
 
