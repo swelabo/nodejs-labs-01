@@ -2,7 +2,7 @@
 
 ## Current milestone
 
-Phase 4 — `hexagonal-01` implementation.
+Phase 7 — consolidation and acceptance audit.
 
 ## Completed
 
@@ -18,28 +18,28 @@ Phase 4 — `hexagonal-01` implementation.
 - Prepared the blog data model, OpenAPI contract, and first implementation plan.
 - Implemented the blog first slice with roles, drafts, scheduling, public reads,
   escaped rendering, and OpenAPI tests.
-- Started `prisma-01/url-shortener` with Prisma 7.10.1, migration, JavaScript
+- Implemented `prisma-01/url-shortener` with Prisma 7.10.1, migration, JavaScript
   client generation, API tests, and comparison documentation.
 - Implemented `prisma-01/pastebin` with Prisma 7.10.1, migration, visibility,
   raw text, tags, search, ownership, and tests.
 - Implemented `prisma-01/blog` with Prisma 7.10.1, migration, role checks,
   publication timing, slug uniqueness, and tests.
-- Started `usecases-01/url-shortener` by extracting explicit application
+- Implemented `usecases-01/url-shortener` by extracting explicit application
   operations and testing HTTP delegation.
 - Added explicit use-case layers to `usecases-01/pastebin` and
   `usecases-01/blog`, preserving their Prisma behavior and adding delegation
   tests.
-- Started `hexagonal-01/url-shortener` with a validated port, Prisma adapter,
+- Implemented `hexagonal-01/url-shortener` with a validated port, Prisma adapter,
   composition root, and in-memory port test.
 - Implemented `hexagonal-01/pastebin` and `hexagonal-01/blog` with validated
   ports, Prisma adapters, composition roots, and in-memory port tests.
-- Started `typescript-01/url-shortener` with typed port/use-case contracts,
+- Implemented `typescript-01/url-shortener` with typed port/use-case contracts,
   `tsx` execution, and a passing TypeScript compiler check.
 - Implemented `typescript-01/pastebin` with a typed snippet port, `tsx` tests,
   and a passing TypeScript compiler check.
 - Implemented `typescript-01/blog` with a typed post port, `tsx` tests, and a
   passing TypeScript compiler check.
-- Started `ddd-01` with domain aggregates for all three applications; the blog
+- Implemented the initial `ddd-01` domain aggregates for all three applications; the blog
   includes publication invariants, an immutable slug value object, and an
   infrastructure dependency test.
 
