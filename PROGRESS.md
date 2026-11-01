@@ -135,8 +135,9 @@ Phase 7 — consolidation and acceptance audit.
 
 ## Known limitations
 
-- The URL shortener still lacks real authentication and a distributed rate
-  limiter.
+- The URL shortener's direct reference now has account/session authentication;
+  its in-memory rate limiter remains process-local rather than distributed, and
+  later variants retain a development identity seam for focused comparisons.
 - Pastebin moderation remains intentionally outside the direct baseline; the
   dashboard, accounts, sessions, CSRF, and safe highlighting are implemented.
 - Blog public archives, author pages, search, categories/tags, custom taxonomy
