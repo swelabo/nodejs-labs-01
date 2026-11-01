@@ -8,6 +8,7 @@ export function openDatabase(databasePath) {
   const database = new Database(databasePath)
   database.pragma('foreign_keys = ON')
   database.exec(schema)
+  try { database.exec('ALTER TABLE users ADD COLUMN password_hash TEXT') } catch (error) { if (!String(error.message).includes('duplicate column name')) throw error }
   return database
 }
 

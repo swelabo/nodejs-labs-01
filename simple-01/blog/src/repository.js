@@ -34,6 +34,8 @@ export function createRepository(database) {
   function mapPublic(row) { return mapPost(row, taxonomy('categories', 'post_categories', row.id), taxonomy('tags', 'post_tags', row.id), approvedComments(row.id)) }
   function canManage(role) { return role === 'editor' || role === 'administrator' }
   function ensureUser(userId, role) { database.prepare('INSERT INTO users (id, slug, display_name, role) VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET role = excluded.role').run(userId, userId.toLowerCase().replace(/[^a-z0-9-]/g, '-'), userId, role) }
+  function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) { return `${salt}:${crypto.scryptSync(password, salt, 32).toString('hex')}` }
+  function verifyPassword(password, encoded) { if (!encoded) return false; const [salt, digest] = encoded.split(':'); return crypto.timingSafeEqual(Buffer.from(digest, 'hex'), crypto.scryptSync(password, salt, 32)) }
   return {
     create(userId, role, value) {
       if (!userId || !canManage(role)) throw new ForbiddenError()
@@ -84,6 +86,25 @@ export function createRepository(database) {
       if (!result.changes) throw new NotFoundError('User not found')
       return database.prepare('SELECT id, slug, display_name, role FROM users WHERE id = ?').get(id)
     },
+    createUser(role, value) {
+      if (role !== 'administrator') throw new ForbiddenError()
+      if (typeof value.id !== 'string' || !/^[a-zA-Z0-9_-]{3,64}$/.test(value.id) || typeof value.password !== 'string' || value.password.length < 12) throw new ValidationError('user id or password is invalid')
+      try { database.prepare('INSERT INTO users (id, slug, display_name, password_hash, role) VALUES (?, ?, ?, ?, ?)').run(value.id, value.id.toLowerCase(), value.display_name || value.id, hashPassword(value.password), value.role || 'author') } catch (error) { if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') throw new ValidationError('user already exists') ; throw error }
+      return database.prepare('SELECT id, slug, display_name, role FROM users WHERE id = ?').get(value.id)
+    },
+    login(userId, password) {
+      const user = database.prepare('SELECT id, role, password_hash FROM users WHERE id = ?').get(userId)
+      if (!user || !verifyPassword(password, user.password_hash)) throw new ForbiddenError('Invalid credentials')
+      const token = crypto.randomBytes(32).toString('base64url'); const tokenHash = crypto.createHash('sha256').update(token).digest('hex'); const expiresAt = new Date(Date.now() + 86_400_000).toISOString()
+      database.prepare('INSERT INTO sessions (token_hash, user_id, expires_at) VALUES (?, ?, ?)').run(tokenHash, user.id, expiresAt)
+      return { token, expires_at: expiresAt, user: { id: user.id, role: user.role } }
+    },
+    sessionUser(token) {
+      if (!token) return null
+      const tokenHash = crypto.createHash('sha256').update(token).digest('hex'); const user = database.prepare('SELECT users.id, users.role FROM sessions JOIN users ON users.id = sessions.user_id WHERE sessions.token_hash = ? AND sessions.expires_at > ?').get(tokenHash, new Date().toISOString())
+      return user || null
+    },
+    logout(token) { if (token) database.prepare('DELETE FROM sessions WHERE token_hash = ?').run(crypto.createHash('sha256').update(token).digest('hex')) },
     feed() { return this.list({ page: 1, pageSize: 20 }).items },
     sitemap() { return database.prepare("SELECT slug, updated_at FROM posts WHERE status = 'published' AND (publish_at IS NULL OR publish_at <= @now) ORDER BY slug").all({ now: new Date().toISOString() }) },
   }

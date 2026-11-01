@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
   id TEXT PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
   display_name TEXT NOT NULL,
+  password_hash TEXT,
   role TEXT NOT NULL CHECK (role IN ('author', 'editor', 'administrator'))
 );
 
@@ -61,6 +62,12 @@ CREATE TABLE IF NOT EXISTS captcha_challenges (
   answer_hash TEXT NOT NULL,
   expires_at TEXT NOT NULL,
   consumed_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  token_hash TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at TEXT NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS comments_post_status ON comments(post_id, status, created_at);
