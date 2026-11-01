@@ -19,9 +19,10 @@ architecture tests; it is not presented as production authentication.
 ## Why the blog is the capstone domain
 
 The schema already has users, posts, categories, tags, and many-to-many join
-tables. Future increments add comments, moderation, feeds, sitemaps, hierarchical
-taxonomies, and one-time CAPTCHA challenges. These features create real domain
-invariants that make the later use-case, hexagonal, and DDD comparisons useful.
+tables. The completed direct slice also includes comments, moderation, feeds,
+sitemaps, hierarchical taxonomies, media administration, and one-time CAPTCHA
+challenges. These features create real domain invariants that make the later
+use-case, hexagonal, and DDD comparisons useful.
 
 ## Untrusted post bodies
 
