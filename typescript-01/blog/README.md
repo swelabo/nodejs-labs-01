@@ -1,4 +1,4 @@
-# `hexagonal-01/blog`
+# `typescript-01/blog`
 
 This hexagonal implementation preserves the blog's publication workflow while
 placing a validated post port between the use cases and the Prisma/SQLite
@@ -11,6 +11,8 @@ npx prisma migrate deploy
 npm test
 ```
 
-The tests cover role checks, drafts, scheduled publication, public reads,
-duplicate-slug behavior, and use-case execution against an in-memory port.
+The tests cover role checks, drafts, scheduled publication, public post/page
+reads, duplicate-slug behavior, and use-case execution against an in-memory
+port. Author/archive pages, comments, and administration remain direct-variant
+scope for this focused static-contract experiment.
 

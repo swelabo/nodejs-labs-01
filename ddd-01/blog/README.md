@@ -13,7 +13,8 @@ npm run typecheck
 npm test
 ```
 
-The tests cover role checks, drafts, scheduled publication, public reads,
-duplicate-slug behavior, domain invariants, architectural dependency rules,
-and use-case execution against an in-memory port.
+The tests cover role checks, drafts, scheduled publication, public post/page
+reads, duplicate-slug behavior, domain invariants, architectural dependency
+rules, and use-case execution against an in-memory port. Author/archive pages,
+comments, and administration remain direct-variant scope for the DDD experiment.
 

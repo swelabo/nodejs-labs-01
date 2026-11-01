@@ -27,9 +27,11 @@ in the browser view; this slice does not interpret Markdown or HTML.
 
 ## Scope
 
-The baseline includes posts, roles, categories, tags, publication workflow,
-search, pagination, public rendering, comments pending moderation, feeds,
-sitemaps, one-time arithmetic challenges, hierarchy-cycle checks, and OpenAPI.
+The baseline includes posts, published static pages, page management, roles,
+categories, tags, generic taxonomies, publication workflow, search, pagination,
+author and archive pages, an escaped editor dashboard, public rendering,
+comments pending moderation, feeds, sitemaps, one-time arithmetic challenges,
+hierarchy-cycle checks, and OpenAPI.
 The development baseline also includes administrator-only user-role management.
 The `X-User-Id` identity remains a local teaching seam. Password sessions use
 HttpOnly, SameSite cookies, and authenticated state-changing requests require a
