@@ -6,6 +6,7 @@
     <p>Share text while keeping visibility and ownership explicit.</p>
     <% if (error) { %><p role="alert" style="color: #a11"><%= error %></p><% } %>
     <form method="post" action="/snippets">
+      <% if (csrfToken) { %><input type="hidden" name="_csrf" value="<%= csrfToken %>"><% } %>
       <label for="content">Content</label><br>
       <textarea id="content" name="content" rows="14" cols="80" maxlength="100000" required></textarea><br>
       <label>Language <input name="language" maxlength="32" value="text"></label>

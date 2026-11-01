@@ -1,5 +1,17 @@
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  password_hash TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  token TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS snippets (
   id TEXT PRIMARY KEY,
   content TEXT NOT NULL CHECK (length(content) <= 100000),
@@ -19,4 +31,5 @@ CREATE TABLE IF NOT EXISTS tags (
 
 CREATE INDEX IF NOT EXISTS snippets_created_at ON snippets(created_at);
 CREATE INDEX IF NOT EXISTS tags_tag ON tags(tag);
+CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at);
 

@@ -3,6 +3,14 @@ info:
   title: Simple Pastebin API
   version: 0.1.0
 paths:
+  /api/v1/auth/register:
+    post: {summary: Create an account and session, responses: {'201': {description: Account}, '400': {description: Invalid account}}}
+  /api/v1/auth/login:
+    post: {summary: Create a session, responses: {'200': {description: Session}, '403': {description: Invalid credentials}}}
+  /api/v1/auth/logout:
+    post: {summary: Revoke the current session, responses: {'204': {description: Logged out}, '403': {description: Invalid CSRF token}}}
+  /api/v1/admin/snippets:
+    get: {summary: List snippets for an authenticated administrator, responses: {'200': {description: Snippets}, '401': {description: Authentication required}}}
   /api/v1/snippets:
     get: {summary: List public snippets, responses: {'200': {description: Paginated snippets}}}
     post:

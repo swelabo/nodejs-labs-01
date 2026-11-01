@@ -14,8 +14,9 @@ make db-init
 make start
 ```
 
-The API listens on `http://localhost:3002`. The development identity is supplied
-with `X-User-Id`; anonymous creation is enabled by default for this baseline.
+The API listens on `http://localhost:3002`. Anonymous creation is enabled by
+default for this baseline; registered accounts use scrypt-backed passwords,
+HttpOnly sessions, and CSRF tokens.
 
 ## Security model
 
@@ -32,8 +33,9 @@ exists.
 
 ## Scope
 
-This slice includes creation, visibility, expiration, raw views, tags, search,
-pagination, owner-only edit and delete, size limits, and an OpenAPI document. It
-does not yet include accounts, syntax-highlighting output, moderation, or a
-browser dashboard.
+This slice includes creation, visibility, expiration, raw views, safe
+syntax-highlighting output, tags, search, pagination, owner-only edit and
+delete, size limits, account sessions, a small authenticated admin listing, and
+an OpenAPI document. Anonymous creation remains an explicit configuration
+option; full moderation is intentionally outside this baseline.
 

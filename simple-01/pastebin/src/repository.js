@@ -36,7 +36,23 @@ export function createRepository(database) {
   function tagsFor(id) { return database.prepare('SELECT tag FROM tags WHERE snippet_id = ? ORDER BY tag').all(id).map((row) => row.tag) }
   function get(id) { const row = getRow(id); return row && active(row) ? mapSnippet(row, tagsFor(id)) : null }
   function canRead(row, ownerId) { return row && active(row) && (row.visibility !== 'private' || row.owner_id === ownerId) }
+  function passwordHash(password, salt = crypto.randomBytes(16).toString('hex')) { return `${salt}:${crypto.scryptSync(password, salt, 32).toString('hex')}` }
+  function verifyPassword(password, encoded) { if (!encoded) return false; const [salt, digest] = encoded.split(':'); const actual = crypto.scryptSync(password, salt, 32); const expected = Buffer.from(digest, 'hex'); return expected.length === actual.length && crypto.timingSafeEqual(expected, actual) }
   return {
+    register({ id, password }) {
+      if (typeof id !== 'string' || !/^[a-zA-Z0-9_-]{3,64}$/.test(id) || typeof password !== 'string' || password.length < 10 || password.length > 256) throw new ValidationError('id or password is invalid')
+      try { database.prepare('INSERT INTO users (id, password_hash, created_at) VALUES (?, ?, ?)').run(id, passwordHash(password), new Date().toISOString()) } catch (error) { if (error.code === 'SQLITE_CONSTRAINT_PRIMARYKEY') throw new ValidationError('account already exists'); throw error }
+      return { id }
+    },
+    login({ id, password }) {
+      const user = database.prepare('SELECT id, password_hash FROM users WHERE id = ?').get(id)
+      if (!user || !verifyPassword(password, user.password_hash)) throw new ForbiddenError('Invalid credentials')
+      const token = crypto.randomBytes(32).toString('base64url'); database.prepare('INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)').run(token, user.id, new Date(Date.now() + 86_400_000).toISOString())
+      return { token, user: { id: user.id }, expires_at: new Date(Date.now() + 86_400_000).toISOString() }
+    },
+    sessionUser(token) { if (!token) return null; const row = database.prepare('SELECT user_id AS id FROM sessions WHERE token = ? AND expires_at > ?').get(token, new Date().toISOString()); return row ?? null },
+    logout(token) { if (token) database.prepare('DELETE FROM sessions WHERE token = ?').run(token) },
+    adminSnippets() { return database.prepare('SELECT id, owner_id, visibility, language, expires_at, created_at FROM snippets ORDER BY created_at DESC LIMIT 100').all() },
     create(input) {
       const value = validate(input); const id = crypto.randomBytes(8).toString('base64url'); const now = new Date().toISOString()
       // better-sqlite3 transactions are synchronous callbacks. This is useful

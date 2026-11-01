@@ -22,6 +22,19 @@ test('creates, reads, and returns raw text without HTML interpretation', async (
   assert.equal(raw.status, 200); assert.match(raw.headers['content-type'], /^text\/plain/)
 })
 
+test('supports password accounts, sessions, and CSRF-protected mutations', async () => {
+  const registration = await request(app).post('/api/v1/auth/register').send({ id: 'alice', password: 'correct horse battery staple' })
+  assert.equal(registration.status, 201)
+  const csrf = registration.headers['set-cookie'].find((value) => value.startsWith('pastebin_csrf=')).split(';')[0].split('=')[1]
+  const agent = request.agent(app)
+  agent.jar.setCookie(registration.headers['set-cookie'][0])
+  agent.jar.setCookie(registration.headers['set-cookie'][1])
+  assert.equal((await agent.post('/api/v1/snippets').send({ content: 'blocked' })).status, 403)
+  const created = await agent.post('/api/v1/snippets').set('x-csrf-token', csrf).send({ content: 'owned' })
+  assert.equal(created.status, 201); assert.equal(created.body.data.owner_id, 'alice')
+  assert.equal((await agent.get('/api/v1/admin/snippets')).status, 200)
+})
+
 test('renders escaped browser output and accepts a form submission', async () => {
   const page = await request(app).get('/')
   assert.equal(page.status, 200)
