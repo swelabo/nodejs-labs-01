@@ -91,6 +91,8 @@ Phase 7 — consolidation and acceptance audit.
   runs contracts, seeded applications, lifecycle, and documentation gates.
 - Added a structure verifier proving all eighteen local Makefiles and package
   manifests expose the required lifecycle commands.
+- CI now installs every application lockfile before running the root gates, so
+  the workflow models a clean checkout rather than relying on local modules.
 - Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
   comparison chapters with Mermaid diagrams and exercises.
 - Added tooling, concurrency, Express security, accessibility, reflections,

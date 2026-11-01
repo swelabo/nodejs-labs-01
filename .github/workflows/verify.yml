@@ -11,6 +11,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: asdf-vm/actions/install@v3
       - run: npm ci
+      - name: Install application dependencies
+        run: |
+          for directory in simple-01/* prisma-01/* usecases-01/* hexagonal-01/* typescript-01/* ddd-01/*; do
+            (cd "$directory" && npm ci)
+          done
       - run: npm run verify:structure
       - run: npm run verify:contracts
       - run: npm run verify:apps
