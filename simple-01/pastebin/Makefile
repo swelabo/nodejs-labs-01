@@ -2,7 +2,7 @@
 .SHELLFLAGS := -eu -o pipefail -c
 NPM ?= npm
 
-.PHONY: help install start dev test db-init db-seed db-cleanup db-reset clean
+.PHONY: help install start dev test frontend-build db-init db-seed db-cleanup db-reset clean
 
 help: ## Show application commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -18,6 +18,9 @@ dev: ## Start with Node's file watcher
 
 test: ## Run tests
 	$(NPM) test
+
+frontend-build: ## Build local HTMX, Alpine.js, and Tailwind assets
+	$(NPM) run frontend:build
 
 db-init: ## Initialize the database
 	$(NPM) run db:init

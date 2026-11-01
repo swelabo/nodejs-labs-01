@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pastebin</title></head>
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/styles.css"><script defer src="/vendor/alpine.min.js"></script><script src="/vendor/htmx.min.js"></script><title>Pastebin</title></head>
   <body style="font-family: system-ui; max-width: 56rem; margin: 2rem auto; padding: 0 1rem; color: #172033;">
     <h1>Pastebin</h1>
     <p>Share text while keeping visibility and ownership explicit.</p>
@@ -12,6 +12,7 @@
       <label>Visibility <select name="visibility"><option>public</option><option>unlisted</option><option>private</option></select></label>
       <button type="submit">Create snippet</button>
     </form>
+    <button type="button" hx-get="/" hx-target="body" hx-select="body" hx-swap="outerHTML">Refresh snippets</button>
     <h2>Public snippets</h2>
     <ul>
       <% snippets.forEach((snippet) => { %><li><a href="/snippets/<%= encodeURIComponent(snippet.id) %>"><%= snippet.language %> · <%= snippet.created_at %></a></li><% }) %>

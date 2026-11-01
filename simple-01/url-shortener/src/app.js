@@ -44,6 +44,7 @@ function createRateLimiter(limit, windowMs = 60_000) {
 export function createApp({ repository, config }) {
   const app = express()
   app.disable('x-powered-by')
+  app.use(express.static(new URL('./public', import.meta.url).pathname))
   app.use(express.json({ limit: '16kb' }))
   app.use(express.urlencoded({ extended: false, limit: '16kb' }))
   app.set('view engine', 'ejs')

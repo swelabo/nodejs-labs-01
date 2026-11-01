@@ -6,6 +6,12 @@ request; Alpine.js handles local interaction; Tailwind supplies utility styles.
 None changes the security model: escaped output, CSRF/session care,
 authorization, and safe content types remain server responsibilities.
 
+The three `simple-01` applications install these browser dependencies locally.
+`npm run frontend:build` copies pinned HTMX and Alpine.js distributions into
+`src/public/vendor/` and compiles `src/public/input.css` with Tailwind. Their
+`prestart` hook makes a clean install reproducible without a CDN dependency;
+the generated assets are deliberately treated as application build output.
+
 ## Learning objectives
 
 You should be able to choose between a full document response and a fragment,

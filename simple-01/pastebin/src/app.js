@@ -5,7 +5,7 @@ function sendProblem(response, status, title, detail, errors) { return response.
 function userId(request) { return request.get('x-user-id') || null }
 function page(value, fallback) { const n = Number.parseInt(value ?? '', 10); return Number.isInteger(n) && n > 0 ? n : fallback }
 export function createApp({ repository, config }) {
-  const app = express(); app.disable('x-powered-by'); app.use(express.json({ limit: '128kb' }))
+  const app = express(); app.disable('x-powered-by'); app.use(express.static(new URL('./public', import.meta.url).pathname)); app.use(express.json({ limit: '128kb' }))
   app.use(express.urlencoded({ extended: false, limit: '128kb' }))
   app.set('view engine', 'ejs')
   app.set('views', new URL('./views', import.meta.url).pathname)
