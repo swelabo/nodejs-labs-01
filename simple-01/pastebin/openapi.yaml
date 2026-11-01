@@ -1,0 +1,33 @@
+openapi: 3.1.0
+info:
+  title: Simple Pastebin API
+  version: 0.1.0
+paths:
+  /api/v1/snippets:
+    get: {summary: List public snippets, responses: {'200': {description: Paginated snippets}}}
+    post:
+      summary: Create a snippet
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/CreateSnippet'}}}}
+      responses: {'201': {description: Created snippet}, '400': {description: Invalid request}}
+  /api/v1/snippets/{id}:
+    parameters: [{'$ref': '#/components/parameters/Id'}]
+    get: {summary: Read a permitted snippet, responses: {'200': {description: Snippet}, '404': {description: Unavailable}}}
+    patch: {summary: Edit an owned snippet, responses: {'200': {description: Updated}, '403': {description: Forbidden}, '404': {description: Unavailable}}}
+    delete: {summary: Delete an owned snippet, responses: {'204': {description: Deleted}, '403': {description: Forbidden}, '404': {description: Unavailable}}}
+  /api/v1/snippets/{id}/raw:
+    parameters: [{'$ref': '#/components/parameters/Id'}]
+    get: {summary: Read permitted content as plain text, responses: {'200': {description: Plain text}, '404': {description: Unavailable}}}
+components:
+  parameters:
+    Id: {in: path, name: id, required: true, schema: {type: string}}
+  schemas:
+    CreateSnippet:
+      type: object
+      required: [content]
+      properties:
+        content: {type: string, minLength: 1, maxLength: 100000}
+        visibility: {type: string, enum: [public, unlisted, private]}
+        language: {type: string, maxLength: 32}
+        expires_at: {type: string, format: date-time}
+        tags: {type: array, items: {type: string, maxLength: 32}}
+

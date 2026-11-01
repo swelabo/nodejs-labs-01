@@ -13,6 +13,8 @@ Phase 1 — `simple-01/url-shortener` core slice.
 - Created the VitePress book outline and canonical specifications.
 - Implemented the first URL-shortener slice with SQLite, Express, redirects,
   ownership checks, expiration, analytics, OpenAPI, tests, and documentation.
+- Implemented the Pastebin core slice with visibility controls, raw text,
+  ownership checks, tags, search, OpenAPI, tests, and documentation.
 
 ## Verification
 
@@ -24,17 +26,20 @@ Phase 1 — `simple-01/url-shortener` core slice.
 - `make simple-url-shortener-test` — passed.
 - Manual database initialization, seed, server startup, API creation, and `302`
   redirect smoke test — passed.
+- `make pastebin-test` — passed: 4 tests under Node.js 26.13.0.
 
 ## Known limitations
 
-- The URL-shortener core slice is implemented; dashboard, QR generation, real
-  authentication, and production rate limiting remain out of scope.
-- The book currently contains the foundation and URL-shortener chapters only.
+- The URL shortener still lacks real authentication and a distributed rate
+  limiter.
+- Pastebin still lacks a browser dashboard, accounts, moderation, and syntax
+  highlighting output.
+- The book currently contains the foundation, URL-shortener, and Pastebin
+  chapters.
 - Dependency versions require review when the first application begins.
 
 ## Next action
 
-Extend `simple-01/url-shortener` with browser HTML routes, a safer development
-authentication seam, and the remaining planned baseline features before moving
-to Pastebin.
+Complete the remaining Pastebin baseline controls, then prepare the blog schema
+and canonical API contract.
 

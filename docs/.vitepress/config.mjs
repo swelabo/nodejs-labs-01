@@ -26,7 +26,7 @@ export default defineConfig({
         { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }] },
       ],
       '/applications/': [
-        { text: 'Applications', items: [{ text: 'Simple URL shortener', link: '/applications/simple-url-shortener' }] },
+        { text: 'Applications', items: [{ text: 'Simple URL shortener', link: '/applications/simple-url-shortener' }, { text: 'Simple Pastebin', link: '/applications/simple-pastebin' }] },
       ],
       '/research/': [
         { text: 'Research', items: [{ text: 'Technology decisions', link: '/research/technology-decisions' }] },
