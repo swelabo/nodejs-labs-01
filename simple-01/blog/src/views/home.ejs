@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/styles.css"><script defer src="/vendor/alpine.min.js"></script><script src="/vendor/htmx.min.js"></script><title><%= title || 'Blog' %></title></head>
-<body x-data="{ compact: false }" style="font-family: system-ui; max-width: 56rem; margin: 2rem auto; padding: 0 1rem;">
+<body x-data="{ compact: false }" class="<%= typeof theme !== 'undefined' && theme === 'compact' ? 'theme-compact' : 'theme-default' %>" style="font-family: system-ui; max-width: 56rem; margin: 2rem auto; padding: 0 1rem;">
 <h1><%= title || 'Engineering Blog' %></h1><button type="button" @click="compact = !compact">Toggle compact reading</button>
 <p>Published posts are selected by status and publication time.</p>
 <% posts.forEach((post) => { %><article :class="{ 'opacity-60': compact }"><h2><a href="/posts/<%= encodeURIComponent(post.slug) %>"><%= post.title %></a></h2><p>By <%= post.author_name %> · <%= post.publish_at || post.created_at %></p></article><% }) %>

@@ -66,6 +66,11 @@ test('supports author, archive, category, and tag discovery', async () => {
   assert.equal((await request(app).get('/api/v1/tags')).body.data[0].slug, 'release')
 })
 
+test('supports a bounded public theme variation', async () => {
+  const compact = await request(app).get('/?theme=compact')
+  assert.equal(compact.status, 200); assert.match(compact.text, /theme-compact/)
+})
+
 test('supports arbitrary hierarchical taxonomies with scoped parent checks', async () => {
   const taxonomy = await request(app).post('/api/v1/taxonomies').set('x-user-id', 'editor').send({ slug: 'series', name: 'Series', hierarchical: true })
   assert.equal(taxonomy.status, 201)

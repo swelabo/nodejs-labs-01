@@ -1,3 +1,5 @@
 @import "tailwindcss";
 @source "../views";
 @source "../app.js";
+.theme-compact { max-width: 42rem; }
+.theme-default { max-width: 56rem; }
