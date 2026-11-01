@@ -25,8 +25,8 @@ in the browser view; this slice does not interpret Markdown or HTML.
 
 ## Scope
 
-The first slice includes posts, roles, categories, tags, publication workflow,
-search, pagination, public rendering, and OpenAPI. Comments, moderation, feeds,
-sitemaps, hierarchical taxonomy validation, and CAPTCHA are intentionally later
-increments.
+The baseline includes posts, roles, categories, tags, publication workflow,
+search, pagination, public rendering, comments pending moderation, feeds,
+sitemaps, one-time arithmetic challenges, hierarchy-cycle checks, and OpenAPI.
+Accounts, richer CAPTCHA, and full administration remain later increments.
 

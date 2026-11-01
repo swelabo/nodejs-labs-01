@@ -25,11 +25,11 @@ Phase 1 — `simple-01/url-shortener` core slice.
   project baseline is Node 26.13.0.
 - `npm run docs:build` — passed.
 - `npm run docs:lint` — passed.
-- `make test` — passed: 10 tests under Node.js 26.13.0.
+- `make test` — passed: 20 tests under Node.js 26.13.0.
 - `make simple-url-shortener-test` — passed.
 - Manual database initialization, seed, server startup, API creation, and `302`
   redirect smoke test — passed.
-- `make pastebin-test` — passed: 4 tests under Node.js 26.13.0.
+- `make pastebin-test` — passed: 5 tests under Node.js 26.13.0.
 
 ## Known limitations
 
@@ -38,13 +38,13 @@ Phase 1 — `simple-01/url-shortener` core slice.
 - Pastebin still lacks a browser dashboard, accounts, moderation, and syntax
   highlighting output.
 - Blog first slice is implemented and verified.
-- Blog still lacks comments, moderation, feeds, sitemaps, hierarchical taxonomy,
-  CAPTCHA, and full administration.
-- The book currently contains the foundation, URL-shortener, and Pastebin
+- Blog comments, moderation, feeds, sitemap generation, hierarchy checks, and a
+  one-time challenge are now implemented and tested.
+- The book currently contains the foundation, URL-shortener, Pastebin, and blog
   chapters.
 - Dependency versions require review when the first application begins.
 
 ## Next action
 
-Extend the blog with comments, moderation, feeds, sitemaps, and taxonomy rules.
+Extend the blog with accounts, richer CAPTCHA, media, and full administration.
 

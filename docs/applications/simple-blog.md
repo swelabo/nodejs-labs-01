@@ -30,6 +30,15 @@ text. It does not interpret Markdown or HTML. Rendering richer content is a
 separate security decision; accepting a `body` string is not permission to emit
 it as markup.
 
+Comments enter a pending state and become public only after editor moderation.
+Submission requires a short-lived, one-time arithmetic challenge. The challenge
+is an abuse-control layer, not strong bot protection; rate limiting, moderation,
+and accessibility remain necessary.
+
+The application also emits a small Atom feed and sitemap from the same public
+publication predicate. This keeps drafts and future posts out of syndication and
+search-engine inventories.
+
 Run the tests with:
 
 ```sh

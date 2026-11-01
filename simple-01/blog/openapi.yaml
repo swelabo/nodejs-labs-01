@@ -14,6 +14,19 @@ paths:
   /api/v1/posts/{id}:
     parameters: [{in: path, name: id, required: true, schema: {type: integer}}]
     patch: {summary: Edit a post, security: [{DevelopmentUser: []}], responses: {'200': {description: Updated}, '403': {description: Forbidden}, '404': {description: Not found}}}
+  /api/v1/posts/{slug}/comments/challenge:
+    parameters: [{'$ref': '#/components/parameters/Slug'}]
+    get: {summary: Issue a short-lived one-time comment challenge, responses: {'200': {description: Challenge}}}
+  /api/v1/posts/{slug}/comments:
+    parameters: [{'$ref': '#/components/parameters/Slug'}]
+    post: {summary: Submit a comment for moderation, responses: {'201': {description: Pending comment}, '400': {description: Invalid challenge}}}
+  /api/v1/comments/{id}:
+    parameters: [{in: path, name: id, required: true, schema: {type: integer}}]
+    patch: {summary: Moderate a comment, security: [{DevelopmentUser: []}], responses: {'200': {description: Moderated comment}, '403': {description: Forbidden}}}
+  /feed.xml:
+    get: {summary: Atom feed of published posts, responses: {'200': {description: Atom feed}}}
+  /sitemap.xml:
+    get: {summary: Sitemap of published posts, responses: {'200': {description: Sitemap}}}
 components:
   securitySchemes: {DevelopmentUser: {type: apiKey, in: header, name: X-User-Id}}
   parameters: {Slug: {in: path, name: slug, required: true, schema: {type: string, pattern: '^[a-z0-9-]{1,128}$'}}}

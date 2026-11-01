@@ -19,7 +19,8 @@ parameterized SQL, SQLite, EJS, HTMX, Alpine.js, and Tailwind CSS.
 - [x] Pastebin core slice: visibility, raw text, tags, search, tests, OpenAPI.
 - [x] Pastebin browser interface and expiration cleanup; moderation remains.
 - [x] Blog first slice: publication workflow, roles, public reads, tests, and OpenAPI.
-- [ ] Blog comments, moderation, feeds, taxonomies, CAPTCHA, and administration.
+- [x] Blog comments, moderation, feeds, sitemap, hierarchy checks, and one-time challenge.
+- [ ] Blog accounts, richer CAPTCHA, media, and full administration.
 
 ## Phase 2 — `prisma-01`
 
