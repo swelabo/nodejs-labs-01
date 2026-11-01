@@ -93,6 +93,8 @@ Phase 7 — consolidation and acceptance audit.
   manifests expose the required lifecycle commands.
 - CI now installs every application lockfile before running the root gates, so
   the workflow models a clean checkout rather than relying on local modules.
+- Added a dependency-audit gate; all eighteen runtime dependency graphs report
+  zero vulnerabilities at the high-severity threshold.
 - Added dedicated Prisma, DDD/Clean Architecture, production, and all-variant
   comparison chapters with Mermaid diagrams and exercises.
 - Added tooling, concurrency, Express security, accessibility, reflections,

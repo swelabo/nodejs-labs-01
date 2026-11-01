@@ -17,6 +17,7 @@ jobs:
             (cd "$directory" && npm ci)
           done
       - run: npm run verify:structure
+      - run: npm run verify:dependencies
       - run: npm run verify:contracts
       - run: npm run verify:apps
       - run: npm run verify:start

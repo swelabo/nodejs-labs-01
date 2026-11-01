@@ -5,6 +5,9 @@ scope of each gate:
 
 - `npm test` covers the direct JavaScript baseline;
 - `npm run verify:apps` covers all eighteen application suites;
+- `npm run verify:structure` checks each local manifest and Makefile;
+- `npm run verify:contracts` checks every OpenAPI artifact and essential paths;
+- `npm run verify:dependencies` audits runtime dependencies across all variants;
 - each Prisma-backed app requires generated client and deployed migrations;
 - `npm run docs:build` proves the VitePress site renders;
 - `npm run docs:lint` checks prose rules and internal links;

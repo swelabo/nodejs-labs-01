@@ -3,7 +3,7 @@
 
 NPM ?= npm
 
-.PHONY: help install docs-dev docs-build docs-preview docs-lint test verify-apps verify-contracts verify-start verify-structure simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck typescript-pastebin-test typescript-pastebin-typecheck typescript-blog-test typescript-blog-typecheck ddd-url-shortener-test ddd-pastebin-test ddd-blog-test clean
+.PHONY: help install docs-dev docs-build docs-preview docs-lint test verify-apps verify-contracts verify-start verify-structure verify-dependencies simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck typescript-pastebin-test typescript-pastebin-typecheck typescript-blog-test typescript-blog-typecheck ddd-url-shortener-test ddd-pastebin-test ddd-blog-test clean
 
 help: ## Show available foundation commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -37,6 +37,9 @@ verify-start: ## Start and gracefully stop every application
 
 verify-structure: ## Verify local application manifests and Makefiles
 	$(NPM) run verify:structure
+
+verify-dependencies: ## Audit runtime dependencies across all variants
+	$(NPM) run verify:dependencies
 
 simple-url-shortener-test: ## Run the first application test suite
 	$(MAKE) -C simple-01/url-shortener test
