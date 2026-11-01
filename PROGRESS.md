@@ -108,6 +108,9 @@ Phase 7 — consolidation and acceptance audit.
 - Added a dedicated TypeScript comparison and an eighteen-entry application
   reflection matrix covering design, testing, performance, security, and
   evolution tradeoffs.
+- Expanded the SQLite, Prisma, server-driven frontend, Express, JavaScript,
+  Node.js, and DDD comparison chapters with runnable examples, security and
+  operational tradeoffs, exercises, and official references.
 - Extended the DDD Blog with a domain factory, publication policy service,
   aggregate-oriented repository abstraction, and identity context mapping.
 - Added idempotent seed commands to all eighteen applications; the matrix now
