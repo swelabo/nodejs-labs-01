@@ -3,7 +3,7 @@
 
 NPM ?= npm
 
-.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck typescript-pastebin-test typescript-pastebin-typecheck typescript-blog-test typescript-blog-typecheck clean
+.PHONY: help install docs-dev docs-build docs-preview docs-lint test simple-url-shortener-test pastebin-test blog-test prisma-url-shortener-test prisma-pastebin-test prisma-blog-test usecases-url-shortener-test usecases-pastebin-test usecases-blog-test hexagonal-url-shortener-test hexagonal-pastebin-test hexagonal-blog-test typescript-url-shortener-test typescript-url-shortener-typecheck typescript-pastebin-test typescript-pastebin-typecheck typescript-blog-test typescript-blog-typecheck ddd-url-shortener-test ddd-pastebin-test ddd-blog-test clean
 
 help: ## Show available foundation commands
 	@awk 'BEGIN {FS = ":.*##"; print "Usage: make <target>\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -79,6 +79,15 @@ typescript-blog-test: ## Run the TypeScript blog test suite
 
 typescript-blog-typecheck: ## Type-check the TypeScript blog
 	$(MAKE) -C typescript-01/blog typecheck
+
+ddd-url-shortener-test: ## Run the DDD URL-shortener tests
+	$(MAKE) -C ddd-01/url-shortener test
+
+ddd-pastebin-test: ## Run the DDD Pastebin tests
+	$(MAKE) -C ddd-01/pastebin test
+
+ddd-blog-test: ## Run the DDD blog tests
+	$(MAKE) -C ddd-01/blog test
 
 clean: ## Remove generated documentation output
 	rm -rf docs/.vitepress/cache docs/.vitepress/dist

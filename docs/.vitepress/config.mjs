@@ -23,7 +23,7 @@ export default defineConfig({
         { text: 'Node.js', items: [{ text: 'Runtime fundamentals', link: '/nodejs/fundamentals' }] },
       ],
       '/architecture/': [
-        { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }, { text: 'Prisma comparison', link: '/architecture/prisma-comparison' }, { text: 'Use-case comparison', link: '/architecture/usecases-comparison' }, { text: 'Hexagonal comparison', link: '/architecture/hexagonal-comparison' }] },
+        { text: 'Architecture', items: [{ text: 'Progression', link: '/architecture/progression' }, { text: 'Prisma comparison', link: '/architecture/prisma-comparison' }, { text: 'Use-case comparison', link: '/architecture/usecases-comparison' }, { text: 'Hexagonal comparison', link: '/architecture/hexagonal-comparison' }, { text: 'DDD comparison', link: '/architecture/ddd-comparison' }] },
       ],
       '/applications/': [
         { text: 'Applications', items: [{ text: 'Simple URL shortener', link: '/applications/simple-url-shortener' }, { text: 'Simple Pastebin', link: '/applications/simple-pastebin' }, { text: 'Simple blog', link: '/applications/simple-blog' }] },

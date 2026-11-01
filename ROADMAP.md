@@ -63,7 +63,7 @@ where the domain complexity justifies them.
 
 - [ ] URL shortener.
 - [ ] Pastebin.
-- [ ] Blog.
+- [x] Blog: publication aggregate, value object, domain errors, and architecture test.
 
 ## Phase 7 — Consolidation
 

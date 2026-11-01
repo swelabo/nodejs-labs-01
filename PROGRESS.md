@@ -39,6 +39,9 @@ Phase 4 — `hexagonal-01` implementation.
   and a passing TypeScript compiler check.
 - Implemented `typescript-01/blog` with a typed post port, `tsx` tests, and a
   passing TypeScript compiler check.
+- Started `ddd-01` with domain aggregates for all three applications; the blog
+  includes publication invariants, an immutable slug value object, and an
+  infrastructure dependency test.
 
 ## Verification
 
@@ -66,6 +69,9 @@ Phase 4 — `hexagonal-01` implementation.
 - `make typescript-pastebin-test` — passed: 4 tests under Node.js 26.13.0.
 - `make typescript-blog-typecheck` — passed under Node.js 26.13.0.
 - `make typescript-blog-test` — passed: 4 tests under Node.js 26.13.0.
+- `ddd-01/url-shortener` — passed typecheck and 5 tests.
+- `ddd-01/pastebin` — passed typecheck and 5 tests.
+- `ddd-01/blog` — passed typecheck and 6 tests.
 
 ## Known limitations
 
@@ -85,5 +91,6 @@ Phase 4 — `hexagonal-01` implementation.
 
 ## Next action
 
-Begin `ddd-01` with a domain model for the blog publication workflow.
+Extend `ddd-01` with transaction boundaries, domain events, and cross-variant
+architectural comparisons.
 
