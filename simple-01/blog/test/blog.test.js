@@ -78,6 +78,16 @@ test('supports arbitrary hierarchical taxonomies with scoped parent checks', asy
   assert.equal((await request(app).get('/api/v1/taxonomies/series/terms')).body.data.length, 2)
 })
 
+test('supports page management and an editor dashboard', async () => {
+  const created = await request(app).post('/api/v1/pages').set('x-user-id', 'editor').send({ slug: 'managed', title: 'Managed', body: 'Draft page' })
+  assert.equal(created.status, 201)
+  const updated = await request(app).patch(`/api/v1/pages/${created.body.data.id}`).set('x-user-id', 'editor').send({ status: 'published' })
+  assert.equal(updated.status, 200)
+  const dashboard = await request(app).get('/admin').set('x-user-id', 'editor')
+  assert.equal(dashboard.status, 200)
+  assert.match(dashboard.text, /Managed/)
+})
+
 test('submits a one-time comment challenge and moderates the result', async () => {
   const post = await request(app).post('/api/v1/posts').set('x-user-id', 'editor').send({ slug: 'commented', title: 'Commented', body: 'body', status: 'published' })
   const challenge = await request(app).get('/api/v1/posts/commented/comments/challenge')

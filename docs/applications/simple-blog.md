@@ -54,6 +54,10 @@ hierarchy validation. Media management remains explicit follow-on scope; the
 comparison documents record that boundary instead of implying that a small
 teaching application is a complete WordPress replacement.
 
+Editors can create and publish pages through the API and use the escaped `/admin`
+dashboard to inspect post/page status. The dashboard uses the same development
+identity seam as the API; it is a teaching surface, not a production login.
+
 Run the tests with:
 
 ```sh

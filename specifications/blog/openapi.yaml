@@ -9,6 +9,12 @@ paths:
       summary: Read a published page
       parameters: [{in: path, name: slug, required: true, schema: {type: string}}]
       responses: {'200': {description: Published page}, '404': {description: Not found}}
+  /api/v1/pages:
+    post: {summary: Create a page draft, security: [{DevelopmentUser: []}], responses: {'201': {description: Page}}}
+  /api/v1/pages/{id}:
+    patch: {summary: Edit a page, security: [{DevelopmentUser: []}], responses: {'200': {description: Updated page}}}
+  /admin:
+    get: {summary: Render the administration dashboard, security: [{DevelopmentUser: []}], responses: {'200': {description: Dashboard}}}
   /api/v1/posts:
     get:
       summary: List published posts

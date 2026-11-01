@@ -30,6 +30,7 @@ export function createRepository(database) {
     return database.prepare(`SELECT posts.*, users.display_name AS author_name FROM posts JOIN users ON users.id = posts.author_id WHERE posts.${bySlug ? 'slug' : 'id'} = ?`).get(idOrSlug)
   }
   function pageRow(slugValue) { return database.prepare('SELECT pages.*, users.display_name AS author_name FROM pages JOIN users ON users.id = pages.author_id WHERE pages.slug = ?').get(slugValue) }
+  function pageIdRow(id) { return database.prepare('SELECT pages.*, users.display_name AS author_name FROM pages JOIN users ON users.id = pages.author_id WHERE pages.id = ?').get(id) }
   function taxonomy(table, joinTable, postId) { return database.prepare(`SELECT ${table}.slug, ${table}.name FROM ${table} JOIN ${joinTable} ON ${joinTable}.${table === 'categories' ? 'category_id' : 'tag_id'} = ${table}.id WHERE ${joinTable}.post_id = ? ORDER BY ${table}.name`).all(postId) }
   function get(id) { const row = postRow(id); return row ? mapPost(row, taxonomy('categories', 'post_categories', id), taxonomy('tags', 'post_tags', id)) : null }
   function approvedComments(postId) { return database.prepare("SELECT id, author_name, body, created_at FROM comments WHERE post_id = ? AND status = 'approved' ORDER BY created_at").all(postId) }
@@ -47,6 +48,16 @@ export function createRepository(database) {
     get,
     publicBySlug(value) { const row = postRow(value, true); if (!published(row)) throw new NotFoundError(); return mapPublic(row) },
     publicPageBySlug(value) { const row = pageRow(value); if (!published(row)) throw new NotFoundError('Page not found'); return mapPage(row) },
+    createPage(userId, role, value) {
+      if (!userId || !canManage(role)) throw new ForbiddenError()
+      ensureUser(userId, role); const page = input(value); const now = new Date().toISOString()
+      try { const result = database.prepare('INSERT INTO pages (slug, title, body, author_id, status, publish_at, created_at, updated_at) VALUES (@slug, @title, @body, @authorId, @status, @publishAt, @now, @now)').run({ ...page, authorId: userId, now }); return mapPage(pageIdRow(Number(result.lastInsertRowid))) } catch (error) { if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') throw new ValidationError('page slug is already in use', { slug: 'must be unique' }); throw error }
+    },
+    updatePage(id, userId, role, value) {
+      const current = pageIdRow(id); if (!current) throw new NotFoundError('Page not found'); if (current.author_id !== userId && role !== 'administrator') throw new ForbiddenError(); if (!canManage(role)) throw new ForbiddenError()
+      const page = input({ ...current, ...value }); database.prepare('UPDATE pages SET slug = @slug, title = @title, body = @body, status = @status, publish_at = @publishAt, updated_at = @now WHERE id = @id').run({ ...page, id, now: new Date().toISOString() }); return mapPage(pageIdRow(id))
+    },
+    adminContent(role) { if (!canManage(role)) throw new ForbiddenError(); return { posts: database.prepare('SELECT id, slug, title, status, updated_at FROM posts ORDER BY updated_at DESC').all(), pages: database.prepare('SELECT id, slug, title, status, updated_at FROM pages ORDER BY updated_at DESC').all() } },
     list({ query = '', page = 1, pageSize = 20, tag, category, author, year, month }) {
       const size = Math.min(MAX_PAGE_SIZE, Math.max(1, Number.isInteger(pageSize) ? pageSize : 20)); const currentPage = Math.max(1, Number.isInteger(page) ? page : 1)
       const clauses = ["posts.status = 'published'", '(posts.publish_at IS NULL OR posts.publish_at <= @now)', '(posts.title LIKE @query OR posts.body LIKE @query)']; const parameters = { now: new Date().toISOString(), query: `%${query}%` }

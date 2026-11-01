@@ -6,6 +6,12 @@ paths:
       summary: Read a published page
       parameters: [{in: path, name: slug, required: true, schema: {type: string}}]
       responses: {'200': {description: Published page}, '404': {description: Not found}}
+  /api/v1/pages:
+    post: {summary: Create a page draft, security: [{DevelopmentUser: []}], responses: {'201': {description: Page}, '403': {description: Forbidden}}}
+  /api/v1/pages/{id}:
+    patch: {summary: Edit a page, security: [{DevelopmentUser: []}], responses: {'200': {description: Updated page}, '403': {description: Forbidden}}}
+  /admin:
+    get: {summary: Render the administration dashboard, security: [{DevelopmentUser: []}], responses: {'200': {description: Dashboard}, '403': {description: Forbidden}}}
   /api/v1/categories:
     get: {summary: List hierarchical categories, responses: {'200': {description: Categories}}}
   /api/v1/tags:
