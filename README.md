@@ -38,6 +38,12 @@ The current runtime baseline is Node.js 26.13.0. See
 [`docs/research/technology-decisions.md`](docs/research/technology-decisions.md)
 for the version and compatibility record.
 
+## Licenses
+
+- Software: [MIT License](LICENSE).
+- Documentation: [CC BY 4.0](LICENSE-DOCS).
+- See the book's [licensing page](docs/legal/licensing.md) for reuse guidance.
+
 ## Repository map
 
 - `docs/` — the VitePress technical book.

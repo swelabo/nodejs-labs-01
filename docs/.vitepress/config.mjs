@@ -49,6 +49,9 @@ export default defineConfig({
       '/references/': [
         { text: 'References', items: [{ text: 'Official references', link: '/references/' }] },
       ],
+      '/legal/': [
+        { text: 'Legal', items: [{ text: 'Licensing', link: '/legal/licensing' }] },
+      ],
       '/prisma/': [
         { text: 'Prisma', items: [{ text: 'Guide', link: '/prisma/guide' }] },
       ],

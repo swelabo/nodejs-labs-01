@@ -22,10 +22,10 @@ idea. Tests and reflections make the tradeoffs visible.
 - [Node.js runtime fundamentals](/nodejs/fundamentals)
 - [Architecture progression](/architecture/progression)
 - [Technology decisions](/research/technology-decisions)
+- [Licensing](/legal/licensing)
 
 ## Project status
 
-The six-variant application matrix is executable. The remaining consolidation
-work expands the book, contract checks, and cross-variant reflections without
-changing the verified application behavior.
+The six-variant application matrix is executable, with intentional feature
+boundaries documented for later architectural experiments.
 
